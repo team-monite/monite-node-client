@@ -44,7 +44,7 @@ following namespace:
 ```typescript
 import { Monite } from "monite";
 
-const request: Monite.ApprovalPoliciesGetRequest = {
+const request: Monite.GetAnalyticsPayablesRequest = {
     ...
 };
 ```
@@ -69,6 +69,18 @@ try {
 ```
 
 ## Advanced
+
+### Additional Headers
+
+If you would like to send additional headers as part of the request, use the `headers` request option.
+
+```typescript
+const response = await client.products.create(..., {
+    headers: {
+        'X-Custom-Header': 'custom value'
+    }
+});
+```
 
 ### Retries
 

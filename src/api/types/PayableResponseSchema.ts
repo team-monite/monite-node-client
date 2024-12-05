@@ -36,11 +36,15 @@ export interface PayableResponseSchema {
     counterpart_vat_id_id?: string;
     /** The ID of the role that the entity user who created this payable had at that time. If the payable was created using a partner access token, the value is `null`. */
     created_by_role_id?: string;
+    /** The list of linked credit notes of the payable. */
+    credit_notes: Monite.PayableCreditNoteData[];
     /** The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable. */
     currency?: Monite.CurrencyEnum;
-    currency_exchange?: Monite.CurrencyExchangeSchema;
+    currency_exchange?: Monite.CurrencyExchangeSchema2;
     /** An arbitrary description of this payable. */
     description?: string;
+    /** The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
+    discount?: number;
     /** A unique invoice number assigned by the invoice issuer for payment tracking purposes. This is different from `id` which is an internal ID created automatically by Monite. */
     document_id?: string;
     /** The date by which the payable must be paid, in the YYYY-MM-DD format. If the payable specifies payment terms with early payment discounts, this is the final payment date. */
@@ -93,5 +97,7 @@ export interface PayableResponseSchema {
     tax_amount?: number;
     /** The total amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
     total_amount?: number;
+    /** The total price of the payable in [minor units](https://docs.monite.com/docs/currencies#minor-units), excluding all issued credit notes. */
+    total_amount_with_credit_notes?: number;
     was_created_by_user_id?: string;
 }

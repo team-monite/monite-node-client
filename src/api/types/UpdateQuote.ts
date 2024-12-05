@@ -4,9 +4,6 @@
 
 import * as Monite from "../index";
 
-/**
- * Raise if None was explicitly passed to given fields
- */
 export interface UpdateQuote {
     /** Unique ID of the counterpart contact. */
     contact_id?: string;

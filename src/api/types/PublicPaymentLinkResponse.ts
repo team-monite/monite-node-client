@@ -10,13 +10,14 @@ export interface PublicPaymentLinkResponse {
     currency: Monite.CurrencyEnum;
     expires_at: string;
     invoice?: Monite.Invoice;
-    payer?: Monite.AccountResponse;
+    payer?: Monite.PayerAccountResponse;
     payment_intent?: Monite.PaymentIntent;
     payment_intent_id: string;
     payment_methods: string[];
     payment_page_url: string;
     payment_reference?: string;
     recipient: Monite.RecipientAccountResponse;
+    /** The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL. */
     return_url?: string;
     status: string;
 }

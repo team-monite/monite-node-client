@@ -67,10 +67,9 @@ export interface InvoiceResponsePayload {
     /** The receivable's PDF URL in the counterpart's default language. */
     file_url?: string;
     /**
-     * The date when the goods are shipped or the service is provided.
+     * The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
      *
-     * If omitted, defaults to the invoice issue date,
-     * and the value is automatically set when the invoice status changes to `issued`.
+     * If omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status.
      */
     fulfillment_date?: string;
     /** Optional field for the issue of the entry. */

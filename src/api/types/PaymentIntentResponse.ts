@@ -13,7 +13,7 @@ export interface PaymentIntentResponse {
     currency: string;
     invoice?: Monite.Invoice;
     object?: Monite.PaymentObject;
-    payer?: Monite.AccountResponse;
+    payer?: Monite.PayerAccountResponse;
     payment_link_id?: string;
     payment_methods: Monite.MoniteAllPaymentMethodsTypes[];
     payment_reference?: string;

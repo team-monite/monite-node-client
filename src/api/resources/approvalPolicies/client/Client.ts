@@ -31,6 +31,8 @@ export declare namespace ApprovalPolicies {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -56,6 +58,7 @@ export class ApprovalPolicies {
         requestOptions?: ApprovalPolicies.RequestOptions
     ): Promise<Monite.ApprovalPolicyResourceList> {
         const {
+            process_id: processId,
             order,
             limit,
             pagination_token: paginationToken,
@@ -77,6 +80,10 @@ export class ApprovalPolicies {
             updated_at__lte: updatedAtLte,
         } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        if (processId != null) {
+            _queryParams["process_id"] = processId;
+        }
+
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -180,6 +187,7 @@ export class ApprovalPolicies {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -217,7 +225,7 @@ export class ApprovalPolicies {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /approval_policies.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -267,6 +275,7 @@ export class ApprovalPolicies {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -306,7 +315,7 @@ export class ApprovalPolicies {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /approval_policies.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -352,6 +361,7 @@ export class ApprovalPolicies {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -390,7 +400,9 @@ export class ApprovalPolicies {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling GET /approval_policies/{approval_policy_id}."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -433,6 +445,7 @@ export class ApprovalPolicies {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -471,7 +484,9 @@ export class ApprovalPolicies {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling DELETE /approval_policies/{approval_policy_id}."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -520,6 +535,7 @@ export class ApprovalPolicies {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -561,7 +577,9 @@ export class ApprovalPolicies {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling PATCH /approval_policies/{approval_policy_id}."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

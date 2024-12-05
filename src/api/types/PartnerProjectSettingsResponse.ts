@@ -6,7 +6,7 @@ import * as Monite from "../index";
 
 export interface PartnerProjectSettingsResponse {
     /** Settings for the accounting module. */
-    accounting?: Monite.AccountingSettingsResponse;
+    accounting?: Monite.AccountingSettings;
     /** Default API version for partner. */
     api_version?: Monite.ApiVersion;
     /** Commercial conditions for receivables. */
@@ -16,15 +16,15 @@ export interface PartnerProjectSettingsResponse {
     /** A default role to provision upon new entity creation. */
     default_role?: Record<string, unknown>;
     /** Settings for the e-invoicing module. */
-    einvoicing?: Monite.EInvoicingSettingsResponse;
+    einvoicing?: Monite.EInvoicingSettingsPayload;
     /** Settings for email and mailboxes. */
-    mail?: Monite.MailSettingsResponse;
+    mail?: Monite.MailSettingsPayload;
     /** Settings for the payables module. */
-    payable?: Monite.PayableSettingsResponse;
+    payable?: Monite.PayableSettingsPayload;
     /** Settings for the payments module. */
-    payments?: Monite.PaymentsSettingsResponse;
+    payments?: Monite.PaymentsSettingsPayload;
     /** Settings for the receivables module. */
-    receivable?: Monite.ReceivableSettingsResponse;
+    receivable?: Monite.ReceivableSettingsPayload;
     /** Measurement units. */
     units?: Monite.Unit[];
     website?: string;

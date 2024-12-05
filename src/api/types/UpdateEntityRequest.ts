@@ -16,7 +16,7 @@ export interface UpdateEntityRequest {
     individual?: Monite.OptionalIndividualSchema;
     /** A set of meta data describing the organization */
     organization?: Monite.OptionalOrganizationSchema;
-    /** A phone number of the entity */
+    /** The contact phone number of the entity. Required for US organizations to use payments. */
     phone?: string;
     /** The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered. */
     tax_id?: string;

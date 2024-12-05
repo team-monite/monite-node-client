@@ -12,7 +12,7 @@ export interface CounterpartOrganizationRootUpdatePayload {
     default_billing_address_id?: string;
     /** ID of the shipping address. */
     default_shipping_address_id?: string;
-    /** The language used to generate pdf documents for this counterpart. */
+    /** The language used to generate PDF documents for this counterpart. */
     language?: Monite.LanguageCodeEnum;
     organization: Monite.CounterpartOrganizationUpdatePayload;
     reminders_enabled?: boolean;

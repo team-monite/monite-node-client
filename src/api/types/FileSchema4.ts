@@ -10,7 +10,7 @@ import * as Monite from "../index";
 export interface FileSchema4 {
     /** A unique ID of this file. */
     id: string;
-    /** UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. */
+    /** UTC date and time when this file was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. */
     created_at: string;
     /** The type of the business object associated with this file. */
     file_type: string;
