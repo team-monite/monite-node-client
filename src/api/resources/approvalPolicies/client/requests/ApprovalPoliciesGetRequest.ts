@@ -9,6 +9,7 @@ import * as Monite from "../../../../index";
  *     {}
  */
 export interface ApprovalPoliciesGetRequest {
+    process_id?: string;
     /**
      * Order by
      */

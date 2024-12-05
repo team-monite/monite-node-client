@@ -30,6 +30,8 @@ export declare namespace ExtraData {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -149,6 +151,7 @@ export class ExtraData {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -186,7 +189,7 @@ export class ExtraData {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /data_exports/extra_data.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -234,6 +237,7 @@ export class ExtraData {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -273,7 +277,7 @@ export class ExtraData {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /data_exports/extra_data.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -317,6 +321,7 @@ export class ExtraData {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -355,7 +360,9 @@ export class ExtraData {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling GET /data_exports/extra_data/{extra_data_id}."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -399,6 +406,7 @@ export class ExtraData {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -437,7 +445,9 @@ export class ExtraData {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling DELETE /data_exports/extra_data/{extra_data_id}."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -484,6 +494,7 @@ export class ExtraData {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -525,7 +536,9 @@ export class ExtraData {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling PATCH /data_exports/extra_data/{extra_data_id}."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

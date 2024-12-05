@@ -30,6 +30,8 @@ export declare namespace PaymentLinks {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -75,6 +77,7 @@ export class PaymentLinks {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -108,7 +111,7 @@ export class PaymentLinks {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payment_links.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -149,6 +152,7 @@ export class PaymentLinks {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -181,7 +185,9 @@ export class PaymentLinks {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling GET /payment_links/{payment_link_id}."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -222,6 +228,7 @@ export class PaymentLinks {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -254,7 +261,9 @@ export class PaymentLinks {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling POST /payment_links/{payment_link_id}/expire."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

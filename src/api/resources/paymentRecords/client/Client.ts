@@ -30,6 +30,8 @@ export declare namespace PaymentRecords {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -40,13 +42,6 @@ export class PaymentRecords {
      * @param {Monite.PaymentRecordsGetRequest} request
      * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Monite.BadRequestError}
-     * @throws {@link Monite.UnauthorizedError}
-     * @throws {@link Monite.ForbiddenError}
-     * @throws {@link Monite.NotFoundError}
-     * @throws {@link Monite.NotAcceptableError}
-     * @throws {@link Monite.ConflictError}
-     * @throws {@link Monite.RangeNotSatisfiableError}
      * @throws {@link Monite.UnprocessableEntityError}
      * @throws {@link Monite.InternalServerError}
      *
@@ -109,6 +104,7 @@ export class PaymentRecords {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -123,20 +119,6 @@ export class PaymentRecords {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
-                case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 416:
-                    throw new Monite.RangeNotSatisfiableError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
@@ -156,7 +138,7 @@ export class PaymentRecords {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payment_records.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -168,13 +150,6 @@ export class PaymentRecords {
      * @param {Monite.PaymentRecordRequest} request
      * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Monite.BadRequestError}
-     * @throws {@link Monite.UnauthorizedError}
-     * @throws {@link Monite.ForbiddenError}
-     * @throws {@link Monite.NotFoundError}
-     * @throws {@link Monite.NotAcceptableError}
-     * @throws {@link Monite.ConflictError}
-     * @throws {@link Monite.RangeNotSatisfiableError}
      * @throws {@link Monite.UnprocessableEntityError}
      * @throws {@link Monite.InternalServerError}
      *
@@ -213,6 +188,7 @@ export class PaymentRecords {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -227,20 +203,6 @@ export class PaymentRecords {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
-                case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 416:
-                    throw new Monite.RangeNotSatisfiableError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
@@ -260,7 +222,7 @@ export class PaymentRecords {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payment_records.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -272,13 +234,6 @@ export class PaymentRecords {
      * @param {string} paymentRecordId
      * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Monite.BadRequestError}
-     * @throws {@link Monite.UnauthorizedError}
-     * @throws {@link Monite.ForbiddenError}
-     * @throws {@link Monite.NotFoundError}
-     * @throws {@link Monite.NotAcceptableError}
-     * @throws {@link Monite.ConflictError}
-     * @throws {@link Monite.RangeNotSatisfiableError}
      * @throws {@link Monite.UnprocessableEntityError}
      * @throws {@link Monite.InternalServerError}
      *
@@ -308,6 +263,7 @@ export class PaymentRecords {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -321,20 +277,6 @@ export class PaymentRecords {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
-                case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
-                case 416:
-                    throw new Monite.RangeNotSatisfiableError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
@@ -354,7 +296,9 @@ export class PaymentRecords {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling GET /payment_records/{payment_record_id}."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

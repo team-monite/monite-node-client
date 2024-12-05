@@ -5,17 +5,30 @@
 import * as Monite from "../index";
 
 export interface BankAccount {
+    /** The ID of the bank account. */
     id: string;
+    /** The name of the person or business that owns this bank account. */
     account_holder_name?: string;
+    /** The bank account number. Typically used for UK and US bank accounts. US account numbers contain 9 to 12 digits. UK account numbers typically contain 8 digits. */
     account_number?: string;
+    /** The BIC/SWIFT code of the bank. */
     bic?: string;
+    /** The country in which the bank account is registered, repsesented as a two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). */
     country?: Monite.AllowedCountries;
+    /** The currency of the bank account, represented as a three-letter ISO [currency code](https://docs.monite.com/references/currencies). */
     currency?: Monite.CurrencyEnum;
+    /** User-defined name of this bank account, such as 'Primary account' or 'Savings account'. Used only for entity bank accounts. */
     display_name?: string;
+    /** The IBAN of the bank account. */
     iban?: string;
+    /** Indicates whether this bank account is the default one for its currency. */
     is_default?: boolean;
-    /** Display name of a bank account */
+    /** User-defined name of this bank account, such as 'Primary account' or 'Savings account'. Used only for counterpart bank accounts. */
     name?: string;
+    /** The bank's routing transit number (RTN). Typically used for US banks. US routing numbers consist of 9 digits. */
+    routing_number?: string;
+    /** The bank's sort code. Typically used for UK banks. */
     sort_code?: string;
+    /** ID of the entity user who added this bank account, or `null` if it was added using a partner access token. Used only for entity bank accounts. */
     was_created_by_user_id?: string;
 }

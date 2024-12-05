@@ -10,6 +10,7 @@ export interface DomainResponse {
     /** A dedicated IP address assigned to this mailbox and used to send outgoing email. */
     dedicated_ip?: string;
     dns_records: Monite.DomainResponseDnsRecords;
+    /** The domain name. */
     domain: string;
     /** The time the domain was updated for the last time */
     last_updated_at?: string;

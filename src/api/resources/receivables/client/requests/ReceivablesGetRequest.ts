@@ -12,7 +12,7 @@ export interface ReceivablesGetRequest {
     /**
      * Sort order (ascending by default). Typically used together with the `sort` parameter.
      */
-    order?: Monite.OrderEnum2;
+    order?: Monite.OrderEnum;
     /**
      * The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
      *

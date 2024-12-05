@@ -22,7 +22,7 @@ export interface CounterpartOrganizationRootResponse {
     default_shipping_address_id?: string;
     /** Entity user ID of counterpart creator. */
     created_by_entity_user_id?: string;
-    /** The language used to generate pdf documents for this counterpart. */
+    /** The language used to generate PDF documents for this counterpart. */
     language?: Monite.LanguageCodeEnum;
     organization: Monite.CounterpartOrganizationResponse;
     reminders_enabled?: boolean;

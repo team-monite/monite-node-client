@@ -30,6 +30,8 @@ export declare namespace PaymentMethods {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
+        /** Additional headers to include in the request. */
+        headers?: Record<string, string>;
     }
 }
 
@@ -71,6 +73,7 @@ export class PaymentMethods {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -103,7 +106,9 @@ export class PaymentMethods {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling GET /entities/{entity_id}/payment_methods."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -148,6 +153,7 @@ export class PaymentMethods {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -181,7 +187,9 @@ export class PaymentMethods {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError();
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling PUT /entities/{entity_id}/payment_methods."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

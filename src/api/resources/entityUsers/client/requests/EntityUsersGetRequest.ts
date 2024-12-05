@@ -10,19 +10,21 @@ import * as Monite from "../../../../index";
  */
 export interface EntityUsersGetRequest {
     /**
-     * Order by
+     * Sort order (ascending by default). Typically used together with the `sort` parameter.
      */
     order?: Monite.OrderEnum;
     /**
-     * Max is 100
+     * The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
      */
     limit?: number;
     /**
-     * A token, obtained from previous page. Prior over other filters
+     * A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
+     *
+     * If not specified, the first page of results will be returned.
      */
     pagination_token?: string;
     /**
-     * Allowed sort fields
+     * The field to sort the results by. Typically used together with the `order` parameter.
      */
     sort?: Monite.EntityUserCursorFields;
     id__in?: string | string[];
@@ -32,6 +34,7 @@ export interface EntityUsersGetRequest {
     login?: string;
     status?: string;
     first_name?: string;
+    name__istartswith?: string;
     created_at__gt?: string;
     created_at__lt?: string;
     created_at__gte?: string;
