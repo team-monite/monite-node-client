@@ -44,7 +44,7 @@ following namespace:
 ```typescript
 import { Monite } from "monite";
 
-const request: Monite.ApprovalPoliciesGetRequest = {
+const request: Monite.GetAnalyticsPayablesRequest = {
     ...
 };
 ```

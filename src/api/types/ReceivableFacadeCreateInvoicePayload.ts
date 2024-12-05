@@ -22,16 +22,17 @@ export interface ReceivableFacadeCreateInvoicePayload {
     deduction_memo?: string;
     /** The discount for a receivable. */
     discount?: Monite.Discount;
+    /** The document number of the receivable, which will appear in the PDF document. Can be set manually only in the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance). Otherwise (or if omitted), it will be generated automatically based on the entity's [document number customization](https://docs.monite.com/advanced/document-number-customization) settings when the document is issued. */
+    document_id?: string;
     entity?: Monite.ReceivableEntityBase;
     /** Entity bank account ID */
     entity_bank_account_id?: string;
     /** Entity VAT ID id */
     entity_vat_id_id?: string;
     /**
-     * The date when the goods are shipped or the service is provided.
+     * The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
      *
-     * If omitted, defaults to the invoice issue date,
-     * and the value is automatically set when the invoice status changes to `issued`.
+     * If omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status.
      */
     fulfillment_date?: string;
     line_items: Monite.LineItem[];

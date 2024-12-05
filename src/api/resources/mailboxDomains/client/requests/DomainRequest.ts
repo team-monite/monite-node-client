@@ -9,5 +9,6 @@
  *     }
  */
 export interface DomainRequest {
+    /** The domain name, such as `mail.mycompany.com`. Can contain only alphanumeric characters (A..Z a..z 0..9), dots (.), and hyphens (-). Each segment of the domain name must start and end with either a letter or a digit. */
     domain: string;
 }

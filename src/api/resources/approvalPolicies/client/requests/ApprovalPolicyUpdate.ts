@@ -9,6 +9,10 @@ import * as Monite from "../../../../index";
  *     {}
  */
 export interface ApprovalPolicyUpdate {
+    /** The date and time (in the ISO 8601 format) when the approval policy becomes active. Only payables submitted for approval during the policy's active period will trigger this policy. If omitted or `null`, the policy is effective immediately. The value will be converted to UTC. */
+    starts_at?: string;
+    /** The date and time (in the ISO 8601 format) when the approval policy stops being active and stops triggering approval workflows.If `ends_at` is provided in the request, then `starts_at` must also be provided and `ends_at` must be later than `starts_at`. The value will be converted to UTC. */
+    ends_at?: string;
     /** The name of the approval policy. */
     name?: string;
     /** A brief description of the approval policy. */

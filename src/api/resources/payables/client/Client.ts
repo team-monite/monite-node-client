@@ -474,6 +474,8 @@ export class Payables {
     /**
      * Retrieve aggregated statistics for payables, including total amount and count, both overall and by status.
      *
+     * For more flexible configuration and retrieval of other data types, use GET /analytics/payables.
+     *
      * @param {Monite.PayablesGetAnalyticsRequest} request
      * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
      *

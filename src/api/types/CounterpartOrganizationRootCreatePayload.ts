@@ -8,7 +8,7 @@ import * as Monite from "../index";
  * This schema is used to create counterparts that are organizations (juridical persons).
  */
 export interface CounterpartOrganizationRootCreatePayload {
-    /** The language used to generate pdf documents for this counterpart. */
+    /** The language used to generate PDF documents for this counterpart. */
     language?: Monite.LanguageCodeEnum;
     organization: Monite.CounterpartOrganizationCreatePayload;
     reminders_enabled?: boolean;

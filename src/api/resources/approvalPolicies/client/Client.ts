@@ -56,6 +56,7 @@ export class ApprovalPolicies {
         requestOptions?: ApprovalPolicies.RequestOptions
     ): Promise<Monite.ApprovalPolicyResourceList> {
         const {
+            process_id: processId,
             order,
             limit,
             pagination_token: paginationToken,
@@ -77,6 +78,10 @@ export class ApprovalPolicies {
             updated_at__lte: updatedAtLte,
         } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        if (processId != null) {
+            _queryParams["process_id"] = processId;
+        }
+
         if (order != null) {
             _queryParams["order"] = order;
         }

@@ -10,4 +10,5 @@ export interface PayableSettingsPayload {
     /** A state each new payable will have upon creation */
     default_state?: string;
     enable_line_items?: boolean;
+    skip_approval_for_paid_invoice?: boolean;
 }

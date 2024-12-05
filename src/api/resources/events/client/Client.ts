@@ -37,7 +37,11 @@ export class Events {
     constructor(protected readonly _options: Events.Options) {}
 
     /**
-     * Get events for a given entity.
+     * Returns all webhook events that were triggered for the specified entity based on your enabled webhook subscriptions. These are the same events that were sent to your configured webhook listener endpoints, aggregated into a single list. Results can be filtered by the related object type or time period.
+     *
+     * You can use this to get the missed events for the time periods when your webhook listener was temporarily unavailable.
+     *
+     * We guarantee access to event data only from the last three months. Earlier events may be unavailable.
      *
      * @param {Monite.EventsGetRequest} request
      * @param {Events.RequestOptions} requestOptions - Request-specific configuration.
@@ -161,9 +165,9 @@ export class Events {
     }
 
     /**
-     * Get event by ID.
+     * Get a webhook event by its ID. The data is the same as you might have previously received in a webhook sent by Monite to your server.
      *
-     * @param {string} eventId
+     * @param {string} eventId - ID of the webhook event. This is the `id` value you might have received in a webhook or retrieved from `GET /events`.
      * @param {Events.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Monite.UnprocessableEntityError}

@@ -5,8 +5,12 @@
 import * as Monite from "../index";
 
 export interface RecipientAccountResponse {
+    /** ID of a payment account */
     id: string;
+    /** List of bank accounts */
     bank_accounts?: Monite.BankAccount[];
+    /** Display name of a payment account */
     name?: string;
+    /** Type of a payment account. Can be `entity` or `counterpart` */
     type: Monite.PaymentAccountType;
 }

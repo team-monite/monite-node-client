@@ -12,7 +12,7 @@ export interface ReceivablesGetHistoryRequest {
     /**
      * Order by
      */
-    order?: Monite.OrderEnum3;
+    order?: Monite.OrderEnum;
     /**
      * Max is 100
      */

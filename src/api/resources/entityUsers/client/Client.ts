@@ -68,6 +68,7 @@ export class EntityUsers {
             login,
             status,
             first_name: firstName,
+            name__istartswith: nameIstartswith,
             created_at__gt: createdAtGt,
             created_at__lt: createdAtLt,
             created_at__gte: createdAtGte,
@@ -128,6 +129,10 @@ export class EntityUsers {
 
         if (firstName != null) {
             _queryParams["first_name"] = firstName;
+        }
+
+        if (nameIstartswith != null) {
+            _queryParams["name__istartswith"] = nameIstartswith;
         }
 
         if (createdAtGt != null) {
@@ -226,7 +231,7 @@ export class EntityUsers {
      *
      * @example
      *     await client.entityUsers.create({
-     *         first_name: "Andrey",
+     *         first_name: "Casey",
      *         login: "login"
      *     })
      */

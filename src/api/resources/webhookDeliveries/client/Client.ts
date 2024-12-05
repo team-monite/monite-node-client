@@ -37,6 +37,12 @@ export class WebhookDeliveries {
     constructor(protected readonly _options: WebhookDeliveries.Options) {}
 
     /**
+     * Returns an aggregated log of webhook delivery attempts. The data contains a list of triggered webhook events, how many times Monite tried to send each event to your server, the last HTTP status code returned by your webhook listener endpoint, and whether the final attempt to deliver that event was successful.
+     *
+     * We guarantee access to webhook delivery data only from the last three months. Earlier data may be unavailable.
+     *
+     * Note that if the same event type is included in multiple webhook subscriptions, the results will include several entries for each occurrence of this event - one entry per subscription.
+     *
      * @param {Monite.WebhookDeliveriesGetRequest} request
      * @param {WebhookDeliveries.RequestOptions} requestOptions - Request-specific configuration.
      *

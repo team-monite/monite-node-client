@@ -4,6 +4,7 @@
 
 import * as environments from "./environments";
 import * as core from "./core";
+import { Analytics } from "./api/resources/analytics/client/Client";
 import { ApprovalPolicies } from "./api/resources/approvalPolicies/client/Client";
 import { ApprovalRequests } from "./api/resources/approvalRequests/client/Client";
 import { AuditLogs } from "./api/resources/auditLogs/client/Client";
@@ -17,12 +18,14 @@ import { Entities } from "./api/resources/entities/client/Client";
 import { EntityUsers } from "./api/resources/entityUsers/client/Client";
 import { Events } from "./api/resources/events/client/Client";
 import { Files } from "./api/resources/files/client/Client";
+import { Financing } from "./api/resources/financing/client/Client";
 import { MailTemplates } from "./api/resources/mailTemplates/client/Client";
 import { MailboxDomains } from "./api/resources/mailboxDomains/client/Client";
 import { Mailboxes } from "./api/resources/mailboxes/client/Client";
 import { MeasureUnits } from "./api/resources/measureUnits/client/Client";
 import { OnboardingLinks } from "./api/resources/onboardingLinks/client/Client";
 import { OverdueReminders } from "./api/resources/overdueReminders/client/Client";
+import { CreditNotes } from "./api/resources/creditNotes/client/Client";
 import { PurchaseOrders } from "./api/resources/purchaseOrders/client/Client";
 import { Payables } from "./api/resources/payables/client/Client";
 import { PaymentIntents } from "./api/resources/paymentIntents/client/Client";
@@ -70,6 +73,12 @@ export declare namespace MoniteClient {
 
 export class MoniteClient {
     constructor(protected readonly _options: MoniteClient.Options) {}
+
+    protected _analytics: Analytics | undefined;
+
+    public get analytics(): Analytics {
+        return (this._analytics ??= new Analytics(this._options));
+    }
 
     protected _approvalPolicies: ApprovalPolicies | undefined;
 
@@ -149,6 +158,12 @@ export class MoniteClient {
         return (this._files ??= new Files(this._options));
     }
 
+    protected _financing: Financing | undefined;
+
+    public get financing(): Financing {
+        return (this._financing ??= new Financing(this._options));
+    }
+
     protected _mailTemplates: MailTemplates | undefined;
 
     public get mailTemplates(): MailTemplates {
@@ -183,6 +198,12 @@ export class MoniteClient {
 
     public get overdueReminders(): OverdueReminders {
         return (this._overdueReminders ??= new OverdueReminders(this._options));
+    }
+
+    protected _creditNotes: CreditNotes | undefined;
+
+    public get creditNotes(): CreditNotes {
+        return (this._creditNotes ??= new CreditNotes(this._options));
     }
 
     protected _purchaseOrders: PurchaseOrders | undefined;
