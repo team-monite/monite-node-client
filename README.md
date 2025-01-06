@@ -1,7 +1,7 @@
 # Monite TypeScript Library
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fteam-monite%2Fmonite-node-client)
-[![npm shield](https://img.shields.io/npm/v/monite)](https://www.npmjs.com/package/monite)
+[![npm shield](https://img.shields.io/npm/v/@monite/node-client)](https://www.npmjs.com/package/@monite/node-client)
 
 The Monite TypeScript library provides convenient access to the Monite API from TypeScript.
 
@@ -12,7 +12,7 @@ API reference documentation is available [here](https://docs.monite.com/api).
 ## Installation
 
 ```sh
-npm i -s monite
+npm i -s @monite/node-client
 ```
 
 ## Reference
@@ -24,7 +24,7 @@ A full reference for this library is available [here](./reference.md).
 Instantiate and use the client with the following:
 
 ```typescript
-import { MoniteClient } from "monite";
+import { MoniteClient } from "@monite/node-client";
 
 const client = new MoniteClient({
     token: "YOUR_TOKEN",
@@ -42,7 +42,7 @@ The SDK exports all request and response types as TypeScript interfaces. Simply 
 following namespace:
 
 ```typescript
-import { Monite } from "monite";
+import { Monite } from "@monite/node-client";
 
 const request: Monite.GetAnalyticsPayablesRequest = {
     ...
@@ -55,7 +55,7 @@ When the API returns a non-success status code (4xx or 5xx response), a subclass
 will be thrown.
 
 ```typescript
-import { MoniteError } from "monite";
+import { MoniteError } from "@monite/node-client";
 
 try {
     await client.products.create(...);
@@ -142,7 +142,7 @@ The SDK provides a way for your to customize the underlying HTTP client / Fetch 
 unsupported environment, this provides a way for you to break glass and ensure the SDK works.
 
 ```typescript
-import { MoniteClient } from "monite";
+import { MoniteClient } from "@monite/node-client";
 
 const client = new MoniteClient({
     ...
