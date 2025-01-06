@@ -30,8 +30,6 @@ export declare namespace CreditNotes {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
-        /** Additional headers to include in the request. */
-        headers?: Record<string, string>;
     }
 }
 
@@ -246,7 +244,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -288,7 +285,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payable_credit_notes.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -337,7 +334,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -377,7 +373,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payable_credit_notes.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -421,7 +417,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -460,9 +455,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /payable_credit_notes/{credit_note_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -507,7 +500,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -548,9 +540,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /payable_credit_notes/{credit_note_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -596,7 +586,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -636,9 +625,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /payable_credit_notes/{credit_note_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -685,7 +672,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -726,9 +712,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payable_credit_notes/{credit_note_id}/approve."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -775,7 +759,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -816,9 +799,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payable_credit_notes/{credit_note_id}/cancel."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1087,7 +1068,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -1127,9 +1107,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /payable_credit_notes/{credit_note_id}/line_items."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1175,7 +1153,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1215,9 +1192,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payable_credit_notes/{credit_note_id}/line_items."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1265,7 +1240,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1305,9 +1279,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PUT /payable_credit_notes/{credit_note_id}/line_items."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1353,7 +1325,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1392,9 +1363,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /payable_credit_notes/{credit_note_id}/line_items/{line_item_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1440,7 +1409,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1479,9 +1447,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /payable_credit_notes/{credit_note_id}/line_items/{line_item_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1529,7 +1495,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1569,9 +1534,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /payable_credit_notes/{credit_note_id}/line_items/{line_item_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1618,7 +1581,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1659,9 +1621,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payable_credit_notes/{credit_note_id}/reject."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1708,7 +1668,6 @@ export class CreditNotes {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1749,9 +1708,7 @@ export class CreditNotes {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payable_credit_notes/{credit_note_id}/submit_for_approval."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

@@ -3,8 +3,8 @@
  */
 
 export class MoniteTimeoutError extends Error {
-    constructor(message: string) {
-        super(message);
+    constructor() {
+        super("Timeout");
         Object.setPrototypeOf(this, MoniteTimeoutError.prototype);
     }
 }

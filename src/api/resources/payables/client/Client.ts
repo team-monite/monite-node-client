@@ -33,8 +33,6 @@ export declare namespace Payables {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
-        /** Additional headers to include in the request. */
-        headers?: Record<string, string>;
     }
 }
 
@@ -333,7 +331,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -375,7 +372,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -427,7 +424,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -467,7 +463,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payables.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -719,7 +715,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -757,7 +752,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables/analytics.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -808,7 +803,6 @@ export class Payables {
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ..._maybeEncodedRequest.headers,
-                ...requestOptions?.headers,
             },
             requestType: "file",
             duplex: _maybeEncodedRequest.duplex,
@@ -850,7 +844,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payables/upload_from_file.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -892,7 +886,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -931,7 +924,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables/validations.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -979,7 +972,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1019,7 +1011,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling PUT /payables/validations.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1063,7 +1055,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1102,7 +1093,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payables/validations/reset.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1144,7 +1135,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1179,7 +1169,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables/variables.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1226,7 +1216,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1267,7 +1256,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables/{payable_id}.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1311,7 +1300,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1352,7 +1340,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling DELETE /payables/{payable_id}.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1401,7 +1389,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1443,7 +1430,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling PATCH /payables/{payable_id}.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1491,7 +1478,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1534,9 +1520,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/approve_payment_operation."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1589,7 +1573,6 @@ export class Payables {
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ..._maybeEncodedRequest.headers,
-                ...requestOptions?.headers,
             },
             requestType: "file",
             duplex: _maybeEncodedRequest.duplex,
@@ -1631,9 +1614,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/attach_file."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1681,7 +1662,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1724,9 +1704,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/cancel."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1798,7 +1776,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1842,9 +1819,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/mark_as_paid."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1920,7 +1895,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1964,9 +1938,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/mark_as_partially_paid."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2014,7 +1986,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2057,9 +2028,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/reject."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2107,7 +2076,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2150,9 +2118,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/reopen."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2200,7 +2166,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2243,9 +2208,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/submit_for_approval."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2292,7 +2255,6 @@ export class Payables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2333,9 +2295,7 @@ export class Payables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/validate."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

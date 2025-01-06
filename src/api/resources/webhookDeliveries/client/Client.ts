@@ -30,8 +30,6 @@ export declare namespace WebhookDeliveries {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
-        /** Additional headers to include in the request. */
-        headers?: Record<string, string>;
     }
 }
 
@@ -135,7 +133,6 @@ export class WebhookDeliveries {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -169,7 +166,7 @@ export class WebhookDeliveries {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /webhook_deliveries.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
