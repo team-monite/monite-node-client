@@ -30,8 +30,6 @@ export declare namespace Receivables {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
-        /** Additional headers to include in the request. */
-        headers?: Record<string, string>;
     }
 }
 
@@ -49,63 +47,62 @@ export class Receivables {
      *
      * ##### Invoices
      *
-     * - Get all overdue invoices:
+     * * Get all overdue invoices:
+     *     ```
+     *     GET /receivables?type=invoice&status=overdue
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice&status=overdue
-     *   ```
+     * * Get all invoices created for the counterpart named "Solarwind" (case-insensitive):
      *
-     * - Get all invoices created for the counterpart named "Solarwind" (case-insensitive):
+     *     ```
+     *     GET /receivables?type=invoice?counterpart_name__icontains=Solarwind
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice?counterpart_name__icontains=Solarwind
-     *   ```
+     * * Get invoices whose total amount starts from 500 EUR:
      *
-     * - Get invoices whose total amount starts from 500 EUR:
+     *     ```
+     *     GET /receivables?type=invoice&total_amount__gte=50000
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice&total_amount__gte=50000
-     *   ```
+     * * Get invoices that are due for payment in September 2024:
      *
-     * - Get invoices that are due for payment in September 2024:
+     *     ```
+     *     GET /receivables?type=invoice&due_date__gte=2024-09-01T00:00:00Z&due_date__lt=2024-10-01T00:00:00Z
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice&due_date__gte=2024-09-01T00:00:00Z&due_date__lt=2024-10-01T00:00:00Z
-     *   ```
+     * * Get invoices created on or after September 1, 2024:
      *
-     * - Get invoices created on or after September 1, 2024:
+     *     ```
+     *     GET /receivables?type=invoice&created_at__gte=2024-09-01T00:00:00Z
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice&created_at__gte=2024-09-01T00:00:00Z
-     *   ```
+     * * Find an invoice created from a specific quote:
      *
-     * - Find an invoice created from a specific quote:
-     *
-     *   ```
-     *   GET /receivables?type=invoice?based_on=QUOTE_ID
-     *   ```
+     *     ```
+     *     GET /receivables?type=invoice?based_on=QUOTE_ID
+     *     ```
      *
      * ##### Quotes
      *
-     * - Get the latest created quote:
+     * * Get the latest created quote:
      *
-     *   ```
-     *   GET /receivables?type=quote&sort=created_at&order=desc&limit=1
-     *   ```
+     *     ```
+     *     GET /receivables?type=quote&sort=created_at&order=desc&limit=1
+     *     ```
      *
-     * - Get the latest issued quote:
+     * * Get the latest issued quote:
      *
-     *   ```
-     *   GET /receivables?type=quote&sort=issue_date&order=desc&limit=1
-     *   ```
+     *     ```
+     *     GET /receivables?type=quote&sort=issue_date&order=desc&limit=1
+     *     ```
      *
      * ##### Credit notes
      *
-     * - Find all credit notes created for a specific invoice:
+     * * Find all credit notes created for a specific invoice:
      *
-     *   ```
-     *   GET /receivables?type=credit_note?based_on=INVOICE_ID
-     *   ```
+     *     ```
+     *     GET /receivables?type=credit_note?based_on=INVOICE_ID
+     *     ```
      *
      * @param {Monite.ReceivablesGetRequest} request
      * @param {Receivables.RequestOptions} requestOptions - Request-specific configuration.
@@ -347,7 +344,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -389,7 +385,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /receivables.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -443,7 +439,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -487,7 +482,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /receivables.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -530,7 +525,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -567,7 +561,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /receivables/variables.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -612,7 +606,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -653,7 +646,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /receivables/{receivable_id}.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -696,7 +689,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -739,9 +731,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /receivables/{receivable_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -791,7 +781,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -835,9 +824,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /receivables/{receivable_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -885,7 +872,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -929,9 +915,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/accept."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -974,7 +958,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1017,9 +1000,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/cancel."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1065,7 +1046,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1108,9 +1088,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/clone."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1158,7 +1136,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1202,9 +1179,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/decline."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1312,7 +1287,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -1354,9 +1328,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /receivables/{receivable_id}/history."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1403,7 +1375,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1444,9 +1415,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /receivables/{receivable_id}/history/{receivable_history_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1492,7 +1461,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1535,9 +1503,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/issue."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1591,7 +1557,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1635,9 +1600,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PUT /receivables/{receivable_id}/line_items."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1741,7 +1704,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -1783,9 +1745,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /receivables/{receivable_id}/mails."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1832,7 +1792,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1873,9 +1832,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /receivables/{receivable_id}/mails/{mail_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -1923,7 +1880,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -1967,9 +1923,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/mark_as_paid."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2021,7 +1975,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2065,9 +2018,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/mark_as_partially_paid."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2115,7 +2066,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2159,9 +2109,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/mark_as_uncollectible."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2206,7 +2154,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2247,9 +2194,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /receivables/{receivable_id}/pdf_link."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2299,7 +2244,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2341,9 +2285,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/preview."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2394,7 +2336,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2438,9 +2379,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/send."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2490,7 +2429,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2534,9 +2472,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/send_test_reminder."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -2581,7 +2517,6 @@ export class Receivables {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -2622,9 +2557,7 @@ export class Receivables {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /receivables/{receivable_id}/verify."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
