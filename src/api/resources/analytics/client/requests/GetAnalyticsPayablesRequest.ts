@@ -17,7 +17,7 @@ export interface GetAnalyticsPayablesRequest {
     aggregation_function: Monite.AggregationFunctionEnum;
     date_dimension_breakdown?: Monite.DateDimensionBreakdownEnum;
     /**
-     * Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][z|±hh:mm].
+     * Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
      */
     created_at__gt?: string;
     /**

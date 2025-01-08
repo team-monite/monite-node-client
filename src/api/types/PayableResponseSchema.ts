@@ -87,7 +87,7 @@ export interface PayableResponseSchema {
     status: Monite.PayableStateEnum;
     /** The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
     subtotal?: number;
-    /** The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X \* (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0. */
+    /** The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X * (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0. */
     suggested_payment_term?: Monite.SuggestedPaymentTerm;
     /** A list of user-defined tags (labels) assigned to this payable. Tags can be used to trigger a specific approval policy for this payable. */
     tags?: Monite.TagReadSchema[];
