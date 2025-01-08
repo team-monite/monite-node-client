@@ -1,6 +1,10 @@
 import { RUNTIME } from "../../../src/core/runtime";
 import { makeRequest } from "../../../src/core/fetcher/makeRequest";
 
+if (RUNTIME.type === "browser") {
+    require("jest-fetch-mock").enableMocks();
+}
+
 describe("Test makeRequest", () => {
     const mockPostUrl = "https://httpbin.org/post";
     const mockGetUrl = "https://httpbin.org/get";

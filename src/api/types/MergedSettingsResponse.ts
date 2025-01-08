@@ -6,7 +6,7 @@ import * as Monite from "../index";
 
 export interface MergedSettingsResponse {
     /** Settings for the accounting module. */
-    accounting?: Monite.AccountingSettings;
+    accounting?: Monite.AccountingSettingsResponse;
     /** Automatically attempt to find a corresponding purchase order for all incoming payables. */
     allow_purchase_order_autolinking?: boolean;
     /** Default API version for partner. */
@@ -19,24 +19,24 @@ export interface MergedSettingsResponse {
     default_role?: Record<string, unknown>;
     document_ids?: Monite.DocumentIDsSettings;
     /** Settings for the e-invoicing module. */
-    einvoicing?: Monite.EInvoicingSettingsPayload;
+    einvoicing?: Monite.EInvoicingSettingsResponse;
     /** If enabled, the paid invoice's PDF will be in a new layout set by the user */
     generate_paid_invoice_pdf?: boolean;
     language?: Monite.LanguageCodeEnum;
     /** Settings for email and mailboxes. */
-    mail?: Monite.MailSettingsPayload;
+    mail?: Monite.MailSettingsResponse;
     /** Settings for the payables module. */
-    payable?: Monite.PayableSettingsPayload;
+    payable?: Monite.PayableSettingsResponse;
     /** Auto tagging settings for all incoming OCR payable documents. */
     payables_ocr_auto_tagging?: Monite.OcrAutoTaggingSettingsRequest[];
     /** Payment preferences for entity to automate calculating suggested payment date basing on payment terms and entity preferences */
     payment_priority?: Monite.PaymentPriorityEnum;
     /** Settings for the payments module. */
-    payments?: Monite.PaymentsSettingsPayload;
+    payments?: Monite.PaymentsSettingsResponse;
     /** Sets the default behavior of whether a signature is required to accept quotes */
     quote_signature_required?: boolean;
     /** Settings for the receivables module. */
-    receivable?: Monite.ReceivableSettingsPayload;
+    receivable?: Monite.ReceivableSettingsResponse;
     receivable_edit_flow?: Monite.ReceivableEditFlow;
     reminder?: Monite.RemindersSettings;
     /** Measurement units. */
