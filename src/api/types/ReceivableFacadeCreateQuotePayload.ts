@@ -22,8 +22,6 @@ export interface ReceivableFacadeCreateQuotePayload {
     deduction_memo?: string;
     /** The discount for a receivable. */
     discount?: Monite.Discount;
-    /** The document number of the receivable, which will appear in the PDF document. Can be set manually only in the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance). Otherwise (or if omitted), it will be generated automatically based on the entity's [document number customization](https://docs.monite.com/advanced/document-number-customization) settings when the document is issued. */
-    document_id?: string;
     entity?: Monite.ReceivableEntityBase;
     /** Entity bank account ID */
     entity_bank_account_id?: string;

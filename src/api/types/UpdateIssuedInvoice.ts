@@ -4,6 +4,9 @@
 
 import * as Monite from "../index";
 
+/**
+ * Raise if None was explicitly passed to given fields
+ */
 export interface UpdateIssuedInvoice {
     /** Unique ID of the counterpart contact. */
     contact_id?: string;
@@ -15,7 +18,12 @@ export interface UpdateIssuedInvoice {
     entity_address?: Monite.ReceivableEntityAddressSchema;
     /** Entity VAT ID id */
     entity_vat_id_id?: string;
-    /** The date when the goods are shipped or the service is provided. Can be a current, past, or future date. */
+    /**
+     * The date when the goods are shipped or the service is provided.
+     *
+     * If omitted, defaults to the invoice issue date,
+     * and the value is automatically set when the invoice status changes to `issued`.
+     */
     fulfillment_date?: string;
     /** A note with additional information for a receivable */
     memo?: string;
