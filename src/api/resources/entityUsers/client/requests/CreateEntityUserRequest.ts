@@ -5,7 +5,7 @@
 /**
  * @example
  *     {
- *         first_name: "Casey",
+ *         first_name: "Andrey",
  *         login: "login"
  *     }
  */

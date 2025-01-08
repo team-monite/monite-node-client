@@ -30,8 +30,6 @@ export declare namespace Tags {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
-        /** Additional headers to include in the request. */
-        headers?: Record<string, string>;
     }
 }
 
@@ -40,7 +38,7 @@ export class Tags {
 
     /**
      * Get a list of all tags. Tags can be assigned to resources to assist with searching and filtering.
-     * Tags can also be used as trigger conditions in payable approval policies.
+     *     Tags can also be used as trigger conditions in payable approval policies.
      *
      * @param {Monite.TagsGetRequest} request
      * @param {Tags.RequestOptions} requestOptions - Request-specific configuration.
@@ -124,7 +122,6 @@ export class Tags {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -166,7 +163,7 @@ export class Tags {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /tags.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -176,7 +173,8 @@ export class Tags {
 
     /**
      * Create a new tag. The tag name must be unique.
-     * Tag names are case-sensitive, that is `Marketing` and `marketing` are two different tags.
+     *     Tag names are case-sensitive, that is `Marketing` and `marketing` are two different tags.
+     *
      *
      * The response returns an auto-generated ID assigned to this tag.
      * To assign this tag to a resource, send the tag ID in the `tag_ids` list when creating or updating a resource.
@@ -220,7 +218,6 @@ export class Tags {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -264,7 +261,7 @@ export class Tags {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /tags.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -309,7 +306,6 @@ export class Tags {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -352,7 +348,7 @@ export class Tags {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /tags/{tag_id}.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -396,7 +392,6 @@ export class Tags {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -437,7 +432,7 @@ export class Tags {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling DELETE /tags/{tag_id}.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -447,7 +442,7 @@ export class Tags {
 
     /**
      * Change the tag name. The new name must be unique among existing tags.
-     * Tag names are case-sensitive, that is `Marketing` and `marketing` are two different tags.
+     *     Tag names are case-sensitive, that is `Marketing` and `marketing` are two different tags.
      *
      * @param {string} tagId
      * @param {Monite.TagUpdateSchema} request
@@ -488,7 +483,6 @@ export class Tags {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -532,7 +526,7 @@ export class Tags {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling PATCH /tags/{tag_id}.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

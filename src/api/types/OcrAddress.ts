@@ -4,9 +4,8 @@
 
 /**
  * In general it's compatible with CounterpartAddress model but
- *
- * - All fields are optional
- * - There is an additional field original_country_name
+ * * All fields are optional
+ * * There is an additional field original_country_name
  */
 export interface OcrAddress {
     /** Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). */
