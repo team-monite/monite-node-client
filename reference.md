@@ -2150,69 +2150,6 @@ await client.pdfTemplates.makeDefaultById("document_template_id");
 </dl>
 </details>
 
-<details><summary><code>client.pdfTemplates.<a href="/src/api/resources/pdfTemplates/client/Client.ts">previewById</a>(documentTemplateId) -> stream.Readable</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns a sample PDF invoice generated using the specified template.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.pdfTemplates.previewById("string");
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**documentTemplateId:** `string`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `PdfTemplates.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
 ## Entities
 
 <details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">get</a>({ ...params }) -> Monite.EntityPaginationResponse</code></summary>
@@ -3862,9 +3799,7 @@ await client.events.getById("event_id");
 <dd>
 
 ```typescript
-await client.files.get({
-    id__in: "string",
-});
+await client.files.get();
 ```
 
 </dd>
@@ -10162,9 +10097,9 @@ This endpoint supports [pagination](https://docs.monite.com/api/concepts/paginat
 
 -   Find all credit notes created for a specific invoice:
 
-    ```
-    GET /receivables?type=credit_note?based_on=INVOICE_ID
-    ```
+        ```
+        GET /receivables?type=credit_note?based_on=INVOICE_ID
+        ```
 
     </dd>
     </dl>
