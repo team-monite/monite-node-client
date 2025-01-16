@@ -10,8 +10,6 @@ import * as Monite from "../index";
 export type ReceivableHistoryResponseEventData =
     | Monite.StatusChangedEventData
     | Monite.ReceivableUpdatedEventData
-    | Monite.ReceivableCreatedEventData
     | Monite.BasedOnReceivableCreatedEventData
     | Monite.PaymentReceivedEventData
-    | Monite.MailSentEventData
-    | Monite.ReminderMailSentEventData;
+    | Monite.MailSentEventData;

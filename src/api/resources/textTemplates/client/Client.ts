@@ -30,8 +30,6 @@ export declare namespace TextTemplates {
         moniteVersion?: string;
         /** Override the x-monite-entity-id header */
         moniteEntityId?: string | undefined;
-        /** Additional headers to include in the request. */
-        headers?: Record<string, string>;
     }
 }
 
@@ -87,7 +85,6 @@ export class TextTemplates {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -121,7 +118,7 @@ export class TextTemplates {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /text_templates.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -169,7 +166,6 @@ export class TextTemplates {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -203,7 +199,7 @@ export class TextTemplates {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /text_templates.");
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -246,7 +242,6 @@ export class TextTemplates {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -279,9 +274,7 @@ export class TextTemplates {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /text_templates/{text_template_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -321,7 +314,6 @@ export class TextTemplates {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -354,9 +346,7 @@ export class TextTemplates {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /text_templates/{text_template_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -401,7 +391,6 @@ export class TextTemplates {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -435,9 +424,7 @@ export class TextTemplates {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /text_templates/{text_template_id}."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -480,7 +467,6 @@ export class TextTemplates {
                 "User-Agent": "monite/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
@@ -513,9 +499,7 @@ export class TextTemplates {
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /text_templates/{text_template_id}/make_default."
-                );
+                throw new errors.MoniteTimeoutError();
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
