@@ -44,9 +44,11 @@ export class Payables {
     /**
      * Lists all payables from the connected entity.
      *
-     * If you already have the data of the payable (amount in [minor units](https://docs.monite.com/docs/currencies#minor-units), currency, vendor information, and other details)
+     * If you already have the data of the payable (amount in [minor units](
+     * https://docs.monite.com/docs/currencies#minor-units), currency, vendor information, and other details)
      * stored somewhere as individual attributes, you can create a payable with these attributes by calling [POST
-     * /payables](https://docs.monite.com/reference/post_payables) and providing the [base64-encoded](https://en.wikipedia.org/wiki/Base64) contents of the original invoice file in the field `base64_encoded_file`.
+     * /payables](https://docs.monite.com/reference/post_payables) and providing the [base64-encoded](
+     * https://en.wikipedia.org/wiki/Base64) contents of the original invoice file in the field `base64_encoded_file`.
      *
      * A payable is a financial document given by an entity`s supplier itemizing the purchase of a good or a service and
      * demanding payment.
@@ -61,6 +63,7 @@ export class Payables {
      * Related guide: [Create a payable from data](https://docs.monite.com/docs/collect-payables#create-a-payable-from-data)
      *
      * See also:
+     *
      *
      * [Automatic calculation of due date](https://docs.monite.com/docs/collect-payables#automatic-calculation-of-due-date)
      *
@@ -328,9 +331,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -422,9 +425,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -477,8 +480,6 @@ export class Payables {
 
     /**
      * Retrieve aggregated statistics for payables, including total amount and count, both overall and by status.
-     *
-     * For more flexible configuration and retrieval of other data types, use GET /analytics/payables.
      *
      * @param {Monite.PayablesGetAnalyticsRequest} request
      * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
@@ -714,9 +715,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -802,9 +803,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ..._maybeEncodedRequest.headers,
@@ -887,9 +888,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -974,9 +975,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1058,9 +1059,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1139,9 +1140,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1221,9 +1222,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1306,9 +1307,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1396,9 +1397,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1486,9 +1487,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1583,9 +1584,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ..._maybeEncodedRequest.headers,
@@ -1676,9 +1677,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1738,18 +1739,17 @@ export class Payables {
      * Mark a payable as paid.
      *
      * Payables can be paid using the payment channels offered by Monite or through external payment channels. In the latter
-     * case, the invoice is not automatically marked as paid in the system and needs to be converted to the paid status
-     * manually.
+     *  case, the invoice is not automatically marked as paid in the system and needs to be converted to the paid status
+     *  manually.
      *
      * Optionally, it is possible to pass the `comment` field in the request body, to describe how and when the invoice was
      * paid.
      *
      * Notes:
-     *
      * - To use this endpoint with an entity user token, this entity user must have a role that includes the `pay` permission
-     *   for payables.
+     * for payables.
      * - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
-     *   in the `payment_terms.discount` value.
+     * in the `payment_terms.discount` value.
      *
      * Related guide: [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
      *
@@ -1793,9 +1793,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1856,18 +1856,17 @@ export class Payables {
      * Mark a payable as partially paid.
      *
      * If the payable is partially paid, its status is moved to `partially_paid`. The value of the `amount_paid` field must be
-     * the sum of all payments made, not only the last one.
+     *  the sum of all payments made, not only the last one.
      *
      * Notes:
-     *
      * - This endpoint can be used for payables in the `waiting_to_be_paid` status.
      * - The `amount_paid` must be greater than 0 and less than the total payable amount specified by the `amount` field.
      * - You can use this endpoint multiple times for the same payable to reflect multiple partial payments, always setting the
-     *   sum of all payments made.
+     *  sum of all payments made.
      * - To use this endpoint with an entity user token, this entity user must have a role that includes the `pay`
-     *   permission for payables.
+     * permission for payables.
      * - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
-     *   in the `payment_terms.discount` value.
+     * in the `payment_terms.discount` value.
      *
      * Related guide: [Mark a payable as partially paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-partially-paid)
      *
@@ -1915,9 +1914,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2009,9 +2008,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2102,9 +2101,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2195,9 +2194,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2287,9 +2286,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,

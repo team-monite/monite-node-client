@@ -10,172 +10,54 @@ import * as Monite from "../../../../index";
  */
 export interface PayablesGetRequest {
     /**
-     * Sort order (ascending by default). Typically used together with the `sort` parameter.
+     * Order by
      */
     order?: Monite.OrderEnum;
     /**
-     * The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+     * Max is 100
      */
     limit?: number;
     /**
-     * A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-     *
-     * If not specified, the first page of results will be returned.
+     * A token, obtained from previous page. Prior over other filters
      */
     pagination_token?: string;
     /**
-     * The field to sort the results by. Typically used together with the `order` parameter.
+     * Allowed sort fields
      */
     sort?: Monite.PayableCursorFields;
-    /**
-     * Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][z|±hh:mm].
-     */
     created_at__gt?: string;
-    /**
-     * Return only payables created in Monite before the specified date and time.
-     */
     created_at__lt?: string;
-    /**
-     * Return only payables created in Monite on or after the specified date and time.
-     */
     created_at__gte?: string;
-    /**
-     * Return only payables created in Monite before or on the specified date and time.
-     */
     created_at__lte?: string;
-    /**
-     * Return only payables that have the specified [status](https://docs.monite.com/accounts-payable/payables/index).
-     *
-     * To query multiple statuses at once, use the `status__in` parameter instead.
-     */
     status?: Monite.PayableStateEnum;
-    /**
-     * Return only payables that have the specified [statuses](https://docs.monite.com/accounts-payable/payables/index).
-     *
-     * To specify multiple statuses, repeat this parameter for each value: `status__in=draft&status__in=new`
-     */
     status__in?: Monite.PayableStateEnum | Monite.PayableStateEnum[];
-    /**
-     * Return only payables with specified IDs. Valid but nonexistent IDs do not raise errors but produce no results.
-     *
-     * To specify multiple IDs, repeat this parameter for each value: `id__in=<id1>&id__in=<id2>`
-     */
     id__in?: string | string[];
-    /**
-     * Return only payables with the exact specified total amount. The amount must be specified in the minor units of currency. For example, $12.5 is represented as 1250.
-     */
     total_amount?: number;
-    /**
-     * Return only payables whose total amount (in minor units) exceeds the specified value.
-     */
     total_amount__gt?: number;
-    /**
-     * Return only payables whose total amount (in minor units) is less than the specified value.
-     */
     total_amount__lt?: number;
-    /**
-     * Return only payables whose total amount (in minor units) is greater than or equal to the specified value.
-     */
     total_amount__gte?: number;
-    /**
-     * Return only payables whose total amount (in minor units) is less than or equal to the specified value.
-     */
     total_amount__lte?: number;
-    /**
-     * Return only payables with the specified amount.
-     */
     amount?: number;
-    /**
-     * Return only payables whose amount (in minor units) exceeds the specified value.
-     */
     amount__gt?: number;
-    /**
-     * Return only payables whose amount (in minor units) is less than the specified value.
-     */
     amount__lt?: number;
-    /**
-     * Return only payables whose amount (in minor units) is greater than or equal to the specified value.
-     */
     amount__gte?: number;
-    /**
-     * Return only payables whose amount (in minor units) is less than or equal to the specified value.
-     */
     amount__lte?: number;
-    /**
-     * Return only payables that use the specified currency.
-     */
     currency?: Monite.CurrencyEnum;
-    /**
-     * Return only payables received from counterparts with the specified name (exact match, case-sensitive).
-     *
-     * For counterparts of `type = individual`, the full name is formatted as `first_name last_name`.
-     */
     counterpart_name?: string;
-    /**
-     * Return only payables received from counterparts whose name contains the specified string (case-sensitive).
-     */
     counterpart_name__contains?: string;
-    /**
-     * Return only payables received from counterparts whose name contains the specified string (case-insensitive).
-     */
     counterpart_name__icontains?: string;
-    /**
-     * Apply the `icontains` condition to search for the specified text in the `document_id` and `counterpart_name` fields in the payables.
-     */
     search_text?: string;
-    /**
-     * Return payables that are due on the specified date (YYYY-MM-DD)
-     */
     due_date?: string;
-    /**
-     * Return payables that are due after the specified date (exclusive, YYYY-MM-DD).
-     */
     due_date__gt?: string;
-    /**
-     * Return payables that are due before the specified date (exclusive, YYYY-MM-DD).
-     */
     due_date__lt?: string;
-    /**
-     * Return payables that are due on or after the specified date (YYYY-MM-DD).
-     */
     due_date__gte?: string;
-    /**
-     * Return payables that are due before or on the specified date (YYYY-MM-DD).
-     */
     due_date__lte?: string;
-    /**
-     * Return a payable with the exact specified document number (case-sensitive).
-     *
-     * The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
-     */
     document_id?: string;
-    /**
-     * Return only payables whose document number (`document_id`) contains the specified string (case-sensitive).
-     */
     document_id__contains?: string;
-    /**
-     * Return only payables whose document number (`document_id`) contains the specified string (case-insensitive).
-     */
     document_id__icontains?: string;
-    /**
-     * Return only payables created in Monite by the entity user with the specified ID.
-     */
     was_created_by_user_id?: string;
-    /**
-     * Return only payables received from the counterpart with the specified ID.
-     *
-     * Counterparts that have been deleted but have associated payables will still return results here because the payables contain a frozen copy of the counterpart data.
-     *
-     * If the specified counterpart ID does not exist and never existed, no results are returned.
-     */
     counterpart_id?: string;
-    /**
-     * Return only payables coming from the specified source.
-     */
     source_of_payable_data?: Monite.SourceOfPayableDataEnum;
-    /**
-     * Return only payables with specific OCR statuses.
-     */
     ocr_status?: Monite.OcrStatusEnum;
     /**
      * Search for a payable by the identifier of the line item associated with it.
@@ -186,13 +68,11 @@ export interface PayablesGetRequest {
      */
     purchase_order_id?: string;
     /**
-     * Return only payables assigned to the project with the specified ID.
-     *
-     * Valid but nonexistent project IDs do not raise errors but return no results.
+     * Search for a payable by the identifier of the project associated with it.
      */
     project_id?: string;
     /**
-     * Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
+     * Search for a payable by the identifiers of the tags associated with it.
      */
     tag_ids?: string | string[];
 }
