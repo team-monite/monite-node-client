@@ -9,7 +9,7 @@ export interface OcrResponseInvoiceReceiptLineItem {
     description?: string;
     /** Quanity */
     quantity?: number;
-    /** Price in cents/eurocents */
+    /** Price in  cents/eurocents */
     unit_price?: number;
     /** Unit */
     unit?: string;

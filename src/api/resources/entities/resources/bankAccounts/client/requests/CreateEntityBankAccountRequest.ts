@@ -30,7 +30,7 @@ export interface CreateEntityBankAccountRequest {
     iban?: string;
     /** If set to `true` or if this is the first bank account added for the given currency, this account becomes the default one for its currency. */
     is_default_for_currency?: boolean;
-    /** The bank's routing transit number (RTN) or branch code. Required if the account currency is USD. US routing numbers consist of 9 digits. */
+    /** The bank's routing transit number (RTN). Required if the account currency is USD. US routing numbers consist of 9 digits. */
     routing_number?: string;
     /** The bank's sort code. Required if the account currency is GBP. */
     sort_code?: string;

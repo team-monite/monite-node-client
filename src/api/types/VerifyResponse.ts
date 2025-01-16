@@ -5,7 +5,6 @@
 export interface VerifyResponse {
     /** Entry UUID */
     id: string;
-    /** The domain name. */
     domain: string;
     status: string;
 }
