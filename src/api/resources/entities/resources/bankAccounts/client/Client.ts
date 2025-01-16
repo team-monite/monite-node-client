@@ -67,9 +67,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -120,13 +120,13 @@ export class BankAccounts {
      *
      * The minimum required fields are `currency` and `country`. Other required fields depend on the currency:
      *
-     * - EUR accounts require `iban`.
-     * - GBP accounts require `account_holder_name`, `account_number`, and `sort_code`.
-     * - USD accounts require `account_holder_name`, `account_number`, and `routing_number`.
-     * - Accounts in other currencies require one of:
-     *   - `iban`
-     *   - `account_number` and `sort_code`
-     *   - `account_number` and `routing_number`
+     * * EUR accounts require `iban`.
+     * * GBP accounts require `account_holder_name`, `account_number`, and `sort_code`.
+     * * USD accounts require `account_holder_name`, `account_number`, and `routing_number`.
+     * * Accounts in other currencies require one of:
+     *   * `iban`
+     *   * `account_number` and `sort_code`
+     *   * `account_number` and `routing_number`
      *
      * @param {Monite.entities.CreateEntityBankAccountRequest} request
      * @param {BankAccounts.RequestOptions} requestOptions - Request-specific configuration.
@@ -159,9 +159,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -256,9 +256,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -342,9 +342,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -423,9 +423,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -504,9 +504,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -590,9 +590,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -675,9 +675,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -756,9 +756,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -844,9 +844,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -921,9 +921,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
