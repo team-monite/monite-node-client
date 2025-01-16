@@ -70,7 +70,6 @@ export class EntityUsers {
             login,
             status,
             first_name: firstName,
-            name__istartswith: nameIstartswith,
             created_at__gt: createdAtGt,
             created_at__lt: createdAtLt,
             created_at__gte: createdAtGte,
@@ -133,10 +132,6 @@ export class EntityUsers {
             _queryParams["first_name"] = firstName;
         }
 
-        if (nameIstartswith != null) {
-            _queryParams["name__istartswith"] = nameIstartswith;
-        }
-
         if (createdAtGt != null) {
             _queryParams["created_at__gt"] = createdAtGt;
         }
@@ -167,9 +162,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -234,7 +229,7 @@ export class EntityUsers {
      *
      * @example
      *     await client.entityUsers.create({
-     *         first_name: "Casey",
+     *         first_name: "Andrey",
      *         login: "login"
      *     })
      */
@@ -256,9 +251,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -332,9 +327,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -411,9 +406,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -487,9 +482,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -566,9 +561,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -641,9 +636,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -718,9 +713,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -794,9 +789,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -877,9 +872,9 @@ export class EntityUsers {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
