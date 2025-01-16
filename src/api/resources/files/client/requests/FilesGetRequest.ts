@@ -4,9 +4,7 @@
 
 /**
  * @example
- *     {
- *         id__in: "string"
- *     }
+ *     {}
  */
 export interface FilesGetRequest {
     id__in?: string | string[];
