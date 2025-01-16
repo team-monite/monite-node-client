@@ -10,7 +10,7 @@ import * as Monite from "../../../../index";
  */
 export interface PartnerProjectSettingsPayload {
     /** Settings for the accounting module. */
-    accounting?: Monite.AccountingSettings;
+    accounting?: Monite.AccountingSettingsPayload;
     /** Default API version for partner. */
     api_version?: Monite.ApiVersion;
     /** Commercial conditions for receivables. */
