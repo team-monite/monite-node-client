@@ -5,8 +5,6 @@
 import * as Monite from "../index";
 
 export interface PaymentAccountObject {
-    /** ID of a payment account */
     id: string;
-    /** Type of a payment account. Can be `entity` or `counterpart` */
     type: Monite.PaymentAccountType;
 }
