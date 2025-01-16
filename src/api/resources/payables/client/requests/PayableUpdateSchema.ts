@@ -23,8 +23,6 @@ export interface PayableUpdateSchema {
     currency?: Monite.CurrencyEnum;
     /** An arbitrary description of this payable. */
     description?: string;
-    /** The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
-    discount?: number;
     /** A unique invoice number assigned by the invoice issuer for payment tracking purposes. */
     document_id?: string;
     /** The date by which the payable must be paid, in the YYYY-MM-DD format. If the payable specifies payment terms with early payment discounts, this is the final payment date. */

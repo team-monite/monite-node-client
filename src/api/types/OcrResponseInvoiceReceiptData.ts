@@ -7,8 +7,6 @@ import * as Monite from "../index";
 export interface OcrResponseInvoiceReceiptData {
     /** Total in cents/eurocents. Outdated, actual conversion happens in payables. */
     total?: number;
-    /** Total paid amount */
-    total_paid_amount_raw?: number;
     /** Total, without minor units */
     total_raw?: number;
     /** Subtotal cents/eurocents. Outdated, actual conversion happens in payables. */

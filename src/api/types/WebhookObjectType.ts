@@ -38,8 +38,7 @@ export type WebhookObjectType =
     | "overdue_reminder"
     | "payment_reminder"
     | "accounting_connection"
-    | "project"
-    | "approval_policy_process";
+    | "project";
 
 export const WebhookObjectType = {
     Account: "account",
@@ -78,5 +77,4 @@ export const WebhookObjectType = {
     PaymentReminder: "payment_reminder",
     AccountingConnection: "accounting_connection",
     Project: "project",
-    ApprovalPolicyProcess: "approval_policy_process",
 } as const;
