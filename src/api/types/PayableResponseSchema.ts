@@ -36,15 +36,11 @@ export interface PayableResponseSchema {
     counterpart_vat_id_id?: string;
     /** The ID of the role that the entity user who created this payable had at that time. If the payable was created using a partner access token, the value is `null`. */
     created_by_role_id?: string;
-    /** The list of linked credit notes of the payable. */
-    credit_notes: Monite.PayableCreditNoteData[];
     /** The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable. */
     currency?: Monite.CurrencyEnum;
-    currency_exchange?: Monite.CurrencyExchangeSchema2;
+    currency_exchange?: Monite.CurrencyExchangeSchema;
     /** An arbitrary description of this payable. */
     description?: string;
-    /** The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
-    discount?: number;
     /** A unique invoice number assigned by the invoice issuer for payment tracking purposes. This is different from `id` which is an internal ID created automatically by Monite. */
     document_id?: string;
     /** The date by which the payable must be paid, in the YYYY-MM-DD format. If the payable specifies payment terms with early payment discounts, this is the final payment date. */
@@ -87,7 +83,7 @@ export interface PayableResponseSchema {
     status: Monite.PayableStateEnum;
     /** The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
     subtotal?: number;
-    /** The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X \* (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0. */
+    /** The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X * (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0. */
     suggested_payment_term?: Monite.SuggestedPaymentTerm;
     /** A list of user-defined tags (labels) assigned to this payable. Tags can be used to trigger a specific approval policy for this payable. */
     tags?: Monite.TagReadSchema[];
@@ -97,7 +93,5 @@ export interface PayableResponseSchema {
     tax_amount?: number;
     /** The total amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
     total_amount?: number;
-    /** The total price of the payable in [minor units](https://docs.monite.com/docs/currencies#minor-units), excluding all issued credit notes. */
-    total_amount_with_credit_notes?: number;
     was_created_by_user_id?: string;
 }

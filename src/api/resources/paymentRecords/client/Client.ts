@@ -42,6 +42,13 @@ export class PaymentRecords {
      * @param {Monite.PaymentRecordsGetRequest} request
      * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.NotFoundError}
+     * @throws {@link Monite.NotAcceptableError}
+     * @throws {@link Monite.ConflictError}
+     * @throws {@link Monite.RangeNotSatisfiableError}
      * @throws {@link Monite.UnprocessableEntityError}
      * @throws {@link Monite.InternalServerError}
      *
@@ -99,9 +106,9 @@ export class PaymentRecords {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -119,6 +126,20 @@ export class PaymentRecords {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 404:
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 406:
+                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 409:
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 416:
+                    throw new Monite.RangeNotSatisfiableError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
@@ -150,6 +171,13 @@ export class PaymentRecords {
      * @param {Monite.PaymentRecordRequest} request
      * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.NotFoundError}
+     * @throws {@link Monite.NotAcceptableError}
+     * @throws {@link Monite.ConflictError}
+     * @throws {@link Monite.RangeNotSatisfiableError}
      * @throws {@link Monite.UnprocessableEntityError}
      * @throws {@link Monite.InternalServerError}
      *
@@ -183,9 +211,9 @@ export class PaymentRecords {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -203,6 +231,20 @@ export class PaymentRecords {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 404:
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 406:
+                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 409:
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 416:
+                    throw new Monite.RangeNotSatisfiableError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
@@ -234,6 +276,13 @@ export class PaymentRecords {
      * @param {string} paymentRecordId
      * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.NotFoundError}
+     * @throws {@link Monite.NotAcceptableError}
+     * @throws {@link Monite.ConflictError}
+     * @throws {@link Monite.RangeNotSatisfiableError}
      * @throws {@link Monite.UnprocessableEntityError}
      * @throws {@link Monite.InternalServerError}
      *
@@ -258,9 +307,9 @@ export class PaymentRecords {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -277,6 +326,20 @@ export class PaymentRecords {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 404:
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 406:
+                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 409:
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                case 416:
+                    throw new Monite.RangeNotSatisfiableError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:

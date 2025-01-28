@@ -4,21 +4,15 @@
 
 export type ReceivableHistoryEventTypeEnum =
     | "status_changed"
-    | "receivable_created"
     | "receivable_updated"
     | "based_on_receivable_created"
     | "payment_received"
-    | "mail_sent"
-    | "payment_reminder_mail_sent"
-    | "overdue_reminder_mail_sent";
+    | "mail_sent";
 
 export const ReceivableHistoryEventTypeEnum = {
     StatusChanged: "status_changed",
-    ReceivableCreated: "receivable_created",
     ReceivableUpdated: "receivable_updated",
     BasedOnReceivableCreated: "based_on_receivable_created",
     PaymentReceived: "payment_received",
     MailSent: "mail_sent",
-    PaymentReminderMailSent: "payment_reminder_mail_sent",
-    OverdueReminderMailSent: "overdue_reminder_mail_sent",
 } as const;
