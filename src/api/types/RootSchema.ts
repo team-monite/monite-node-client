@@ -15,7 +15,6 @@ export type RootSchema =
     | Monite.RootSchema.CounterpartVatId
     | Monite.RootSchema.EntityBankAccount
     | Monite.RootSchema.Export
-    | Monite.RootSchema.Mailbox
     | Monite.RootSchema.PayablesPurchaseOrder
     | Monite.RootSchema.PaymentReminder
     | Monite.RootSchema.OverdueReminder
@@ -73,10 +72,6 @@ export declare namespace RootSchema {
 
     interface Export extends Monite.CommonSchema {
         object_type: "export";
-    }
-
-    interface Mailbox extends Monite.CommonSchema {
-        object_type: "mailbox";
     }
 
     interface PayablesPurchaseOrder extends Monite.CommonSchema {

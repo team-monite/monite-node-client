@@ -49,63 +49,62 @@ export class Receivables {
      *
      * ##### Invoices
      *
-     * - Get all overdue invoices:
+     * * Get all overdue invoices:
+     *     ```
+     *     GET /receivables?type=invoice&status=overdue
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice&status=overdue
-     *   ```
+     * * Get all invoices created for the counterpart named "Solarwind" (case-insensitive):
      *
-     * - Get all invoices created for the counterpart named "Solarwind" (case-insensitive):
+     *     ```
+     *     GET /receivables?type=invoice?counterpart_name__icontains=Solarwind
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice?counterpart_name__icontains=Solarwind
-     *   ```
+     * * Get invoices whose total amount starts from 500 EUR:
      *
-     * - Get invoices whose total amount starts from 500 EUR:
+     *     ```
+     *     GET /receivables?type=invoice&total_amount__gte=50000
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice&total_amount__gte=50000
-     *   ```
+     * * Get invoices that are due for payment in September 2024:
      *
-     * - Get invoices that are due for payment in September 2024:
+     *     ```
+     *     GET /receivables?type=invoice&due_date__gte=2024-09-01T00:00:00Z&due_date__lt=2024-10-01T00:00:00Z
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice&due_date__gte=2024-09-01T00:00:00Z&due_date__lt=2024-10-01T00:00:00Z
-     *   ```
+     * * Get invoices created on or after September 1, 2024:
      *
-     * - Get invoices created on or after September 1, 2024:
+     *     ```
+     *     GET /receivables?type=invoice&created_at__gte=2024-09-01T00:00:00Z
+     *     ```
      *
-     *   ```
-     *   GET /receivables?type=invoice&created_at__gte=2024-09-01T00:00:00Z
-     *   ```
+     * * Find an invoice created from a specific quote:
      *
-     * - Find an invoice created from a specific quote:
-     *
-     *   ```
-     *   GET /receivables?type=invoice?based_on=QUOTE_ID
-     *   ```
+     *     ```
+     *     GET /receivables?type=invoice?based_on=QUOTE_ID
+     *     ```
      *
      * ##### Quotes
      *
-     * - Get the latest created quote:
+     * * Get the latest created quote:
      *
-     *   ```
-     *   GET /receivables?type=quote&sort=created_at&order=desc&limit=1
-     *   ```
+     *     ```
+     *     GET /receivables?type=quote&sort=created_at&order=desc&limit=1
+     *     ```
      *
-     * - Get the latest issued quote:
+     * * Get the latest issued quote:
      *
-     *   ```
-     *   GET /receivables?type=quote&sort=issue_date&order=desc&limit=1
-     *   ```
+     *     ```
+     *     GET /receivables?type=quote&sort=issue_date&order=desc&limit=1
+     *     ```
      *
      * ##### Credit notes
      *
-     * - Find all credit notes created for a specific invoice:
+     * * Find all credit notes created for a specific invoice:
      *
-     *   ```
-     *   GET /receivables?type=credit_note?based_on=INVOICE_ID
-     *   ```
+     *     ```
+     *     GET /receivables?type=credit_note?based_on=INVOICE_ID
+     *     ```
      *
      * @param {Monite.ReceivablesGetRequest} request
      * @param {Receivables.RequestOptions} requestOptions - Request-specific configuration.
@@ -342,9 +341,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -438,9 +437,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -525,9 +524,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -607,9 +606,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -691,9 +690,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -786,9 +785,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -880,9 +879,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -969,9 +968,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1060,9 +1059,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1153,9 +1152,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1307,9 +1306,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1398,9 +1397,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1487,9 +1486,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1586,9 +1585,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1736,9 +1735,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1827,9 +1826,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1918,9 +1917,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2016,9 +2015,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2110,9 +2109,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2201,9 +2200,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2294,9 +2293,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2389,9 +2388,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2485,9 +2484,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2576,9 +2575,9 @@ export class Receivables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,

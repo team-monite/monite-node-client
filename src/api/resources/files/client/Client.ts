@@ -48,9 +48,7 @@ export class Files {
      * @throws {@link Monite.InternalServerError}
      *
      * @example
-     *     await client.files.get({
-     *         id__in: "string"
-     *     })
+     *     await client.files.get()
      */
     public async get(
         request: Monite.FilesGetRequest = {},
@@ -80,9 +78,9 @@ export class Files {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -163,9 +161,9 @@ export class Files {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ..._maybeEncodedRequest.headers,
@@ -236,9 +234,9 @@ export class Files {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -307,9 +305,9 @@ export class Files {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
+                "X-Fern-SDK-Name": "@monite/node-client",
                 "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "User-Agent": "@monite/node-client/0.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
