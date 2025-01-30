@@ -10,13 +10,16 @@ export interface Recurrence {
     created_at: string;
     /** Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard. */
     updated_at: string;
+    body_text?: string;
     current_iteration: number;
     day_of_month: Monite.DayOfMonth;
     end_month: number;
     end_year: number;
     invoice_id: string;
     iterations: Monite.RecurrenceIteration[];
+    recipients?: Monite.Recipients;
     start_month: number;
     start_year: number;
     status: Monite.RecurrenceStatus;
+    subject_text?: string;
 }

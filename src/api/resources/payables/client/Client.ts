@@ -44,9 +44,11 @@ export class Payables {
     /**
      * Lists all payables from the connected entity.
      *
-     * If you already have the data of the payable (amount in [minor units](https://docs.monite.com/docs/currencies#minor-units), currency, vendor information, and other details)
+     * If you already have the data of the payable (amount in [minor units](
+     * https://docs.monite.com/references/currencies#minor-units), currency, vendor information, and other details)
      * stored somewhere as individual attributes, you can create a payable with these attributes by calling [POST
-     * /payables](https://docs.monite.com/reference/post_payables) and providing the [base64-encoded](https://en.wikipedia.org/wiki/Base64) contents of the original invoice file in the field `base64_encoded_file`.
+     * /payables](https://docs.monite.com/api/payables/post-payables) and providing the [base64-encoded](
+     * https://en.wikipedia.org/wiki/Base64) contents of the original invoice file in the field `base64_encoded_file`.
      *
      * A payable is a financial document given by an entity`s supplier itemizing the purchase of a good or a service and
      * demanding payment.
@@ -55,22 +57,23 @@ export class Payables {
      * to automatically set `suggested_payment_term`, this object can be omitted from the request body.
      *
      * The `id` generated for this payable can be used in other API calls to update the data of this payable or trigger [
-     * status transitions](https://docs.monite.com/docs/payable-status-transitions), for example. essential data
+     * status transitions](https://docs.monite.com/accounts-payable/approvals/manual-transition), for example. essential data
      * fields to move from `draft` to `new`
      *
-     * Related guide: [Create a payable from data](https://docs.monite.com/docs/collect-payables#create-a-payable-from-data)
+     * Related guide: [Create a payable from data](https://docs.monite.com/accounts-payable/payables/collect#create-a-payable-from-data)
      *
      * See also:
      *
-     * [Automatic calculation of due date](https://docs.monite.com/docs/collect-payables#automatic-calculation-of-due-date)
      *
-     * [Suggested payment date](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
+     * [Automatic calculation of due date](https://docs.monite.com/accounts-payable/payables/collect#automatic-calculation-of-due-date)
      *
-     * [Attach file](https://docs.monite.com/docs/collect-payables#attach-file)
+     * [Suggested payment date](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
      *
-     * [Collect payables by email](https://docs.monite.com/docs/collect-payables#send-payables-by-email)
+     * [Attach file](https://docs.monite.com/accounts-payable/payables/collect#attach-file)
      *
-     * [Manage line items](https://docs.monite.com/docs/manage-line-items)
+     * [Collect payables by email](https://docs.monite.com/accounts-payable/payables/collect#send-payables-by-email)
+     *
+     * [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
      *
      * @param {Monite.PayablesGetRequest} request
      * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
@@ -328,9 +331,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -349,17 +352,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -390,7 +393,7 @@ export class Payables {
      * You can use this endpoint to bypass the Monite OCR service and provide the data directly
      * (for example, if you already have the data in place).
      *
-     * A newly created payable has the the `draft` [status](https://docs.monite.com/docs/payables-lifecycle).
+     * A newly created payable has the the `draft` [status](https://docs.monite.com/accounts-payable/payables/index).
      *
      * @param {Monite.PayableUploadWithDataSchema} request
      * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
@@ -422,9 +425,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -443,15 +446,15 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -478,7 +481,7 @@ export class Payables {
     /**
      * Retrieve aggregated statistics for payables, including total amount and count, both overall and by status.
      *
-     * For more flexible configuration and retrieval of other data types, use GET /analytics/payables.
+     * For more flexible configuration and retrieval of other data types, use `GET /analytics/payables`.
      *
      * @param {Monite.PayablesGetAnalyticsRequest} request
      * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
@@ -714,9 +717,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -735,13 +738,13 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -802,9 +805,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ..._maybeEncodedRequest.headers,
@@ -824,17 +827,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -887,9 +890,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -907,15 +910,15 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -974,9 +977,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -995,15 +998,15 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1058,9 +1061,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1078,15 +1081,15 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1139,9 +1142,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1159,11 +1162,11 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1221,9 +1224,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1241,17 +1244,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1306,9 +1309,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1326,17 +1329,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1396,9 +1399,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1417,17 +1420,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1486,9 +1489,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1506,19 +1509,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1583,9 +1586,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ..._maybeEncodedRequest.headers,
@@ -1605,17 +1608,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1676,9 +1679,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1696,19 +1699,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1735,29 +1738,121 @@ export class Payables {
     }
 
     /**
+     * Request to cancel the OCR processing of the specified payable.
+     *
+     * @param {string} payableId
+     * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.NotFoundError}
+     * @throws {@link Monite.ConflictError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.payables.postPayablesIdCancelOcr("payable_id")
+     */
+    public async postPayablesIdCancelOcr(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions
+    ): Promise<Monite.PayableResponseSchema> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/cancel_ocr`
+            ),
+            method: "POST",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.PayableResponseSchema;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 404:
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                case 409:
+                    throw new Monite.ConflictError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling POST /payables/{payable_id}/cancel_ocr."
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
      * Mark a payable as paid.
      *
      * Payables can be paid using the payment channels offered by Monite or through external payment channels. In the latter
-     * case, the invoice is not automatically marked as paid in the system and needs to be converted to the paid status
-     * manually.
+     *  case, the invoice is not automatically marked as paid in the system and needs to be converted to the paid status
+     *  manually.
      *
      * Optionally, it is possible to pass the `comment` field in the request body, to describe how and when the invoice was
      * paid.
      *
      * Notes:
-     *
      * - To use this endpoint with an entity user token, this entity user must have a role that includes the `pay` permission
-     *   for payables.
+     * for payables.
      * - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
-     *   in the `payment_terms.discount` value.
+     * in the `payment_terms.discount` value.
      *
-     * Related guide: [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
+     * Related guide: [Mark a payable as paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-paid)
      *
      * See also:
      *
-     * [Payables lifecycle](https://docs.monite.com/docs/payables-lifecycle)
+     * [Payables lifecycle](https://docs.monite.com/accounts-payable/payables/index)
      *
-     * [Payables status transitions](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
+     * [Payables status transitions](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
      *
      * @param {string} payableId
      * @param {Monite.CommentPayload} request
@@ -1793,9 +1888,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1814,19 +1909,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1856,28 +1951,27 @@ export class Payables {
      * Mark a payable as partially paid.
      *
      * If the payable is partially paid, its status is moved to `partially_paid`. The value of the `amount_paid` field must be
-     * the sum of all payments made, not only the last one.
+     *  the sum of all payments made, not only the last one.
      *
      * Notes:
-     *
      * - This endpoint can be used for payables in the `waiting_to_be_paid` status.
      * - The `amount_paid` must be greater than 0 and less than the total payable amount specified by the `amount` field.
      * - You can use this endpoint multiple times for the same payable to reflect multiple partial payments, always setting the
-     *   sum of all payments made.
+     *  sum of all payments made.
      * - To use this endpoint with an entity user token, this entity user must have a role that includes the `pay`
-     *   permission for payables.
+     * permission for payables.
      * - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
-     *   in the `payment_terms.discount` value.
+     * in the `payment_terms.discount` value.
      *
-     * Related guide: [Mark a payable as partially paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-partially-paid)
+     * Related guide: [Mark a payable as partially paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-partially-paid)
      *
      * See also:
      *
-     * [Payables lifecycle](https://docs.monite.com/docs/payables-lifecycle)
+     * [Payables lifecycle](https://docs.monite.com/accounts-payable/payables/index)
      *
-     * [Payables status transitions](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
+     * [Payables status transitions](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
      *
-     * [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
+     * [Mark a payable as paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-paid)
      *
      * @param {string} payableId
      * @param {Monite.PartiallyPaidPayload} request
@@ -1915,9 +2009,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1936,19 +2030,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -2009,9 +2103,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2029,19 +2123,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -2102,9 +2196,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2122,19 +2216,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -2195,9 +2289,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2215,19 +2309,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -2287,9 +2381,9 @@ export class Payables {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -2307,17 +2401,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

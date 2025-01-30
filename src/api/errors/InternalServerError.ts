@@ -3,10 +3,9 @@
  */
 
 import * as errors from "../../errors/index";
-import * as Monite from "../index";
 
 export class InternalServerError extends errors.MoniteError {
-    constructor(body: Monite.ErrorSchemaResponse) {
+    constructor(body?: unknown) {
         super({
             message: "InternalServerError",
             statusCode: 500,

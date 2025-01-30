@@ -9,7 +9,7 @@
 export interface PageSchema {
     /** A unique ID of the image. */
     id: string;
-    /** The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the image. */
+    /** The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types) of the image. */
     mimetype: string;
     /** The page number in the PDF document, from 0. */
     number: number;

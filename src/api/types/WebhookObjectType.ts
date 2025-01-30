@@ -4,9 +4,11 @@
 
 export type WebhookObjectType =
     | "account"
+    | "accounting_connection"
     | "approval"
     | "approval_request"
     | "approval_policy"
+    | "approval_policy_process"
     | "batch_payment"
     | "comment"
     | "counterpart"
@@ -20,32 +22,33 @@ export type WebhookObjectType =
     | "entity_settings"
     | "entity_user"
     | "export"
+    | "overdue_reminder"
     | "partner_settings"
     | "payable"
+    | "payables_credit_note"
     | "payables_purchase_order"
     | "payable.line_item"
     | "payment"
     | "payment_intent"
     | "payment_link"
+    | "payment_reminder"
     | "product"
+    | "project"
     | "receivable"
     | "recurrence"
     | "role"
     | "tag"
     | "todo_task"
     | "workflow"
-    | "workflow_pipeline"
-    | "overdue_reminder"
-    | "payment_reminder"
-    | "accounting_connection"
-    | "project"
-    | "approval_policy_process";
+    | "workflow_pipeline";
 
 export const WebhookObjectType = {
     Account: "account",
+    AccountingConnection: "accounting_connection",
     Approval: "approval",
     ApprovalRequest: "approval_request",
     ApprovalPolicy: "approval_policy",
+    ApprovalPolicyProcess: "approval_policy_process",
     BatchPayment: "batch_payment",
     Comment: "comment",
     Counterpart: "counterpart",
@@ -59,14 +62,18 @@ export const WebhookObjectType = {
     EntitySettings: "entity_settings",
     EntityUser: "entity_user",
     Export: "export",
+    OverdueReminder: "overdue_reminder",
     PartnerSettings: "partner_settings",
     Payable: "payable",
+    PayablesCreditNote: "payables_credit_note",
     PayablesPurchaseOrder: "payables_purchase_order",
     PayableLineItem: "payable.line_item",
     Payment: "payment",
     PaymentIntent: "payment_intent",
     PaymentLink: "payment_link",
+    PaymentReminder: "payment_reminder",
     Product: "product",
+    Project: "project",
     Receivable: "receivable",
     Recurrence: "recurrence",
     Role: "role",
@@ -74,9 +81,4 @@ export const WebhookObjectType = {
     TodoTask: "todo_task",
     Workflow: "workflow",
     WorkflowPipeline: "workflow_pipeline",
-    OverdueReminder: "overdue_reminder",
-    PaymentReminder: "payment_reminder",
-    AccountingConnection: "accounting_connection",
-    Project: "project",
-    ApprovalPolicyProcess: "approval_policy_process",
 } as const;

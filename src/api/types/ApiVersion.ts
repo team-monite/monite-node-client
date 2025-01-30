@@ -3,6 +3,7 @@
  */
 
 export type ApiVersion =
+    | "2024-05-25"
     | "2024-01-31"
     | "2023-09-01"
     | "2023-06-04"
@@ -13,6 +14,7 @@ export type ApiVersion =
     | "2022-11-16";
 
 export const ApiVersion = {
+    TwoThousandTwentyFour0525: "2024-05-25",
     TwoThousandTwentyFour0131: "2024-01-31",
     TwoThousandTwentyThree0901: "2023-09-01",
     TwoThousandTwentyThree0604: "2023-06-04",

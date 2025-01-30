@@ -56,18 +56,32 @@ export interface ReceivablesGetRequest {
      * Return only receivables whose [tags](https://docs.monite.com/common/tags) include at least one of the tags with the specified IDs.
      *
      * For example, given receivables with the following tags:
-     *
      * 1. tagA
      * 2. tagB
      * 3. tagA, tagB
      * 4. tagC
      * 5. tagB, tagC
      *
+     *
      * `tag_ids__in=<tagA>&tag_ids__in=<tagB>` will return receivables 1, 2, 3, and 5.
      *
      * Valid but nonexistent tag IDs do not raise errors but produce no results.
      */
     tag_ids__in?: string | string[];
+    /**
+     * Return only receivables whose [tags](https://docs.monite.com/common/tags) include all of the tags with the specified IDs and optionally other tags that are not specified.
+     *
+     * For example, given receivables with the following tags:
+     * 1. tagA
+     * 2. tagB
+     * 3. tagA, tagB
+     * 4. tagC
+     * 5. tagA, tagB, tagC
+     *
+     *
+     * `tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
+     */
+    tag_ids?: string | string[];
     type?: Monite.ReceivableType;
     document_id?: string;
     document_id__contains?: string;

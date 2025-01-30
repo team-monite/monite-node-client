@@ -14,8 +14,6 @@ import * as Monite from "../../../../index";
 export interface ReceivableSendRequest {
     /** Body text of the content */
     body_text: string;
-    /** Lowercase ISO code of language */
-    language?: string;
     recipients?: Monite.Recipients;
     /** Subject text of the content */
     subject_text: string;

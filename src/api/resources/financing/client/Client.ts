@@ -232,9 +232,9 @@ export class Financing {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -255,7 +255,7 @@ export class Financing {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -314,9 +314,9 @@ export class Financing {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -337,7 +337,7 @@ export class Financing {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -389,9 +389,9 @@ export class Financing {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -411,7 +411,7 @@ export class Financing {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -463,9 +463,9 @@ export class Financing {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -485,7 +485,7 @@ export class Financing {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

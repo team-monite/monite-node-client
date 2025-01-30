@@ -67,9 +67,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -87,11 +87,11 @@ export class BankAccounts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -120,13 +120,13 @@ export class BankAccounts {
      *
      * The minimum required fields are `currency` and `country`. Other required fields depend on the currency:
      *
-     * - EUR accounts require `iban`.
-     * - GBP accounts require `account_holder_name`, `account_number`, and `sort_code`.
-     * - USD accounts require `account_holder_name`, `account_number`, and `routing_number`.
-     * - Accounts in other currencies require one of:
-     *   - `iban`
-     *   - `account_number` and `sort_code`
-     *   - `account_number` and `routing_number`
+     * * EUR accounts require `iban`.
+     * * GBP accounts require `account_holder_name`, `account_number`, and `sort_code`.
+     * * USD accounts require `account_holder_name`, `account_number`, and `routing_number`.
+     * * Accounts in other currencies require one of:
+     *   * `iban`
+     *   * `account_number` and `sort_code`
+     *   * `account_number` and `routing_number`
      *
      * @param {Monite.entities.CreateEntityBankAccountRequest} request
      * @param {BankAccounts.RequestOptions} requestOptions - Request-specific configuration.
@@ -159,9 +159,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -180,11 +180,11 @@ export class BankAccounts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -256,16 +256,16 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
-            body: { ...request, type: "airwallex_plaid" },
+            body: request,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -279,7 +279,7 @@ export class BankAccounts {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -342,9 +342,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -365,7 +365,7 @@ export class BankAccounts {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -423,9 +423,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -443,13 +443,13 @@ export class BankAccounts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -504,9 +504,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -524,13 +524,13 @@ export class BankAccounts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -590,9 +590,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -611,13 +611,13 @@ export class BankAccounts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -675,16 +675,16 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
             },
             contentType: "application/json",
             requestType: "json",
-            body: { ...request, type: "airwallex_plaid" },
+            body: request,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -698,7 +698,7 @@ export class BankAccounts {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -756,9 +756,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -776,13 +776,13 @@ export class BankAccounts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -844,9 +844,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -867,7 +867,7 @@ export class BankAccounts {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -921,9 +921,9 @@ export class BankAccounts {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -943,7 +943,7 @@ export class BankAccounts {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

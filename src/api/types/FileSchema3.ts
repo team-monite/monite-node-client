@@ -14,20 +14,20 @@ export interface FileSchema3 {
     created_at: string;
     /** The type of the business object associated with this file. */
     file_type: string;
-    /** The original file name (if available). */
-    name: string;
-    /** Geographical region of the data center where the file is stored. */
-    region: string;
     /** The MD5 hash of the file. */
     md5: string;
-    /** The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types). */
+    /** The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types). */
     mimetype: string;
-    /** The URL to download the file. */
-    url: string;
+    /** The original file name (if available). */
+    name: string;
+    /** If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array. */
+    pages?: Monite.PageSchema[];
+    /** Preview images generated for this file. There can be multiple images with different sizes. */
+    previews?: Monite.PreviewSchema[];
+    /** Geographical region of the data center where the file is stored. */
+    region: string;
     /** The file size in bytes. */
     size: number;
-    /** Preview images generated for this file. There can be multiple images with different sizes. */
-    previews?: Monite.PreviewSchema3[];
-    /** If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array. */
-    pages?: Monite.PageSchema3[];
+    /** The URL to download the file. */
+    url: string;
 }

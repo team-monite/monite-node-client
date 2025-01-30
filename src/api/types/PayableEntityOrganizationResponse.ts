@@ -18,7 +18,7 @@ export interface PayableEntityOrganizationResponse {
     /** An official email address of the entity */
     email?: string;
     /** A logo image of the entity */
-    logo?: Monite.FileSchema2;
+    logo?: Monite.FileSchema4;
     /** A set of metadata describing an organization */
     organization: Monite.PayableOrganizationSchema;
     /** A phone number of the entity */

@@ -19,11 +19,11 @@ export interface PayableUpdateSchema {
     counterpart_raw_data?: Monite.CounterpartRawDataUpdateRequest;
     /** The ID of counterpart VAT ID object stored in counterparts service */
     counterpart_vat_id_id?: string;
-    /** The [currency code](https://docs.monite.com/docs/currencies) of the currency used in the payable. */
+    /** The [currency code](https://docs.monite.com/references/currencies) of the currency used in the payable. */
     currency?: Monite.CurrencyEnum;
     /** An arbitrary description of this payable. */
     description?: string;
-    /** The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
+    /** The value of the additional discount that will be applied to the total amount. in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250. */
     discount?: number;
     /** A unique invoice number assigned by the invoice issuer for payment tracking purposes. */
     document_id?: string;
@@ -41,7 +41,7 @@ export interface PayableUpdateSchema {
     purchase_order_id?: string;
     /** The email address from which the invoice was sent to the entity. */
     sender?: string;
-    /** The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
+    /** The subtotal amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250. */
     subtotal?: number;
     /** The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X * (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0. */
     suggested_payment_term?: Monite.SuggestedPaymentTerm;
@@ -49,8 +49,8 @@ export interface PayableUpdateSchema {
     tag_ids?: string[];
     /** Registered tax percentage applied for a service price in minor units, e.g. 200 means 2%, 1050 means 10.5%. */
     tax?: number;
-    /** Tax amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
+    /** Tax amount in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250. */
     tax_amount?: number;
-    /** The total amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
+    /** The total amount to be paid, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250. */
     total_amount?: number;
 }

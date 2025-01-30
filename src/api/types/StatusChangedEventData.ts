@@ -4,7 +4,15 @@
 
 import * as Monite from "../index";
 
+/**
+ * Contains information about a document's status change. See the applicable
+ * [invoice statuses](https://docs.monite.com/accounts-receivable/invoices/index),
+ * [quote statuses](https://docs.monite.com/accounts-receivable/quotes/index),
+ * and [credit note statuses](https://docs.monite.com/accounts-receivable/credit-notes#credit-note-lifecycle).
+ */
 export interface StatusChangedEventData {
+    /** The new status of a document. */
     new_status: Monite.ReceivablesStatusEnum;
+    /** The old status of a document. */
     old_status: Monite.ReceivablesStatusEnum;
 }

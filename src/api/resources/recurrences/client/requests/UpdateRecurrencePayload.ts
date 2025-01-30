@@ -9,7 +9,10 @@ import * as Monite from "../../../../index";
  *     {}
  */
 export interface UpdateRecurrencePayload {
+    body_text?: string;
     day_of_month?: Monite.DayOfMonth;
     end_month?: number;
     end_year?: number;
+    recipients?: Monite.Recipients;
+    subject_text?: string;
 }

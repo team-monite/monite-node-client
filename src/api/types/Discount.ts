@@ -5,7 +5,7 @@
 import * as Monite from "../index";
 
 export interface Discount {
-    /** The actual discount of the product in [minor units](https://docs.monite.com/docs/currencies#minor-units) if type field equals amount, else in percent minor units */
+    /** The actual discount of the product in [minor units](https://docs.monite.com/references/currencies#minor-units) if type field equals amount, else in percent minor units */
     amount: number;
     /** The field specifies whether to use product currency or %. */
     type: Monite.DiscountType;

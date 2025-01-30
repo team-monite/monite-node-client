@@ -12,14 +12,14 @@ export interface UpdateEntityRequest {
     address?: Monite.UpdateEntityAddressSchema;
     /** An official email address of the entity */
     email?: string;
-    /** A set of meta data describing the individual */
-    individual?: Monite.OptionalIndividualSchema;
-    /** A set of meta data describing the organization */
-    organization?: Monite.OptionalOrganizationSchema;
     /** The contact phone number of the entity. Required for US organizations to use payments. */
     phone?: string;
-    /** The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered. */
-    tax_id?: string;
     /** A website of the entity */
     website?: string;
+    /** The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered. */
+    tax_id?: string;
+    /** A set of meta data describing the organization */
+    organization?: Monite.OptionalOrganizationSchema;
+    /** A set of meta data describing the individual */
+    individual?: Monite.OptionalIndividualSchema;
 }

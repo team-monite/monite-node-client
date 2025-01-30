@@ -10,7 +10,7 @@ export interface RoleResponse {
     /** Role name */
     name: string;
     /** Access permissions */
-    permissions: Monite.BizObjectsSchema;
+    permissions: Monite.BizObjectsSchemaOutput;
     /** record status, 'active' by default */
     status: Monite.StatusEnum;
     /** UTC datetime */

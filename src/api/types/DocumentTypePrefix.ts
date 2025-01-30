@@ -3,8 +3,8 @@
  */
 
 export interface DocumentTypePrefix {
-    quote?: string;
-    invoice?: string;
     credit_note?: string;
+    invoice?: string;
     purchase_order?: string;
+    quote?: string;
 }

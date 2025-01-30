@@ -7,13 +7,13 @@ import * as core from "./core";
 import { Analytics } from "./api/resources/analytics/client/Client";
 import { ApprovalPolicies } from "./api/resources/approvalPolicies/client/Client";
 import { ApprovalRequests } from "./api/resources/approvalRequests/client/Client";
-import { AuditLogs } from "./api/resources/auditLogs/client/Client";
 import { AccessTokens } from "./api/resources/accessTokens/client/Client";
 import { BatchPayments } from "./api/resources/batchPayments/client/Client";
 import { Comments } from "./api/resources/comments/client/Client";
 import { Counterparts } from "./api/resources/counterparts/client/Client";
 import { DataExports } from "./api/resources/dataExports/client/Client";
 import { PdfTemplates } from "./api/resources/pdfTemplates/client/Client";
+import { EInvoicingConnections } from "./api/resources/eInvoicingConnections/client/Client";
 import { Entities } from "./api/resources/entities/client/Client";
 import { EntityUsers } from "./api/resources/entityUsers/client/Client";
 import { Events } from "./api/resources/events/client/Client";
@@ -94,12 +94,6 @@ export class MoniteClient {
         return (this._approvalRequests ??= new ApprovalRequests(this._options));
     }
 
-    protected _auditLogs: AuditLogs | undefined;
-
-    public get auditLogs(): AuditLogs {
-        return (this._auditLogs ??= new AuditLogs(this._options));
-    }
-
     protected _accessTokens: AccessTokens | undefined;
 
     public get accessTokens(): AccessTokens {
@@ -134,6 +128,12 @@ export class MoniteClient {
 
     public get pdfTemplates(): PdfTemplates {
         return (this._pdfTemplates ??= new PdfTemplates(this._options));
+    }
+
+    protected _eInvoicingConnections: EInvoicingConnections | undefined;
+
+    public get eInvoicingConnections(): EInvoicingConnections {
+        return (this._eInvoicingConnections ??= new EInvoicingConnections(this._options));
     }
 
     protected _entities: Entities | undefined;

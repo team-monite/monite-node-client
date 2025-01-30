@@ -5,16 +5,16 @@
 import * as Monite from "../index";
 
 export interface DocumentIDsSettingsRequest {
-    /** Optionally add 4-digit of the current year */
-    include_date?: boolean;
-    /** Optional prefix. Does not substitute document_type prefix */
-    prefix?: string;
-    /** Which character should separate each part of the document_id */
-    separator?: Monite.DocumentIdSeparators;
-    /** Prefixes for each document_type */
+    /** Prefixes for each document_type. */
     document_type_prefix?: Monite.DocumentTypePrefix;
-    /** Minimal size of number in document ID Number will be left padded with zeros if less */
+    /** Optionally add 4-digit of the current year. */
+    include_date?: boolean;
+    /** Minimal size of number in document ID Number will be left padded with zeros if less. */
     min_digits?: number;
-    /** Write-only field. Changes which number will be issued next. Can't be less than the last issued document number */
+    /** Write-only field. Changes which number will be issued next. Can't be less than the last issued document number. */
     next_number?: Monite.DocumentIDsSettingsNextNumber;
+    /** Optional prefix. Does not substitute document_type prefix. */
+    prefix?: string;
+    /** Which character should separate each part of the document_id. */
+    separator?: Monite.DocumentIdSeparators;
 }

@@ -3,8 +3,8 @@
  */
 
 export interface DocumentIDsSettingsNextNumber {
-    quote?: number;
-    invoice?: number;
     credit_note?: number;
+    invoice?: number;
     purchase_order?: number;
+    quote?: number;
 }

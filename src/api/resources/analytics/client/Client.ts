@@ -41,6 +41,257 @@ export class Analytics {
     /**
      * Retrieve aggregated statistics for payables with different breakdowns.
      *
+     * @param {Monite.GetAnalyticsCreditNotesRequest} request
+     * @param {Analytics.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.analytics.getAnalyticsCreditNotes({
+     *         metric: "id",
+     *         aggregation_function: "count"
+     *     })
+     */
+    public async getAnalyticsCreditNotes(
+        request: Monite.GetAnalyticsCreditNotesRequest,
+        requestOptions?: Analytics.RequestOptions
+    ): Promise<Monite.PayableAnalyticsResponse> {
+        const {
+            dimension,
+            metric,
+            aggregation_function: aggregationFunction,
+            date_dimension_breakdown: dateDimensionBreakdown,
+            created_at__gt: createdAtGt,
+            created_at__lt: createdAtLt,
+            created_at__gte: createdAtGte,
+            created_at__lte: createdAtLte,
+            issued_at: issuedAt,
+            issued_at__gt: issuedAtGt,
+            issued_at__lt: issuedAtLt,
+            issued_at__gte: issuedAtGte,
+            issued_at__lte: issuedAtLte,
+            document_id: documentId,
+            document_id__iexact: documentIdIexact,
+            document_id__contains: documentIdContains,
+            document_id__icontains: documentIdIcontains,
+            total_amount__gt: totalAmountGt,
+            total_amount__lt: totalAmountLt,
+            total_amount__gte: totalAmountGte,
+            total_amount__lte: totalAmountLte,
+            subtotal__gt: subtotalGt,
+            subtotal__lt: subtotalLt,
+            subtotal__gte: subtotalGte,
+            subtotal__lte: subtotalLte,
+            based_on: basedOn,
+            counterpart_id: counterpartId,
+            created_by_entity_user_id: createdByEntityUserId,
+            status,
+            status__in: statusIn,
+            status__not_in: statusNotIn,
+            currency,
+        } = request;
+        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        if (dimension != null) {
+            _queryParams["dimension"] = dimension;
+        }
+
+        _queryParams["metric"] = metric;
+        _queryParams["aggregation_function"] = aggregationFunction;
+        if (dateDimensionBreakdown != null) {
+            _queryParams["date_dimension_breakdown"] = dateDimensionBreakdown;
+        }
+
+        if (createdAtGt != null) {
+            _queryParams["created_at__gt"] = createdAtGt;
+        }
+
+        if (createdAtLt != null) {
+            _queryParams["created_at__lt"] = createdAtLt;
+        }
+
+        if (createdAtGte != null) {
+            _queryParams["created_at__gte"] = createdAtGte;
+        }
+
+        if (createdAtLte != null) {
+            _queryParams["created_at__lte"] = createdAtLte;
+        }
+
+        if (issuedAt != null) {
+            _queryParams["issued_at"] = issuedAt;
+        }
+
+        if (issuedAtGt != null) {
+            _queryParams["issued_at__gt"] = issuedAtGt;
+        }
+
+        if (issuedAtLt != null) {
+            _queryParams["issued_at__lt"] = issuedAtLt;
+        }
+
+        if (issuedAtGte != null) {
+            _queryParams["issued_at__gte"] = issuedAtGte;
+        }
+
+        if (issuedAtLte != null) {
+            _queryParams["issued_at__lte"] = issuedAtLte;
+        }
+
+        if (documentId != null) {
+            _queryParams["document_id"] = documentId;
+        }
+
+        if (documentIdIexact != null) {
+            _queryParams["document_id__iexact"] = documentIdIexact;
+        }
+
+        if (documentIdContains != null) {
+            _queryParams["document_id__contains"] = documentIdContains;
+        }
+
+        if (documentIdIcontains != null) {
+            _queryParams["document_id__icontains"] = documentIdIcontains;
+        }
+
+        if (totalAmountGt != null) {
+            _queryParams["total_amount__gt"] = totalAmountGt.toString();
+        }
+
+        if (totalAmountLt != null) {
+            _queryParams["total_amount__lt"] = totalAmountLt.toString();
+        }
+
+        if (totalAmountGte != null) {
+            _queryParams["total_amount__gte"] = totalAmountGte.toString();
+        }
+
+        if (totalAmountLte != null) {
+            _queryParams["total_amount__lte"] = totalAmountLte.toString();
+        }
+
+        if (subtotalGt != null) {
+            _queryParams["subtotal__gt"] = subtotalGt.toString();
+        }
+
+        if (subtotalLt != null) {
+            _queryParams["subtotal__lt"] = subtotalLt.toString();
+        }
+
+        if (subtotalGte != null) {
+            _queryParams["subtotal__gte"] = subtotalGte.toString();
+        }
+
+        if (subtotalLte != null) {
+            _queryParams["subtotal__lte"] = subtotalLte.toString();
+        }
+
+        if (basedOn != null) {
+            _queryParams["based_on"] = basedOn;
+        }
+
+        if (counterpartId != null) {
+            _queryParams["counterpart_id"] = counterpartId;
+        }
+
+        if (createdByEntityUserId != null) {
+            _queryParams["created_by_entity_user_id"] = createdByEntityUserId;
+        }
+
+        if (status != null) {
+            _queryParams["status"] = status;
+        }
+
+        if (statusIn != null) {
+            if (Array.isArray(statusIn)) {
+                _queryParams["status__in"] = statusIn.map((item) => item);
+            } else {
+                _queryParams["status__in"] = statusIn;
+            }
+        }
+
+        if (statusNotIn != null) {
+            if (Array.isArray(statusNotIn)) {
+                _queryParams["status__not_in"] = statusNotIn.map((item) => item);
+            } else {
+                _queryParams["status__not_in"] = statusNotIn;
+            }
+        }
+
+        if (currency != null) {
+            _queryParams["currency"] = currency;
+        }
+
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                "analytics/credit_notes"
+            ),
+            method: "GET",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            queryParameters: _queryParams,
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.PayableAnalyticsResponse;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /analytics/credit_notes.");
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Retrieve aggregated statistics for payables with different breakdowns.
+     *
      * @param {Monite.GetAnalyticsPayablesRequest} request
      * @param {Analytics.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -292,9 +543,9 @@ export class Analytics {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -313,13 +564,13 @@ export class Analytics {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

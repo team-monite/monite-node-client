@@ -4,7 +4,13 @@
 
 import * as Monite from "../index";
 
+/**
+ * In invoice history, this object contains information about a credit note created for this invoice.
+ * In quote history, it contains information about an invoice created from this quote.
+ */
 export interface BasedOnReceivableCreatedEventData {
+    /** The ID of the newly created receivable document. */
     receivable_id: string;
+    /** The type of the receivable document that was created based on the current document. */
     type: Monite.ReceivableType;
 }

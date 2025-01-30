@@ -4,6 +4,9 @@
 
 import * as Monite from "../index";
 
+/**
+ * A paginated list of change history records.
+ */
 export interface ReceivableHistoryPaginationResponse {
     data: Monite.ReceivableHistoryResponse[];
     /** A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page). */

@@ -16,14 +16,14 @@ export interface FileSchema4 {
     file_type: string;
     /** The MD5 hash of the file. */
     md5: string;
-    /** The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types). */
+    /** The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types). */
     mimetype: string;
     /** The original file name (if available). */
     name: string;
     /** If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array. */
-    pages?: Monite.PageSchema4[];
+    pages?: Monite.PageSchema3[];
     /** Preview images generated for this file. There can be multiple images with different sizes. */
-    previews?: Monite.PreviewSchema4[];
+    previews?: Monite.PreviewSchema3[];
     /** Geographical region of the data center where the file is stored. */
     region: string;
     /** The file size in bytes. */

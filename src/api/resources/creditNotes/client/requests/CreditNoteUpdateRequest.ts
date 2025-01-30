@@ -9,8 +9,6 @@ import * as Monite from "../../../../index";
  *     {}
  */
 export interface CreditNoteUpdateRequest {
-    /** The total amount including taxes */
-    amount?: number;
     /** ID of the payable this credit note is based on. The credit note will be linked to this payable */
     based_on?: string;
     /** The document ID of the original payable */
@@ -43,4 +41,6 @@ export interface CreditNoteUpdateRequest {
     tax?: number;
     /** The calculated tax amount */
     tax_amount?: number;
+    /** The total amount including taxes */
+    total_amount?: number;
 }

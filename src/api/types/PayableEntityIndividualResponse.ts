@@ -20,7 +20,7 @@ export interface PayableEntityIndividualResponse {
     /** A set of metadata describing an individual */
     individual: Monite.PayableIndividualSchema;
     /** A logo image of the entity */
-    logo?: Monite.FileSchema2;
+    logo?: Monite.FileSchema4;
     /** A phone number of the entity */
     phone?: string;
     /** record status, 'active' by default */

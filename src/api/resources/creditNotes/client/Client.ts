@@ -7,6 +7,8 @@ import * as core from "../../../../core";
 import * as Monite from "../../../index";
 import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
+import * as fs from "fs";
+import { Blob } from "buffer";
 
 export declare namespace CreditNotes {
     interface Options {
@@ -74,10 +76,10 @@ export class CreditNotes {
             document_id__iexact: documentIdIexact,
             document_id__contains: documentIdContains,
             document_id__icontains: documentIdIcontains,
-            amount__gt: amountGt,
-            amount__lt: amountLt,
-            amount__gte: amountGte,
-            amount__lte: amountLte,
+            total_amount__gt: totalAmountGt,
+            total_amount__lt: totalAmountLt,
+            total_amount__gte: totalAmountGte,
+            total_amount__lte: totalAmountLte,
             subtotal__gt: subtotalGt,
             subtotal__lt: subtotalLt,
             subtotal__gte: subtotalGte,
@@ -159,20 +161,20 @@ export class CreditNotes {
             _queryParams["document_id__icontains"] = documentIdIcontains;
         }
 
-        if (amountGt != null) {
-            _queryParams["amount__gt"] = amountGt.toString();
+        if (totalAmountGt != null) {
+            _queryParams["total_amount__gt"] = totalAmountGt.toString();
         }
 
-        if (amountLt != null) {
-            _queryParams["amount__lt"] = amountLt.toString();
+        if (totalAmountLt != null) {
+            _queryParams["total_amount__lt"] = totalAmountLt.toString();
         }
 
-        if (amountGte != null) {
-            _queryParams["amount__gte"] = amountGte.toString();
+        if (totalAmountGte != null) {
+            _queryParams["total_amount__gte"] = totalAmountGte.toString();
         }
 
-        if (amountLte != null) {
-            _queryParams["amount__lte"] = amountLte.toString();
+        if (totalAmountLte != null) {
+            _queryParams["total_amount__lte"] = totalAmountLte.toString();
         }
 
         if (subtotalGt != null) {
@@ -241,9 +243,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -262,17 +264,17 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -308,8 +310,6 @@ export class CreditNotes {
      *
      * @example
      *     await client.creditNotes.postPayableCreditNotes({
-     *         amount: 1200,
-     *         based_on: "123e4567-e89b-12d3-a456-426614174000",
      *         document_id: "CN-2287",
      *         issued_at: "2024-01-15"
      *     })
@@ -332,9 +332,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -353,15 +353,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -378,6 +378,101 @@ export class CreditNotes {
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payable_credit_notes.");
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+     *
+     * @param {File | fs.ReadStream | Blob} file
+     * @param {CreditNotes.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.ConflictError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.creditNotes.postPayableCreditNotesUploadFromFile(fs.createReadStream("/path/to/your/file"))
+     */
+    public async postPayableCreditNotesUploadFromFile(
+        file: File | fs.ReadStream | Blob,
+        requestOptions?: CreditNotes.RequestOptions
+    ): Promise<Monite.CreditNoteResponse> {
+        const _request = await core.newFormData();
+        await _request.appendFile("file", file);
+        const _maybeEncodedRequest = await _request.getRequest();
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                "payable_credit_notes/upload_from_file"
+            ),
+            method: "POST",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ..._maybeEncodedRequest.headers,
+                ...requestOptions?.headers,
+            },
+            requestType: "file",
+            duplex: _maybeEncodedRequest.duplex,
+            body: _maybeEncodedRequest.body,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.CreditNoteResponse;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 409:
+                    throw new Monite.ConflictError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling POST /payable_credit_notes/upload_from_file."
+                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -416,9 +511,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -436,15 +531,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -502,9 +597,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -522,17 +617,17 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -591,9 +686,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -612,15 +707,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -680,9 +775,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -700,17 +795,17 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -770,9 +865,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -790,17 +885,17 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -818,6 +913,99 @@ export class CreditNotes {
             case "timeout":
                 throw new errors.MoniteTimeoutError(
                     "Timeout exceeded when calling POST /payable_credit_notes/{credit_note_id}/cancel."
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Request to cancel the OCR processing of the specified credit note.
+     *
+     * @param {string} creditNoteId
+     * @param {CreditNotes.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.NotFoundError}
+     * @throws {@link Monite.ConflictError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.creditNotes.postPayableCreditNotesIdCancelOcr("credit_note_id")
+     */
+    public async postPayableCreditNotesIdCancelOcr(
+        creditNoteId: string,
+        requestOptions?: CreditNotes.RequestOptions
+    ): Promise<Monite.CreditNoteResponse> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                `payable_credit_notes/${encodeURIComponent(creditNoteId)}/cancel_ocr`
+            ),
+            method: "POST",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.CreditNoteResponse;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 404:
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                case 409:
+                    throw new Monite.ConflictError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling POST /payable_credit_notes/{credit_note_id}/cancel_ocr."
                 );
             case "unknown":
                 throw new errors.MoniteError({
@@ -1082,9 +1270,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1103,15 +1291,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1170,9 +1358,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1191,15 +1379,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1260,9 +1448,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1281,15 +1469,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1348,9 +1536,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1368,15 +1556,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1435,9 +1623,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1455,15 +1643,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1524,9 +1712,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1545,15 +1733,15 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1613,9 +1801,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1633,17 +1821,17 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1703,9 +1891,9 @@ export class CreditNotes {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -1723,17 +1911,17 @@ export class CreditNotes {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

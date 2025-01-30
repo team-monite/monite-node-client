@@ -190,9 +190,9 @@ export class ApprovalRequests {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -211,17 +211,17 @@ export class ApprovalRequests {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -283,9 +283,9 @@ export class ApprovalRequests {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -304,19 +304,19 @@ export class ApprovalRequests {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -373,9 +373,9 @@ export class ApprovalRequests {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -393,19 +393,19 @@ export class ApprovalRequests {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -464,9 +464,9 @@ export class ApprovalRequests {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -484,19 +484,19 @@ export class ApprovalRequests {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -555,9 +555,9 @@ export class ApprovalRequests {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -575,19 +575,19 @@ export class ApprovalRequests {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -646,9 +646,9 @@ export class ApprovalRequests {
                         ? await core.Supplier.get(this._options.moniteEntityId)
                         : undefined,
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "monite",
-                "X-Fern-SDK-Version": "0.1.0",
-                "User-Agent": "monite/0.1.0",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -666,19 +666,19 @@ export class ApprovalRequests {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

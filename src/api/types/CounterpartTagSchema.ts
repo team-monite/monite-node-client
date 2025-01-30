@@ -16,7 +16,7 @@ export interface CounterpartTagSchema {
     updated_at: string;
     /** The tag category. */
     category?: Monite.CounterpartTagCategory;
-    /** ID of the user who created the tag */
+    /** ID of the user who created the tag. */
     created_by_entity_user_id?: string;
     /** The tag description. */
     description?: string;

@@ -1,6 +1,6 @@
 {
-    "name": "monite",
-    "version": "0.1.0",
+    "name": "@monite/node-client",
+    "version": "0.2.0",
     "private": false,
     "repository": "https://github.com/team-monite/monite-node-client",
     "main": "./index.js",
