@@ -3,10 +3,10 @@
  */
 
 export interface OcrAutoTaggingSettingsRequest {
-    /** Tag identifier that will be assigned to the payable document if one of the words listed in keywords is found during OCR */
-    tag_id: string;
-    /** A list of words that will be searched for assigning a tag in the recognized fields of the document after OCR processing. If at least one match is found, the tag will be assigned. Each keyword must be between 2 and 25 characters long */
-    keywords: string[];
-    /** A switch to temporarily disable a keyword without removing it from the list */
+    /** A switch to temporarily disable a keyword without removing it from the list. */
     enabled: boolean;
+    /** A list of words that will be searched for assigning a tag in the recognized fields of the document after OCR processing. If at least one match is found, the tag will be assigned. Each keyword must be between 2 and 25 characters long. */
+    keywords: string[];
+    /** Tag identifier that will be assigned to the payable document if one of the words listed in keywords is found during OCR. */
+    tag_id: string;
 }

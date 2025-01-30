@@ -4,8 +4,6 @@
 
 export interface LineItemProductMeasureUnit {
     id?: string;
-    created_at: string;
-    updated_at: string;
     description?: string;
     name: string;
 }

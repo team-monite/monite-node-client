@@ -15,7 +15,7 @@ import * as Monite from "../../../../index";
  *     }
  */
 export interface CreatePaymentLinkRequest {
-    /** The payment amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). Required if `object` is not specified. */
+    /** The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified. */
     amount?: number;
     /** The payment currency. Required if `object` is not specified. */
     currency?: Monite.CurrencyEnum;

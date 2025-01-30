@@ -12,14 +12,8 @@ export interface CreditNoteLineItemCreateRequest {
     name?: string;
     /** Quantity of items */
     quantity?: number;
-    /** Subtotal amount before tax in smallest currency unit */
-    subtotal?: number;
-    /** Tax percentage */
+    /** VAT rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250. */
     tax?: number;
-    /** Tax amount in smallest currency unit */
-    tax_amount?: number;
-    /** Total amount including tax in smallest currency unit */
-    total?: number;
     /** Unit of measurement */
     unit?: string;
     /** Price per unit in smallest currency unit (e.g. cents) */

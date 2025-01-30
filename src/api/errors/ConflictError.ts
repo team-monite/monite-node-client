@@ -3,10 +3,9 @@
  */
 
 import * as errors from "../../errors/index";
-import * as Monite from "../index";
 
 export class ConflictError extends errors.MoniteError {
-    constructor(body: Monite.ErrorSchemaResponse) {
+    constructor(body?: unknown) {
         super({
             message: "ConflictError",
             statusCode: 409,

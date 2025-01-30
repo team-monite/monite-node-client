@@ -30,4 +30,5 @@ import * as Monite from "../../../../../../index";
  */
 export interface CompleteVerificationRequest {
     airwallex_plaid: Monite.CompleteVerificationAirwallexPlaidRequest;
+    type: Monite.BankAccountVerificationType;
 }

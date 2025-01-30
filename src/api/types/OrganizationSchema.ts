@@ -14,7 +14,7 @@ export interface OrganizationSchema {
     executives_provided?: boolean;
     /** A code which identifies uniquely a party of a transaction worldwide */
     legal_entity_id?: string;
-    /** A legal name of an organization */
+    /** The legal name of the organization. If this organization will use Monite payment rails, this name must be up to 100 characters long, otherwise it can be up to 255 characters long. */
     legal_name: string;
     owners_provided?: boolean;
     representative_provided?: boolean;

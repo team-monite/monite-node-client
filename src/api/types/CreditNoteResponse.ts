@@ -14,10 +14,8 @@ export interface CreditNoteResponse {
     created_at: string;
     /** Date and time of the last update to the credit note */
     updated_at: string;
-    /** The total amount including taxes */
-    amount?: number;
     /** ID of the payable this credit note is based on */
-    based_on: string;
+    based_on?: string;
     /** The document ID of the original payable that this credit note refers to */
     based_on_document_id?: string;
     /** ID of the counterpart's address */
@@ -43,6 +41,10 @@ export interface CreditNoteResponse {
     document_id?: string;
     /** The ID of the entity to which the credit note belongs */
     entity_id: string;
+    /** The id of the credit note file stored in the file saver. */
+    file_id?: string;
+    /** The URL of the credit note file stored in the file saver. */
+    file_url?: string;
     /** Date when the credit note was issued */
     issued_at?: string;
     /** ID of the OCR processing request */
@@ -67,4 +69,6 @@ export interface CreditNoteResponse {
     tax?: number;
     /** The calculated tax amount */
     tax_amount?: number;
+    /** The total amount including taxes */
+    total_amount?: number;
 }

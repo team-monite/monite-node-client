@@ -40,10 +40,10 @@ export interface GetPayableCreditNotesRequest {
     document_id__iexact?: string;
     document_id__contains?: string;
     document_id__icontains?: string;
-    amount__gt?: number;
-    amount__lt?: number;
-    amount__gte?: number;
-    amount__lte?: number;
+    total_amount__gt?: number;
+    total_amount__lt?: number;
+    total_amount__gte?: number;
+    total_amount__lte?: number;
     subtotal__gt?: number;
     subtotal__lt?: number;
     subtotal__gte?: number;

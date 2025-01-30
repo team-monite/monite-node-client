@@ -12,6 +12,6 @@ export interface CounterpartOrganizationRootCreatePayload {
     language?: Monite.LanguageCodeEnum;
     organization: Monite.CounterpartOrganizationCreatePayload;
     reminders_enabled?: boolean;
-    /** The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered. */
+    /** The counterpart's taxpayer identification number or tax ID. For identification purposes, this field may be required for counterparts that are not VAT-registered. */
     tax_id?: string;
 }

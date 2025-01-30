@@ -7,14 +7,14 @@ import * as Monite from "../index";
 /**
  * A schema for a response after creation of an entity of different types
  */
-export type EntityResponse = Monite.EntityResponse.Organization | Monite.EntityResponse.Individual;
+export type EntityResponse = Monite.EntityResponse.Individual | Monite.EntityResponse.Organization;
 
 export declare namespace EntityResponse {
-    interface Organization extends Monite.EntityOrganizationResponse {
-        type: "organization";
-    }
-
     interface Individual extends Monite.EntityIndividualResponse {
         type: "individual";
+    }
+
+    interface Organization extends Monite.EntityOrganizationResponse {
+        type: "organization";
     }
 }

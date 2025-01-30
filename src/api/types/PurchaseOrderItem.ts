@@ -9,7 +9,7 @@ export interface PurchaseOrderItem {
     currency: Monite.CurrencyEnum;
     /** The name of the product to purchase */
     name: string;
-    /** The subtotal cost (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units). */
+    /** The subtotal cost (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units). */
     price: number;
     /** Number (quantity) of products */
     quantity: number;

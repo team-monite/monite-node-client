@@ -7,17 +7,13 @@ import * as Monite from "../../../../index";
 /**
  * @example
  *     {
- *         amount: 1200,
- *         based_on: "123e4567-e89b-12d3-a456-426614174000",
  *         document_id: "CN-2287",
  *         issued_at: "2024-01-15"
  *     }
  */
 export interface CreditNoteCreateRequest {
-    /** The total amount including taxes */
-    amount: number;
     /** ID of the payable this credit note is based on. The credit note will be linked to this payable */
-    based_on: string;
+    based_on?: string;
     /** The document ID of the original payable that this credit note refers to */
     based_on_document_id?: string;
     /** The ID of the counterpart's address */
@@ -48,4 +44,6 @@ export interface CreditNoteCreateRequest {
     tax?: number;
     /** The calculated tax amount */
     tax_amount?: number;
+    /** The total amount including taxes */
+    total_amount?: number;
 }

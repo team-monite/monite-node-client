@@ -14,7 +14,7 @@ export interface OrganizationResponseSchema {
     executives_provided?: boolean;
     /** A code which identifies uniquely a party of a transaction worldwide */
     legal_entity_id?: string;
-    /** A legal name of an organization */
+    /** The legal name of the organization. */
     legal_name: string;
     owners_provided?: boolean;
     representative_provided?: boolean;
