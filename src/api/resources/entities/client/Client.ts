@@ -189,17 +189,17 @@ export class Entities {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
+                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -284,11 +284,11 @@ export class Entities {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -359,11 +359,11 @@ export class Entities {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -439,11 +439,11 @@ export class Entities {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -515,11 +515,11 @@ export class Entities {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -597,11 +597,11 @@ export class Entities {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -618,168 +618,6 @@ export class Entities {
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling PATCH /entities/{entity_id}.");
-            case "unknown":
-                throw new errors.MoniteError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
-     * Activate an entity to allow it to perform any operations.
-     *
-     * @param {string} entityId - A unique ID to specify the entity.
-     * @param {Entities.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Monite.BadRequestError}
-     * @throws {@link Monite.UnprocessableEntityError}
-     * @throws {@link Monite.InternalServerError}
-     *
-     * @example
-     *     await client.entities.postEntitiesIdActivate("ea837e28-509b-4b6a-a600-d54b6aa0b1f5")
-     */
-    public async postEntitiesIdActivate(
-        entityId: string,
-        requestOptions?: Entities.RequestOptions
-    ): Promise<Monite.EntityResponse> {
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/activate`
-            ),
-            method: "POST",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
-                "x-monite-entity-id":
-                    (await core.Supplier.get(this._options.moniteEntityId)) != null
-                        ? await core.Supplier.get(this._options.moniteEntityId)
-                        : undefined,
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.2.0",
-                "User-Agent": "@monite/node-client/0.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return _response.body as Monite.EntityResponse;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
-                case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
-                case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
-                default:
-                    throw new errors.MoniteError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.MoniteError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /entities/{entity_id}/activate."
-                );
-            case "unknown":
-                throw new errors.MoniteError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
-     * Deactivate an entity to stop it from performing any operations.
-     *
-     * @param {string} entityId - A unique ID to specify the entity.
-     * @param {Entities.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Monite.BadRequestError}
-     * @throws {@link Monite.UnprocessableEntityError}
-     * @throws {@link Monite.InternalServerError}
-     *
-     * @example
-     *     await client.entities.postEntitiesIdDeactivate("ea837e28-509b-4b6a-a600-d54b6aa0b1f5")
-     */
-    public async postEntitiesIdDeactivate(
-        entityId: string,
-        requestOptions?: Entities.RequestOptions
-    ): Promise<Monite.EntityResponse> {
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/deactivate`
-            ),
-            method: "POST",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
-                "x-monite-entity-id":
-                    (await core.Supplier.get(this._options.moniteEntityId)) != null
-                        ? await core.Supplier.get(this._options.moniteEntityId)
-                        : undefined,
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.2.0",
-                "User-Agent": "@monite/node-client/0.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return _response.body as Monite.EntityResponse;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
-                case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
-                case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
-                default:
-                    throw new errors.MoniteError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.MoniteError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /entities/{entity_id}/deactivate."
-                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -845,11 +683,11 @@ export class Entities {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -919,11 +757,11 @@ export class Entities {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -999,7 +837,7 @@ export class Entities {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1084,7 +922,7 @@ export class Entities {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1126,7 +964,7 @@ export class Entities {
     public async getSettingsById(
         entityId: string,
         requestOptions?: Entities.RequestOptions
-    ): Promise<Monite.SettingsResponse> {
+    ): Promise<Monite.MergedSettingsResponse> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
@@ -1155,17 +993,17 @@ export class Entities {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.SettingsResponse;
+            return _response.body as Monite.MergedSettingsResponse;
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1209,7 +1047,7 @@ export class Entities {
         entityId: string,
         request: Monite.PatchSettingsPayload = {},
         requestOptions?: Entities.RequestOptions
-    ): Promise<Monite.SettingsResponse> {
+    ): Promise<Monite.MergedSettingsResponse> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
@@ -1239,17 +1077,17 @@ export class Entities {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.SettingsResponse;
+            return _response.body as Monite.MergedSettingsResponse;
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1328,7 +1166,7 @@ export class Entities {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1402,7 +1240,7 @@ export class Entities {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

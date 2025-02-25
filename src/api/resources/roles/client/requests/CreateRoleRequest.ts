@@ -15,5 +15,5 @@ export interface CreateRoleRequest {
     /** Role name */
     name: string;
     /** Access permissions */
-    permissions: Monite.BizObjectsSchemaInput;
+    permissions: Monite.BizObjectsSchema;
 }

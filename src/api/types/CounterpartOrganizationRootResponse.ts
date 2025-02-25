@@ -22,11 +22,11 @@ export interface CounterpartOrganizationRootResponse {
     default_shipping_address_id?: string;
     /** Entity user ID of counterpart creator. */
     created_by_entity_user_id?: string;
-    /** The language used to generate PDF documents for this counterpart. */
+    /** The language used to generate pdf documents for this counterpart. */
     language?: Monite.LanguageCodeEnum;
     organization: Monite.CounterpartOrganizationResponse;
     reminders_enabled?: boolean;
-    /** The counterpart's taxpayer identification number or tax ID. */
+    /** The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered. */
     tax_id?: string;
     /** The counterpart type: `organization` (juridical person) or `individual` (natural person). */
     type: Monite.CounterpartType;

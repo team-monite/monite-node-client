@@ -4,6 +4,9 @@
 
 import * as Monite from "../index";
 
+/**
+ * A scheme for validation an entity user additional info
+ */
 export interface EntityUserResponse {
     /** UUID entity user ID */
     id: string;

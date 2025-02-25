@@ -15,17 +15,17 @@ export interface LineItemResponse {
     payable_id: string;
     /** The quantity of each of the goods, materials, or services listed in the payable. */
     quantity?: number;
-    /** The subtotal (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    /** The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units). */
     subtotal?: number;
-    /** VAT rate in percent [minor units](https://docs.monite.com/references/currencies#minor-units). Example: 12.5% is 1250. */
+    /** VAT rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250. */
     tax?: number;
-    /** Tax amount in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250. */
+    /** Tax amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
     tax_amount?: number;
     /** The actual price of the product. */
     total?: number;
     /** The unit of the product */
     unit?: string;
-    /** The unit price of the product, in [minor units](https://docs.monite.com/references/currencies#minor-units). For example, $12.50 is represented as 1250. */
+    /** The unit price of the product, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250. */
     unit_price?: number;
     /** ID of the user who created the tag. */
     was_created_by_user_id?: string;

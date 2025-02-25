@@ -50,9 +50,7 @@ export class PartnerSettings {
      * @example
      *     await client.partnerSettings.get()
      */
-    public async get(
-        requestOptions?: PartnerSettings.RequestOptions
-    ): Promise<Monite.PartnerProjectSettingsPayloadOutput> {
+    public async get(requestOptions?: PartnerSettings.RequestOptions): Promise<Monite.PartnerProjectSettingsResponse> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
@@ -81,17 +79,17 @@ export class PartnerSettings {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PartnerProjectSettingsPayloadOutput;
+            return _response.body as Monite.PartnerProjectSettingsResponse;
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -118,7 +116,7 @@ export class PartnerSettings {
     /**
      * Change the specified fields with the provided values.
      *
-     * @param {Monite.PartnerProjectSettingsPayloadInput} request
+     * @param {Monite.PartnerProjectSettingsPayload} request
      * @param {PartnerSettings.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Monite.BadRequestError}
@@ -129,9 +127,9 @@ export class PartnerSettings {
      *     await client.partnerSettings.update()
      */
     public async update(
-        request: Monite.PartnerProjectSettingsPayloadInput = {},
+        request: Monite.PartnerProjectSettingsPayload = {},
         requestOptions?: PartnerSettings.RequestOptions
-    ): Promise<Monite.PartnerProjectSettingsPayloadOutput> {
+    ): Promise<Monite.PartnerProjectSettingsResponse> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
@@ -161,17 +159,17 @@ export class PartnerSettings {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PartnerProjectSettingsPayloadOutput;
+            return _response.body as Monite.PartnerProjectSettingsResponse;
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

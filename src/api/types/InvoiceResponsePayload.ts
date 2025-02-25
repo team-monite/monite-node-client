@@ -10,11 +10,11 @@ export interface InvoiceResponsePayload {
     created_at: string;
     /** Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard. */
     updated_at: string;
-    /** How much is left to be paid in [minor units](https://docs.monite.com/references/currencies#minor-units). Equal 0 if the Invoice is fully paid. */
+    /** How much is left to be paid in [minor units](https://docs.monite.com/docs/currencies#minor-units). Equal 0 if the Invoice is fully paid. */
     amount_due: number;
-    /** How much has been paid [minor units](https://docs.monite.com/references/currencies#minor-units) */
+    /** How much has been paid [minor units](https://docs.monite.com/docs/currencies#minor-units) */
     amount_paid: number;
-    /** How much is left to be paid in in [minor units](https://docs.monite.com/references/currencies#minor-units), including payment_term discounts. */
+    /** How much is left to be paid in in [minor units](https://docs.monite.com/docs/currencies#minor-units), including payment_term discounts. */
     amount_to_pay?: number;
     /** The unique ID of a previous document related to the receivable if applicable. */
     based_on?: string;
@@ -49,7 +49,7 @@ export interface InvoiceResponsePayload {
     deduction_memo?: string;
     /** The discount for a receivable. */
     discount?: Monite.Discount;
-    /** Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    /** Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/docs/currencies#minor-units). */
     discounted_subtotal?: number;
     /** The sequential code systematically assigned to invoices. */
     document_id?: string;
@@ -61,14 +61,16 @@ export interface InvoiceResponsePayload {
     /** The entity user who created this document. */
     entity_user_id?: string;
     entity_vat_id?: Monite.ReceivableEntityVatIdResponse;
+    file?: Monite.ReceivableFileSchema;
     /** The language of the customer-facing PDF file (`file_url`). The value matches the counterpart's `language` at the time when this PDF file was generated. */
     file_language: Monite.LanguageCodeEnum;
     /** The receivable's PDF URL in the counterpart's default language. */
     file_url?: string;
     /**
-     * The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
+     * The date when the goods are shipped or the service is provided.
      *
-     * If omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status.
+     * If omitted, defaults to the invoice issue date,
+     * and the value is automatically set when the invoice status changes to `issued`.
      */
     fulfillment_date?: string;
     /** Optional field for the issue of the entry. */
@@ -99,15 +101,15 @@ export interface InvoiceResponsePayload {
     related_documents: Monite.RelatedDocuments;
     /** The status of the receivable inside the receivable workflow. */
     status: Monite.ReceivablesStatusEnum;
-    /** The subtotal (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    /** The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units). */
     subtotal?: number;
     /** The list of tags for this receivable. */
     tags?: Monite.TagReadSchema[];
-    /** Total price of the receivable in [minor units](https://docs.monite.com/references/currencies#minor-units). Calculated as a subtotal + total_vat_amount. */
+    /** Total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units). Calculated as a subtotal + total_vat_amount. */
     total_amount?: number;
-    /** The total price of the receivable in [minor units](https://docs.monite.com/references/currencies#minor-units), including VAT and excluding all issued credit notes. */
+    /** The total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units), including VAT and excluding all issued credit notes. */
     total_amount_with_credit_notes: number;
-    /** The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    /** The total VAT of all line items, in [minor units](https://docs.monite.com/docs/currencies#minor-units). */
     total_vat_amount: number;
     /** List of total vat amount for each VAT, presented in receivable */
     total_vat_amounts?: Monite.TotalVatAmountItem[];

@@ -4,28 +4,18 @@
 
 import * as Monite from "../index";
 
-/**
- * Represents an entry in the change history of an accounts receivable document.
- */
 export interface ReceivableHistoryResponse {
-    /** A unique ID of the history record. */
+    /** ID of the history record. */
     id: string;
-    /**
-     * A URL of the PDF file that shows the document state after the change. Available only for the following event types: `receivable_created`, `receivable_updated`, `status_changed`, and `payment_received`. In other event types the `current_pdf_url` value is `null`.
-     *
-     * In `payment_received` events, the `current_pdf_url` value is available only in case of full payments and only if the entity setting `generate_paid_invoice_pdf` is `true`.
-     *
-     * Note that Monite generates PDFs asynchronously. This means that the initial value of `current_pdf_url` for the abovementioned events right after they occurred is usually `null` and the value gets populated later after the PDF document has been generated.
-     */
+    /** Link, that will lead to the PDF that shows the state of the document after this change. If this change doesn’t change PDF - this field will be empty. */
     current_pdf_url?: string;
-    /** ID of the entity user who made the change or trigger the event, or `null` if it was done by using a partner access token. */
     entity_user_id?: string;
-    /** An object containing additional information about the event or change. The object structure varies based on the `event_type`. In `receivable_created` and `receivable_updated` events, `event_data` is an empty object `{}`. */
+    /** Payload of the event. */
     event_data: Monite.ReceivableHistoryResponseEventData;
-    /** The type of the event or change. See [Event types](https://docs.monite.com/accounts-receivable/document-history#event-types). */
+    /** The type of event. */
     event_type: Monite.ReceivableHistoryEventTypeEnum;
-    /** ID of the receivable document that was changed or triggered an event. */
+    /** ID of receivable that was changed. */
     receivable_id: string;
-    /** UTC date and time when the event or change occurred. */
+    /** Timestamp when the event has happened. */
     timestamp: string;
 }

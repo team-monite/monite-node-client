@@ -10,9 +10,9 @@ import * as Monite from "../../../../../../index";
  */
 export interface EntityOnboardingDataRequest {
     /** Business information about the entity. */
-    business_profile?: Monite.BusinessProfileInput;
+    business_profile?: Monite.BusinessProfile;
     /** Used to attest that the beneficial owner information provided is both current and correct. */
-    ownership_declaration?: Monite.OwnershipDeclarationInput;
+    ownership_declaration?: Monite.OwnershipDeclaration;
     /** Details on the entity's acceptance of the service agreement. */
-    tos_acceptance?: Monite.TermsOfServiceAcceptanceInput;
+    tos_acceptance?: Monite.TermsOfServiceAcceptance;
 }

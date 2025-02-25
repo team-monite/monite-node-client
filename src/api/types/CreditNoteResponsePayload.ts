@@ -41,7 +41,7 @@ export interface CreditNoteResponsePayload {
     deduction_memo?: string;
     /** The discount for a receivable. */
     discount?: Monite.Discount;
-    /** Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    /** Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/docs/currencies#minor-units). */
     discounted_subtotal?: number;
     /** The sequential code systematically assigned to invoices. */
     document_id?: string;
@@ -53,6 +53,7 @@ export interface CreditNoteResponsePayload {
     /** The entity user who created this document. */
     entity_user_id?: string;
     entity_vat_id?: Monite.ReceivableEntityVatIdResponse;
+    file?: Monite.ReceivableFileSchema;
     /** The language of the customer-facing PDF file (`file_url`). The value matches the counterpart's `language` at the time when this PDF file was generated. */
     file_language: Monite.LanguageCodeEnum;
     /** The receivable's PDF URL in the counterpart's default language. */
@@ -74,13 +75,13 @@ export interface CreditNoteResponsePayload {
     purchase_order?: string;
     /** The status of the Credit Note inside the receivable workflow. */
     status: Monite.CreditNoteStateEnum;
-    /** The subtotal (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    /** The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units). */
     subtotal?: number;
     /** The list of tags for this receivable. */
     tags?: Monite.TagReadSchema[];
-    /** Total price of the receivable in [minor units](https://docs.monite.com/references/currencies#minor-units). Calculated as a subtotal + total_vat_amount. */
+    /** Total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units). Calculated as a subtotal + total_vat_amount. */
     total_amount?: number;
-    /** The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    /** The total VAT of all line items, in [minor units](https://docs.monite.com/docs/currencies#minor-units). */
     total_vat_amount: number;
     /** List of total vat amount for each VAT, presented in receivable */
     total_vat_amounts?: Monite.TotalVatAmountItem[];

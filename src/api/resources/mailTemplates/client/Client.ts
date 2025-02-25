@@ -162,7 +162,7 @@ export class MailTemplates {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -244,7 +244,7 @@ export class MailTemplates {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -326,7 +326,7 @@ export class MailTemplates {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -398,7 +398,7 @@ export class MailTemplates {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -474,7 +474,7 @@ export class MailTemplates {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -547,7 +547,7 @@ export class MailTemplates {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -628,7 +628,7 @@ export class MailTemplates {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -706,7 +706,7 @@ export class MailTemplates {
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

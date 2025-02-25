@@ -1,1 +1,1 @@
-export { type PartnerProjectSettingsPayloadInput } from "./PartnerProjectSettingsPayloadInput";
+export { type PartnerProjectSettingsPayload } from "./PartnerProjectSettingsPayload";

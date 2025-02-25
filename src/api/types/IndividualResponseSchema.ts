@@ -12,7 +12,6 @@ export interface IndividualResponseSchema {
     id_number?: string;
     /** A last name of an individual */
     last_name: string;
-    /** The last four digits of the individual's Social Security number */
     ssn_last_4?: string;
     /** A title of an individual */
     title?: string;

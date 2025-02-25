@@ -10,11 +10,11 @@ import * as Monite from "../../../../index";
  */
 export interface PatchSettingsPayload {
     language?: Monite.LanguageCodeEnum;
-    currency?: Monite.CurrencySettingsInput;
+    currency?: Monite.CurrencySettings;
     reminder?: Monite.RemindersSettings;
     /** Defines whether the prices of products in receivables will already include VAT or not. */
     vat_mode?: Monite.VatModeEnum;
-    /** Payment preferences for entity to automate calculating suggested payment date based on payment terms and entity preferences. */
+    /** Payment preferences for entity to automate calculating suggested payment date basing on payment terms and entity preferences */
     payment_priority?: Monite.PaymentPriorityEnum;
     /** Automatically attempt to find a corresponding purchase order for all incoming payables. */
     allow_purchase_order_autolinking?: boolean;
@@ -22,9 +22,8 @@ export interface PatchSettingsPayload {
     document_ids?: Monite.DocumentIDsSettingsRequest;
     /** Auto tagging settings for all incoming OCR payable documents. */
     payables_ocr_auto_tagging?: Monite.OcrAutoTaggingSettingsRequest[];
-    /** Sets the default behavior of whether a signature is required to accept quotes. */
+    /** Sets the default behavior of whether a signature is required to accept quotes */
     quote_signature_required?: boolean;
-    /** If enabled, the paid invoice's PDF will be in a new layout set by the user. */
+    /** If enabled, the paid invoice's PDF will be in a new layout set by the user */
     generate_paid_invoice_pdf?: boolean;
-    accounting?: Monite.AccountingSettings;
 }

@@ -4,14 +4,8 @@
 
 import * as Monite from "../index";
 
-/**
- * Contains information about a sent email.
- */
 export interface MailSentEventData {
-    /** ID of the email sending operation. Can be used to get the email sending status from `GET /receivables/{receivable_id}/mails/{mail_id}`. */
     mail_id: string;
-    /** The overall email sending status across all recipients. */
     mail_status: Monite.ReceivableMailStatusEnum;
-    /** Contains a list of email recipients (To, CC, BCC) and the email sending status for each recipient. */
     recipients: Monite.ReceivableMailRecipients;
 }

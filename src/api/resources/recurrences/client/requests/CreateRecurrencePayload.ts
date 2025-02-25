@@ -16,13 +16,10 @@ import * as Monite from "../../../../index";
  *     }
  */
 export interface CreateRecurrencePayload {
-    body_text?: string;
     day_of_month: Monite.DayOfMonth;
     end_month: number;
     end_year: number;
     invoice_id: string;
-    recipients?: Monite.Recipients;
     start_month: number;
     start_year: number;
-    subject_text?: string;
 }

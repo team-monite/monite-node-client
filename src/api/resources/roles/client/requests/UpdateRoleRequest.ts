@@ -12,5 +12,5 @@ export interface UpdateRoleRequest {
     /** Role name */
     name?: string;
     /** Access permissions */
-    permissions?: Monite.BizObjectsSchemaInput;
+    permissions?: Monite.BizObjectsSchema;
 }
