@@ -5,13 +5,11 @@
 import * as Monite from "../index";
 
 /**
- * An object containing additional information about the event or change. The object structure varies based on the `event_type`. In `receivable_created` and `receivable_updated` events, `event_data` is an empty object `{}`.
+ * Payload of the event.
  */
 export type ReceivableHistoryResponseEventData =
     | Monite.StatusChangedEventData
     | Monite.ReceivableUpdatedEventData
-    | Monite.ReceivableCreatedEventData
     | Monite.BasedOnReceivableCreatedEventData
     | Monite.PaymentReceivedEventData
-    | Monite.MailSentEventData
-    | Monite.ReminderMailSentEventData;
+    | Monite.MailSentEventData;

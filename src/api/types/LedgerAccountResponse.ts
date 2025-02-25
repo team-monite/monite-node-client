@@ -10,7 +10,7 @@ import * as Monite from "../index";
 export interface LedgerAccountResponse {
     /** A unique identifier of the ledger account. */
     id: string;
-    /** The currency of the ledger account, specified as a three-letter [currency code](https://docs.monite.com/references/currencies) (ISO 4217). */
+    /** The currency of the ledger account, specified as a three-letter [currency code](https://docs.monite.com/docs/currencies) (ISO 4217). */
     currency?: Monite.CurrencyEnum;
     /** The current balance in the account. */
     current_balance?: number;

@@ -10,21 +10,19 @@ import * as Monite from "../../../../index";
  */
 export interface RolesGetRequest {
     /**
-     * Sort order (ascending by default). Typically used together with the `sort` parameter.
+     * Order by
      */
     order?: Monite.OrderEnum;
     /**
-     * The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+     * Max is 100
      */
     limit?: number;
     /**
-     * A pagination token obtained from a previous call to this endpoint. Use it to get the next or previous page of results for your initial query. If `pagination_token` is specified, all other query parameters are ignored and inferred from the initial query.
-     *
-     * If not specified, the first page of results will be returned.
+     * A token, obtained from previous page. Prior over other filters
      */
     pagination_token?: string;
     /**
-     * The field to sort the results by. Typically used together with the `order` parameter.
+     * Allowed sort fields
      */
     sort?: Monite.RoleCursorFields;
     id__in?: string | string[];

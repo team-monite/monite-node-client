@@ -45,9 +45,9 @@ export class Payables {
      * Lists all payables from the connected entity.
      *
      * If you already have the data of the payable (amount in [minor units](
-     * https://docs.monite.com/references/currencies#minor-units), currency, vendor information, and other details)
+     * https://docs.monite.com/docs/currencies#minor-units), currency, vendor information, and other details)
      * stored somewhere as individual attributes, you can create a payable with these attributes by calling [POST
-     * /payables](https://docs.monite.com/api/payables/post-payables) and providing the [base64-encoded](
+     * /payables](https://docs.monite.com/reference/post_payables) and providing the [base64-encoded](
      * https://en.wikipedia.org/wiki/Base64) contents of the original invoice file in the field `base64_encoded_file`.
      *
      * A payable is a financial document given by an entity`s supplier itemizing the purchase of a good or a service and
@@ -57,23 +57,23 @@ export class Payables {
      * to automatically set `suggested_payment_term`, this object can be omitted from the request body.
      *
      * The `id` generated for this payable can be used in other API calls to update the data of this payable or trigger [
-     * status transitions](https://docs.monite.com/accounts-payable/approvals/manual-transition), for example. essential data
+     * status transitions](https://docs.monite.com/docs/payable-status-transitions), for example. essential data
      * fields to move from `draft` to `new`
      *
-     * Related guide: [Create a payable from data](https://docs.monite.com/accounts-payable/payables/collect#create-a-payable-from-data)
+     * Related guide: [Create a payable from data](https://docs.monite.com/docs/collect-payables#create-a-payable-from-data)
      *
      * See also:
      *
      *
-     * [Automatic calculation of due date](https://docs.monite.com/accounts-payable/payables/collect#automatic-calculation-of-due-date)
+     * [Automatic calculation of due date](https://docs.monite.com/docs/collect-payables#automatic-calculation-of-due-date)
      *
-     * [Suggested payment date](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+     * [Suggested payment date](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
      *
-     * [Attach file](https://docs.monite.com/accounts-payable/payables/collect#attach-file)
+     * [Attach file](https://docs.monite.com/docs/collect-payables#attach-file)
      *
-     * [Collect payables by email](https://docs.monite.com/accounts-payable/payables/collect#send-payables-by-email)
+     * [Collect payables by email](https://docs.monite.com/docs/collect-payables#send-payables-by-email)
      *
-     * [Manage line items](https://docs.monite.com/accounts-payable/payables/line-items)
+     * [Manage line items](https://docs.monite.com/docs/manage-line-items)
      *
      * @param {Monite.PayablesGetRequest} request
      * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
@@ -352,17 +352,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
+                    throw new Monite.NotAcceptableError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -393,7 +393,7 @@ export class Payables {
      * You can use this endpoint to bypass the Monite OCR service and provide the data directly
      * (for example, if you already have the data in place).
      *
-     * A newly created payable has the the `draft` [status](https://docs.monite.com/accounts-payable/payables/index).
+     * A newly created payable has the the `draft` [status](https://docs.monite.com/docs/payables-lifecycle).
      *
      * @param {Monite.PayableUploadWithDataSchema} request
      * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
@@ -446,15 +446,15 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -480,8 +480,6 @@ export class Payables {
 
     /**
      * Retrieve aggregated statistics for payables, including total amount and count, both overall and by status.
-     *
-     * For more flexible configuration and retrieval of other data types, use `GET /analytics/payables`.
      *
      * @param {Monite.PayablesGetAnalyticsRequest} request
      * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
@@ -738,13 +736,13 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -827,17 +825,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -910,15 +908,15 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -998,15 +996,15 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1081,15 +1079,15 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1162,11 +1160,11 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1244,17 +1242,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1329,17 +1327,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1420,17 +1418,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1509,19 +1507,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1608,17 +1606,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1699,19 +1697,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1738,99 +1736,6 @@ export class Payables {
     }
 
     /**
-     * Request to cancel the OCR processing of the specified payable.
-     *
-     * @param {string} payableId
-     * @param {Payables.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Monite.BadRequestError}
-     * @throws {@link Monite.UnauthorizedError}
-     * @throws {@link Monite.ForbiddenError}
-     * @throws {@link Monite.NotFoundError}
-     * @throws {@link Monite.ConflictError}
-     * @throws {@link Monite.UnprocessableEntityError}
-     * @throws {@link Monite.InternalServerError}
-     *
-     * @example
-     *     await client.payables.postPayablesIdCancelOcr("payable_id")
-     */
-    public async postPayablesIdCancelOcr(
-        payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/cancel_ocr`
-            ),
-            method: "POST",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
-                "x-monite-entity-id":
-                    (await core.Supplier.get(this._options.moniteEntityId)) != null
-                        ? await core.Supplier.get(this._options.moniteEntityId)
-                        : undefined,
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.2.0",
-                "User-Agent": "@monite/node-client/0.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
-                case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
-                case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
-                case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
-                case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
-                case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
-                case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
-                default:
-                    throw new errors.MoniteError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.MoniteError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/cancel_ocr."
-                );
-            case "unknown":
-                throw new errors.MoniteError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
      * Mark a payable as paid.
      *
      * Payables can be paid using the payment channels offered by Monite or through external payment channels. In the latter
@@ -1846,13 +1751,13 @@ export class Payables {
      * - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
      * in the `payment_terms.discount` value.
      *
-     * Related guide: [Mark a payable as paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-paid)
+     * Related guide: [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
      *
      * See also:
      *
-     * [Payables lifecycle](https://docs.monite.com/accounts-payable/payables/index)
+     * [Payables lifecycle](https://docs.monite.com/docs/payables-lifecycle)
      *
-     * [Payables status transitions](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+     * [Payables status transitions](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
      *
      * @param {string} payableId
      * @param {Monite.CommentPayload} request
@@ -1909,19 +1814,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -1963,15 +1868,15 @@ export class Payables {
      * - The `amount_to_pay` field is automatically calculated based on the `amount_due` less the percentage described
      * in the `payment_terms.discount` value.
      *
-     * Related guide: [Mark a payable as partially paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-partially-paid)
+     * Related guide: [Mark a payable as partially paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-partially-paid)
      *
      * See also:
      *
-     * [Payables lifecycle](https://docs.monite.com/accounts-payable/payables/index)
+     * [Payables lifecycle](https://docs.monite.com/docs/payables-lifecycle)
      *
-     * [Payables status transitions](https://docs.monite.com/accounts-payable/payables/collect#suggested-payment-date)
+     * [Payables status transitions](https://docs.monite.com/docs/collect-payables#suggested-payment-date)
      *
-     * [Mark a payable as paid](https://docs.monite.com/accounts-payable/approvals/manual-transition#mark-as-paid)
+     * [Mark a payable as paid](https://docs.monite.com/docs/payable-status-transitions#mark-as-paid)
      *
      * @param {string} payableId
      * @param {Monite.PartiallyPaidPayload} request
@@ -2030,19 +1935,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -2123,19 +2028,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -2216,19 +2121,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -2309,19 +2214,19 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
@@ -2401,17 +2306,17 @@ export class Payables {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as Monite.ErrorSchemaResponse);
                 case 422:
                     throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as Monite.ErrorSchemaResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,

@@ -6,6 +6,6 @@ import * as Monite from "../index";
 
 export interface ExchangeRate {
     base: Monite.CurrencyEnum;
-    to: Monite.CurrencyEnum;
     rate: number;
+    to: Monite.CurrencyEnum;
 }

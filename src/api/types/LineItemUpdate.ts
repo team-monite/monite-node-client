@@ -7,7 +7,7 @@ import * as Monite from "../index";
 export interface LineItemUpdate {
     /** The discount for a product. */
     discount?: Monite.Discount;
-    /** The actual price of the product in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    /** The actual price of the product in [minor units](https://docs.monite.com/docs/currencies#minor-units). */
     price?: number;
     /** The quantity of each of the goods, materials, or services listed in the receivable. */
     quantity?: number;

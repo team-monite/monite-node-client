@@ -4,6 +4,9 @@
 
 import * as Monite from "../index";
 
+/**
+ * A base for an entity response schema
+ */
 export interface EntityIndividualResponse {
     /** UUID entity ID */
     id: string;
@@ -18,11 +21,11 @@ export interface EntityIndividualResponse {
     /** A set of metadata describing an individual */
     individual: Monite.IndividualResponseSchema;
     /** A logo image of the entity */
-    logo?: Monite.FileSchema3;
+    logo?: Monite.FileSchema4;
     /** A phone number of the entity */
     phone?: string;
     /** record status, 'active' by default */
-    status: Monite.EntityStatusEnum;
+    status: Monite.StatusEnum;
     /** The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered. */
     tax_id?: string;
     /** A website of the entity */

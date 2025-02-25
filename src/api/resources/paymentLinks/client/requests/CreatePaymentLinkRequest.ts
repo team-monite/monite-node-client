@@ -15,7 +15,7 @@ import * as Monite from "../../../../index";
  *     }
  */
 export interface CreatePaymentLinkRequest {
-    /** The payment amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Required if `object` is not specified. */
+    /** The payment amount in [minor units](https://docs.monite.com/docs/currencies#minor-units). Required if `object` is not specified. */
     amount?: number;
     /** The payment currency. Required if `object` is not specified. */
     currency?: Monite.CurrencyEnum;
@@ -28,6 +28,5 @@ export interface CreatePaymentLinkRequest {
     /** A payment reference number that the recipient can use to identify the payer or purpose of the transaction. Required if `object` is not specified. */
     payment_reference?: string;
     recipient: Monite.PaymentAccountObject;
-    /** The URL where to redirect the payer after the payment. If `return_url` is specified, then after the payment is completed the payment page will display the "Return to platform" link that navigates to this URL. */
     return_url?: string;
 }

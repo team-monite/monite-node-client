@@ -7,14 +7,14 @@ import * as Monite from "../index";
 export interface RoleResponse {
     /** UUID role ID */
     id: string;
-    /** Role name */
-    name: string;
-    /** Access permissions */
-    permissions: Monite.BizObjectsSchemaOutput;
-    /** record status, 'active' by default */
-    status: Monite.StatusEnum;
     /** UTC datetime */
     created_at: string;
     /** UTC datetime */
     updated_at: string;
+    /** Role name */
+    name: string;
+    /** Access permissions */
+    permissions: Monite.BizObjectsSchema;
+    /** record status, 'active' by default */
+    status: Monite.StatusEnum;
 }

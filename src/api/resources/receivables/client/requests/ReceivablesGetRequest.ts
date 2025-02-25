@@ -12,7 +12,7 @@ export interface ReceivablesGetRequest {
     /**
      * Sort order (ascending by default). Typically used together with the `sort` parameter.
      */
-    order?: Monite.OrderEnum;
+    order?: Monite.OrderEnum2;
     /**
      * The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
      *
@@ -68,20 +68,6 @@ export interface ReceivablesGetRequest {
      * Valid but nonexistent tag IDs do not raise errors but produce no results.
      */
     tag_ids__in?: string | string[];
-    /**
-     * Return only receivables whose [tags](https://docs.monite.com/common/tags) include all of the tags with the specified IDs and optionally other tags that are not specified.
-     *
-     * For example, given receivables with the following tags:
-     * 1. tagA
-     * 2. tagB
-     * 3. tagA, tagB
-     * 4. tagC
-     * 5. tagA, tagB, tagC
-     *
-     *
-     * `tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
-     */
-    tag_ids?: string | string[];
     type?: Monite.ReceivableType;
     document_id?: string;
     document_id__contains?: string;

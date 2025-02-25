@@ -4,28 +4,24 @@
 
 import * as environments from "./environments";
 import * as core from "./core";
-import { Analytics } from "./api/resources/analytics/client/Client";
 import { ApprovalPolicies } from "./api/resources/approvalPolicies/client/Client";
 import { ApprovalRequests } from "./api/resources/approvalRequests/client/Client";
+import { AuditLogs } from "./api/resources/auditLogs/client/Client";
 import { AccessTokens } from "./api/resources/accessTokens/client/Client";
-import { BatchPayments } from "./api/resources/batchPayments/client/Client";
+import { EntityBankAccountVerifications } from "./api/resources/entityBankAccountVerifications/client/Client";
 import { Comments } from "./api/resources/comments/client/Client";
 import { Counterparts } from "./api/resources/counterparts/client/Client";
 import { DataExports } from "./api/resources/dataExports/client/Client";
 import { PdfTemplates } from "./api/resources/pdfTemplates/client/Client";
-import { EInvoicingConnections } from "./api/resources/eInvoicingConnections/client/Client";
 import { Entities } from "./api/resources/entities/client/Client";
 import { EntityUsers } from "./api/resources/entityUsers/client/Client";
 import { Events } from "./api/resources/events/client/Client";
 import { Files } from "./api/resources/files/client/Client";
-import { Financing } from "./api/resources/financing/client/Client";
 import { MailTemplates } from "./api/resources/mailTemplates/client/Client";
 import { MailboxDomains } from "./api/resources/mailboxDomains/client/Client";
 import { Mailboxes } from "./api/resources/mailboxes/client/Client";
 import { MeasureUnits } from "./api/resources/measureUnits/client/Client";
-import { OnboardingLinks } from "./api/resources/onboardingLinks/client/Client";
 import { OverdueReminders } from "./api/resources/overdueReminders/client/Client";
-import { CreditNotes } from "./api/resources/creditNotes/client/Client";
 import { PurchaseOrders } from "./api/resources/purchaseOrders/client/Client";
 import { Payables } from "./api/resources/payables/client/Client";
 import { PaymentIntents } from "./api/resources/paymentIntents/client/Client";
@@ -76,12 +72,6 @@ export declare namespace MoniteClient {
 export class MoniteClient {
     constructor(protected readonly _options: MoniteClient.Options) {}
 
-    protected _analytics: Analytics | undefined;
-
-    public get analytics(): Analytics {
-        return (this._analytics ??= new Analytics(this._options));
-    }
-
     protected _approvalPolicies: ApprovalPolicies | undefined;
 
     public get approvalPolicies(): ApprovalPolicies {
@@ -94,16 +84,22 @@ export class MoniteClient {
         return (this._approvalRequests ??= new ApprovalRequests(this._options));
     }
 
+    protected _auditLogs: AuditLogs | undefined;
+
+    public get auditLogs(): AuditLogs {
+        return (this._auditLogs ??= new AuditLogs(this._options));
+    }
+
     protected _accessTokens: AccessTokens | undefined;
 
     public get accessTokens(): AccessTokens {
         return (this._accessTokens ??= new AccessTokens(this._options));
     }
 
-    protected _batchPayments: BatchPayments | undefined;
+    protected _entityBankAccountVerifications: EntityBankAccountVerifications | undefined;
 
-    public get batchPayments(): BatchPayments {
-        return (this._batchPayments ??= new BatchPayments(this._options));
+    public get entityBankAccountVerifications(): EntityBankAccountVerifications {
+        return (this._entityBankAccountVerifications ??= new EntityBankAccountVerifications(this._options));
     }
 
     protected _comments: Comments | undefined;
@@ -130,12 +126,6 @@ export class MoniteClient {
         return (this._pdfTemplates ??= new PdfTemplates(this._options));
     }
 
-    protected _eInvoicingConnections: EInvoicingConnections | undefined;
-
-    public get eInvoicingConnections(): EInvoicingConnections {
-        return (this._eInvoicingConnections ??= new EInvoicingConnections(this._options));
-    }
-
     protected _entities: Entities | undefined;
 
     public get entities(): Entities {
@@ -158,12 +148,6 @@ export class MoniteClient {
 
     public get files(): Files {
         return (this._files ??= new Files(this._options));
-    }
-
-    protected _financing: Financing | undefined;
-
-    public get financing(): Financing {
-        return (this._financing ??= new Financing(this._options));
     }
 
     protected _mailTemplates: MailTemplates | undefined;
@@ -190,22 +174,10 @@ export class MoniteClient {
         return (this._measureUnits ??= new MeasureUnits(this._options));
     }
 
-    protected _onboardingLinks: OnboardingLinks | undefined;
-
-    public get onboardingLinks(): OnboardingLinks {
-        return (this._onboardingLinks ??= new OnboardingLinks(this._options));
-    }
-
     protected _overdueReminders: OverdueReminders | undefined;
 
     public get overdueReminders(): OverdueReminders {
         return (this._overdueReminders ??= new OverdueReminders(this._options));
-    }
-
-    protected _creditNotes: CreditNotes | undefined;
-
-    public get creditNotes(): CreditNotes {
-        return (this._creditNotes ??= new CreditNotes(this._options));
     }
 
     protected _purchaseOrders: PurchaseOrders | undefined;

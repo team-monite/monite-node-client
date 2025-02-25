@@ -5,14 +5,14 @@
 import * as Monite from "../index";
 
 export interface DocumentIDsSettings {
-    /** Prefixes for each document_type. */
-    document_type_prefix?: Monite.DocumentTypePrefix;
-    /** Optionally add 4-digit of the current year. */
+    /** Optionally add 4-digit of the current year */
     include_date?: boolean;
-    /** Minimal size of number in document ID Number will be left padded with zeros if less. */
-    min_digits?: number;
-    /** Optional prefix. Does not substitute document_type prefix. */
+    /** Optional prefix. Does not substitute document_type prefix */
     prefix?: string;
-    /** Which character should separate each part of the document_id. */
+    /** Which character should separate each part of the document_id */
     separator?: Monite.DocumentIdSeparators;
+    /** Prefixes for each document_type */
+    document_type_prefix?: Monite.DocumentTypePrefix;
+    /** Minimal size of number in document ID Number will be left padded with zeros if less */
+    min_digits?: number;
 }

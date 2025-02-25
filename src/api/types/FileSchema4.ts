@@ -10,20 +10,20 @@ import * as Monite from "../index";
 export interface FileSchema4 {
     /** A unique ID of this file. */
     id: string;
-    /** UTC date and time when this file was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. */
+    /** UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. */
     created_at: string;
     /** The type of the business object associated with this file. */
     file_type: string;
     /** The MD5 hash of the file. */
     md5: string;
-    /** The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types). */
+    /** The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types). */
     mimetype: string;
     /** The original file name (if available). */
     name: string;
     /** If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array. */
-    pages?: Monite.PageSchema3[];
+    pages?: Monite.PageSchema4[];
     /** Preview images generated for this file. There can be multiple images with different sizes. */
-    previews?: Monite.PreviewSchema3[];
+    previews?: Monite.PreviewSchema4[];
     /** Geographical region of the data center where the file is stored. */
     region: string;
     /** The file size in bytes. */

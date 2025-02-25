@@ -7,7 +7,7 @@ export type ObjectType =
     | "approval"
     | "approval_request"
     | "approval_policy"
-    | "approval_policy_process"
+    | "monitescript_process"
     | "audit_trail"
     | "comment"
     | "counterpart"
@@ -17,7 +17,6 @@ export type ObjectType =
     | "counterpart_partner_metadata"
     | "counterpart_tax_id"
     | "counterpart_vat_id"
-    | "einvoicing"
     | "entity"
     | "entity_bank_account"
     | "entity_settings"
@@ -26,17 +25,14 @@ export type ObjectType =
     | "entity_user_token"
     | "entity_vat_ids"
     | "export"
-    | "mailbox"
-    | "monitescript_process"
     | "onboarding"
-    | "overdue_reminder"
     | "partner"
     | "partner_internal_config"
     | "partner_settings"
     | "partner_token"
     | "payable"
+    | "project"
     | "payable_line_item"
-    | "payables_credit_note"
     | "payables_purchase_order"
     | "payment"
     | "payment_intent"
@@ -45,7 +41,6 @@ export type ObjectType =
     | "payment_reminder"
     | "person"
     | "product"
-    | "project"
     | "receivable"
     | "reconciliation"
     | "recurrence"
@@ -56,14 +51,16 @@ export type ObjectType =
     | "transaction"
     | "webhook"
     | "workflow"
-    | "workflow_pipeline";
+    | "workflow_pipeline"
+    | "overdue_reminder"
+    | "einvoicing";
 
 export const ObjectType = {
     Account: "account",
     Approval: "approval",
     ApprovalRequest: "approval_request",
     ApprovalPolicy: "approval_policy",
-    ApprovalPolicyProcess: "approval_policy_process",
+    MonitescriptProcess: "monitescript_process",
     AuditTrail: "audit_trail",
     Comment: "comment",
     Counterpart: "counterpart",
@@ -73,7 +70,6 @@ export const ObjectType = {
     CounterpartPartnerMetadata: "counterpart_partner_metadata",
     CounterpartTaxId: "counterpart_tax_id",
     CounterpartVatId: "counterpart_vat_id",
-    Einvoicing: "einvoicing",
     Entity: "entity",
     EntityBankAccount: "entity_bank_account",
     EntitySettings: "entity_settings",
@@ -82,17 +78,14 @@ export const ObjectType = {
     EntityUserToken: "entity_user_token",
     EntityVatIds: "entity_vat_ids",
     Export: "export",
-    Mailbox: "mailbox",
-    MonitescriptProcess: "monitescript_process",
     Onboarding: "onboarding",
-    OverdueReminder: "overdue_reminder",
     Partner: "partner",
     PartnerInternalConfig: "partner_internal_config",
     PartnerSettings: "partner_settings",
     PartnerToken: "partner_token",
     Payable: "payable",
+    Project: "project",
     PayableLineItem: "payable_line_item",
-    PayablesCreditNote: "payables_credit_note",
     PayablesPurchaseOrder: "payables_purchase_order",
     Payment: "payment",
     PaymentIntent: "payment_intent",
@@ -101,7 +94,6 @@ export const ObjectType = {
     PaymentReminder: "payment_reminder",
     Person: "person",
     Product: "product",
-    Project: "project",
     Receivable: "receivable",
     Reconciliation: "reconciliation",
     Recurrence: "recurrence",
@@ -113,4 +105,6 @@ export const ObjectType = {
     Webhook: "webhook",
     Workflow: "workflow",
     WorkflowPipeline: "workflow_pipeline",
+    OverdueReminder: "overdue_reminder",
+    Einvoicing: "einvoicing",
 } as const;
