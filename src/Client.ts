@@ -8,7 +8,6 @@ import { Analytics } from "./api/resources/analytics/client/Client";
 import { ApprovalPolicies } from "./api/resources/approvalPolicies/client/Client";
 import { ApprovalRequests } from "./api/resources/approvalRequests/client/Client";
 import { AccessTokens } from "./api/resources/accessTokens/client/Client";
-import { BatchPayments } from "./api/resources/batchPayments/client/Client";
 import { Comments } from "./api/resources/comments/client/Client";
 import { Counterparts } from "./api/resources/counterparts/client/Client";
 import { DataExports } from "./api/resources/dataExports/client/Client";
@@ -23,7 +22,6 @@ import { MailTemplates } from "./api/resources/mailTemplates/client/Client";
 import { MailboxDomains } from "./api/resources/mailboxDomains/client/Client";
 import { Mailboxes } from "./api/resources/mailboxes/client/Client";
 import { MeasureUnits } from "./api/resources/measureUnits/client/Client";
-import { OnboardingLinks } from "./api/resources/onboardingLinks/client/Client";
 import { OverdueReminders } from "./api/resources/overdueReminders/client/Client";
 import { CreditNotes } from "./api/resources/creditNotes/client/Client";
 import { PurchaseOrders } from "./api/resources/purchaseOrders/client/Client";
@@ -98,12 +96,6 @@ export class MoniteClient {
 
     public get accessTokens(): AccessTokens {
         return (this._accessTokens ??= new AccessTokens(this._options));
-    }
-
-    protected _batchPayments: BatchPayments | undefined;
-
-    public get batchPayments(): BatchPayments {
-        return (this._batchPayments ??= new BatchPayments(this._options));
     }
 
     protected _comments: Comments | undefined;
@@ -188,12 +180,6 @@ export class MoniteClient {
 
     public get measureUnits(): MeasureUnits {
         return (this._measureUnits ??= new MeasureUnits(this._options));
-    }
-
-    protected _onboardingLinks: OnboardingLinks | undefined;
-
-    public get onboardingLinks(): OnboardingLinks {
-        return (this._onboardingLinks ??= new OnboardingLinks(this._options));
     }
 
     protected _overdueReminders: OverdueReminders | undefined;
