@@ -194,7 +194,7 @@ export class DataExports {
      *         date_to: "date_to",
      *         format: "csv",
      *         objects: [{
-     *                 name: "receivable",
+     *                 name: "payable",
      *                 statuses: ["draft"]
      *             }]
      *     })

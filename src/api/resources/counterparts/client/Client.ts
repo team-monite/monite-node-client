@@ -297,18 +297,17 @@ export class Counterparts {
      *
      * @example
      *     await client.counterparts.create({
-     *         type: "individual",
-     *         individual: {
+     *         type: "organization",
+     *         organization: {
      *             address: {
      *                 city: "Berlin",
      *                 country: "AF",
      *                 line1: "Flughafenstrasse 52",
      *                 postal_code: "10115"
      *             },
-     *             first_name: "Adnan",
      *             is_customer: true,
      *             is_vendor: true,
-     *             last_name: "Singh"
+     *             legal_name: "Acme Inc."
      *         }
      *     })
      */
