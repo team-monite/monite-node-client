@@ -207,7 +207,7 @@ export class ApprovalPolicies {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -248,7 +248,6 @@ export class ApprovalPolicies {
      * @example
      *     await client.approvalPolicies.create({
      *         name: "name",
-     *         description: "description",
      *         script: [true]
      *     })
      */
@@ -297,7 +296,7 @@ export class ApprovalPolicies {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -382,7 +381,7 @@ export class ApprovalPolicies {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -466,7 +465,7 @@ export class ApprovalPolicies {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -559,7 +558,7 @@ export class ApprovalPolicies {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:

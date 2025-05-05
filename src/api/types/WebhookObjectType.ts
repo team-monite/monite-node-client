@@ -40,7 +40,9 @@ export type WebhookObjectType =
     | "tag"
     | "todo_task"
     | "workflow"
-    | "workflow_pipeline";
+    | "workflow_pipeline"
+    | "ocr_task"
+    | "delivery_note";
 
 export const WebhookObjectType = {
     Account: "account",
@@ -81,4 +83,6 @@ export const WebhookObjectType = {
     TodoTask: "todo_task",
     Workflow: "workflow",
     WorkflowPipeline: "workflow_pipeline",
+    OcrTask: "ocr_task",
+    DeliveryNote: "delivery_note",
 } as const;

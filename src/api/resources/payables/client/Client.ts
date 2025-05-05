@@ -124,6 +124,11 @@ export class Payables {
             due_date__lt: dueDateLt,
             due_date__gte: dueDateGte,
             due_date__lte: dueDateLte,
+            issued_at: issuedAt,
+            issued_at__gt: issuedAtGt,
+            issued_at__lt: issuedAtLt,
+            issued_at__gte: issuedAtGte,
+            issued_at__lte: issuedAtLte,
             document_id: documentId,
             document_id__contains: documentIdContains,
             document_id__icontains: documentIdIcontains,
@@ -134,7 +139,11 @@ export class Payables {
             line_item_id: lineItemId,
             purchase_order_id: purchaseOrderId,
             project_id: projectId,
+            project_id__in: projectIdIn,
             tag_ids: tagIds,
+            tag_ids__not_in: tagIdsNotIn,
+            origin,
+            has_file: hasFile,
         } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
         if (order != null) {
@@ -269,6 +278,26 @@ export class Payables {
             _queryParams["due_date__lte"] = dueDateLte;
         }
 
+        if (issuedAt != null) {
+            _queryParams["issued_at"] = issuedAt;
+        }
+
+        if (issuedAtGt != null) {
+            _queryParams["issued_at__gt"] = issuedAtGt;
+        }
+
+        if (issuedAtLt != null) {
+            _queryParams["issued_at__lt"] = issuedAtLt;
+        }
+
+        if (issuedAtGte != null) {
+            _queryParams["issued_at__gte"] = issuedAtGte;
+        }
+
+        if (issuedAtLte != null) {
+            _queryParams["issued_at__lte"] = issuedAtLte;
+        }
+
         if (documentId != null) {
             _queryParams["document_id"] = documentId;
         }
@@ -309,12 +338,36 @@ export class Payables {
             _queryParams["project_id"] = projectId;
         }
 
+        if (projectIdIn != null) {
+            if (Array.isArray(projectIdIn)) {
+                _queryParams["project_id__in"] = projectIdIn.map((item) => item);
+            } else {
+                _queryParams["project_id__in"] = projectIdIn;
+            }
+        }
+
         if (tagIds != null) {
             if (Array.isArray(tagIds)) {
                 _queryParams["tag_ids"] = tagIds.map((item) => item);
             } else {
                 _queryParams["tag_ids"] = tagIds;
             }
+        }
+
+        if (tagIdsNotIn != null) {
+            if (Array.isArray(tagIdsNotIn)) {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn.map((item) => item);
+            } else {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn;
+            }
+        }
+
+        if (origin != null) {
+            _queryParams["origin"] = origin;
+        }
+
+        if (hasFile != null) {
+            _queryParams["has_file"] = hasFile.toString();
         }
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -360,7 +413,7 @@ export class Payables {
                 case 406:
                     throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -452,7 +505,7 @@ export class Payables {
                 case 403:
                     throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -526,6 +579,11 @@ export class Payables {
             due_date__lt: dueDateLt,
             due_date__gte: dueDateGte,
             due_date__lte: dueDateLte,
+            issued_at: issuedAt,
+            issued_at__gt: issuedAtGt,
+            issued_at__lt: issuedAtLt,
+            issued_at__gte: issuedAtGte,
+            issued_at__lte: issuedAtLte,
             document_id: documentId,
             document_id__contains: documentIdContains,
             document_id__icontains: documentIdIcontains,
@@ -536,7 +594,11 @@ export class Payables {
             line_item_id: lineItemId,
             purchase_order_id: purchaseOrderId,
             project_id: projectId,
+            project_id__in: projectIdIn,
             tag_ids: tagIds,
+            tag_ids__not_in: tagIdsNotIn,
+            origin,
+            has_file: hasFile,
         } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
         if (createdAtGt != null) {
@@ -655,6 +717,26 @@ export class Payables {
             _queryParams["due_date__lte"] = dueDateLte;
         }
 
+        if (issuedAt != null) {
+            _queryParams["issued_at"] = issuedAt;
+        }
+
+        if (issuedAtGt != null) {
+            _queryParams["issued_at__gt"] = issuedAtGt;
+        }
+
+        if (issuedAtLt != null) {
+            _queryParams["issued_at__lt"] = issuedAtLt;
+        }
+
+        if (issuedAtGte != null) {
+            _queryParams["issued_at__gte"] = issuedAtGte;
+        }
+
+        if (issuedAtLte != null) {
+            _queryParams["issued_at__lte"] = issuedAtLte;
+        }
+
         if (documentId != null) {
             _queryParams["document_id"] = documentId;
         }
@@ -695,12 +777,36 @@ export class Payables {
             _queryParams["project_id"] = projectId;
         }
 
+        if (projectIdIn != null) {
+            if (Array.isArray(projectIdIn)) {
+                _queryParams["project_id__in"] = projectIdIn.map((item) => item);
+            } else {
+                _queryParams["project_id__in"] = projectIdIn;
+            }
+        }
+
         if (tagIds != null) {
             if (Array.isArray(tagIds)) {
                 _queryParams["tag_ids"] = tagIds.map((item) => item);
             } else {
                 _queryParams["tag_ids"] = tagIds;
             }
+        }
+
+        if (tagIdsNotIn != null) {
+            if (Array.isArray(tagIdsNotIn)) {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn.map((item) => item);
+            } else {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn;
+            }
+        }
+
+        if (origin != null) {
+            _queryParams["origin"] = origin;
+        }
+
+        if (hasFile != null) {
+            _queryParams["has_file"] = hasFile.toString();
         }
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -742,7 +848,7 @@ export class Payables {
                 case 403:
                     throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -835,7 +941,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -916,7 +1022,7 @@ export class Payables {
                 case 403:
                     throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1004,7 +1110,7 @@ export class Payables {
                 case 403:
                     throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1087,7 +1193,7 @@ export class Payables {
                 case 403:
                     throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1164,7 +1270,7 @@ export class Payables {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1252,7 +1358,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1337,7 +1443,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1428,7 +1534,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1519,7 +1625,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1616,7 +1722,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1709,7 +1815,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1802,7 +1908,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1919,7 +2025,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -2040,7 +2146,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -2133,7 +2239,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -2226,7 +2332,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -2319,7 +2425,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -2409,7 +2515,7 @@ export class Payables {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:

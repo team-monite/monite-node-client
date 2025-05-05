@@ -10,12 +10,14 @@ export type RootSchemaOutput =
     | Monite.RootSchemaOutput.Comment
     | Monite.RootSchemaOutput.Counterpart
     | Monite.RootSchemaOutput.CounterpartVatId
+    | Monite.RootSchemaOutput.DeliveryNote
     | Monite.RootSchemaOutput.Entity
     | Monite.RootSchemaOutput.EntityBankAccount
     | Monite.RootSchemaOutput.EntityUser
     | Monite.RootSchemaOutput.EntityVatIds
     | Monite.RootSchemaOutput.Export
     | Monite.RootSchemaOutput.Mailbox
+    | Monite.RootSchemaOutput.OcrTask
     | Monite.RootSchemaOutput.Onboarding
     | Monite.RootSchemaOutput.OverdueReminder
     | Monite.RootSchemaOutput.Payable
@@ -55,6 +57,10 @@ export declare namespace RootSchemaOutput {
         object_type: "counterpart_vat_id";
     }
 
+    interface DeliveryNote extends Monite.CommonSchemaOutput {
+        object_type: "delivery_note";
+    }
+
     interface Entity extends Monite.CommonSchemaOutput {
         object_type: "entity";
     }
@@ -77,6 +83,10 @@ export declare namespace RootSchemaOutput {
 
     interface Mailbox extends Monite.CommonSchemaOutput {
         object_type: "mailbox";
+    }
+
+    interface OcrTask extends Monite.CommonSchemaOutput {
+        object_type: "ocr_task";
     }
 
     interface Onboarding extends Monite.CommonSchemaOutput {

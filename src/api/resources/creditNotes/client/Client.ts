@@ -76,6 +76,7 @@ export class CreditNotes {
             document_id__iexact: documentIdIexact,
             document_id__contains: documentIdContains,
             document_id__icontains: documentIdIcontains,
+            has_file: hasFile,
             total_amount__gt: totalAmountGt,
             total_amount__lt: totalAmountLt,
             total_amount__gte: totalAmountGte,
@@ -90,7 +91,10 @@ export class CreditNotes {
             status,
             status__in: statusIn,
             status__not_in: statusNotIn,
+            origin,
             currency,
+            project_id: projectId,
+            project_id__in: projectIdIn,
         } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
         if (order != null) {
@@ -161,6 +165,10 @@ export class CreditNotes {
             _queryParams["document_id__icontains"] = documentIdIcontains;
         }
 
+        if (hasFile != null) {
+            _queryParams["has_file"] = hasFile.toString();
+        }
+
         if (totalAmountGt != null) {
             _queryParams["total_amount__gt"] = totalAmountGt.toString();
         }
@@ -225,8 +233,24 @@ export class CreditNotes {
             }
         }
 
+        if (origin != null) {
+            _queryParams["origin"] = origin;
+        }
+
         if (currency != null) {
             _queryParams["currency"] = currency;
+        }
+
+        if (projectId != null) {
+            _queryParams["project_id"] = projectId;
+        }
+
+        if (projectIdIn != null) {
+            if (Array.isArray(projectIdIn)) {
+                _queryParams["project_id__in"] = projectIdIn.map((item) => item);
+            } else {
+                _queryParams["project_id__in"] = projectIdIn;
+            }
         }
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -272,7 +296,7 @@ export class CreditNotes {
                 case 406:
                     throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -359,7 +383,7 @@ export class CreditNotes {
                 case 403:
                     throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -452,7 +476,7 @@ export class CreditNotes {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -472,6 +496,266 @@ export class CreditNotes {
             case "timeout":
                 throw new errors.MoniteTimeoutError(
                     "Timeout exceeded when calling POST /payable_credit_notes/upload_from_file."
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Get credit notes validations.
+     *
+     * @param {CreditNotes.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.creditNotes.getPayableCreditNotesValidations()
+     */
+    public async getPayableCreditNotesValidations(
+        requestOptions?: CreditNotes.RequestOptions
+    ): Promise<Monite.CreditNoteValidationsResource> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                "payable_credit_notes/validations"
+            ),
+            method: "GET",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.CreditNoteValidationsResource;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling GET /payable_credit_notes/validations."
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Update credit notes validations.
+     *
+     * @param {Monite.CreditNoteValidationsResource} request
+     * @param {CreditNotes.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.creditNotes.putPayableCreditNotesValidations({
+     *         required_fields: ["currency"]
+     *     })
+     */
+    public async putPayableCreditNotesValidations(
+        request: Monite.CreditNoteValidationsResource,
+        requestOptions?: CreditNotes.RequestOptions
+    ): Promise<Monite.CreditNoteValidationsResource> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                "payable_credit_notes/validations"
+            ),
+            method: "PUT",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: request,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.CreditNoteValidationsResource;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling PUT /payable_credit_notes/validations."
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Reset credit notes validations.
+     *
+     * @param {CreditNotes.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.creditNotes.postPayableCreditNotesValidationsReset()
+     */
+    public async postPayableCreditNotesValidationsReset(
+        requestOptions?: CreditNotes.RequestOptions
+    ): Promise<Monite.CreditNoteValidationsResource> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                "payable_credit_notes/validations/reset"
+            ),
+            method: "POST",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.CreditNoteValidationsResource;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling POST /payable_credit_notes/validations/reset."
                 );
             case "unknown":
                 throw new errors.MoniteError({
@@ -537,7 +821,7 @@ export class CreditNotes {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -625,7 +909,7 @@ export class CreditNotes {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -713,7 +997,7 @@ export class CreditNotes {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -803,7 +1087,7 @@ export class CreditNotes {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -893,7 +1177,7 @@ export class CreditNotes {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -986,7 +1270,7 @@ export class CreditNotes {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1297,7 +1581,7 @@ export class CreditNotes {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1385,7 +1669,7 @@ export class CreditNotes {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1475,7 +1759,7 @@ export class CreditNotes {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1562,7 +1846,7 @@ export class CreditNotes {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1649,7 +1933,7 @@ export class CreditNotes {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1739,7 +2023,7 @@ export class CreditNotes {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1829,7 +2113,7 @@ export class CreditNotes {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1919,7 +2203,7 @@ export class CreditNotes {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -1939,6 +2223,91 @@ export class CreditNotes {
             case "timeout":
                 throw new errors.MoniteTimeoutError(
                     "Timeout exceeded when calling POST /payable_credit_notes/{credit_note_id}/submit_for_approval."
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * @param {string} creditNoteId
+     * @param {CreditNotes.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.creditNotes.getPayableCreditNotesIdValidate("credit_note_id")
+     */
+    public async getPayableCreditNotesIdValidate(
+        creditNoteId: string,
+        requestOptions?: CreditNotes.RequestOptions
+    ): Promise<Monite.CreditNoteValidationResponse> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                `payable_credit_notes/${encodeURIComponent(creditNoteId)}/validate`
+            ),
+            method: "GET",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.CreditNoteValidationResponse;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling GET /payable_credit_notes/{credit_note_id}/validate."
                 );
             case "unknown":
                 throw new errors.MoniteError({

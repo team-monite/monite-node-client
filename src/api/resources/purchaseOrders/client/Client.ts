@@ -80,6 +80,7 @@ export class PurchaseOrders {
             "counterpart.name": counterpartName,
             currency,
             currency__in: currencyIn,
+            project_id: projectId,
         } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
         if (order != null) {
@@ -194,6 +195,10 @@ export class PurchaseOrders {
             }
         }
 
+        if (projectId != null) {
+            _queryParams["project_id"] = projectId;
+        }
+
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
@@ -233,7 +238,7 @@ export class PurchaseOrders {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -327,7 +332,7 @@ export class PurchaseOrders {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -402,7 +407,7 @@ export class PurchaseOrders {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -484,7 +489,7 @@ export class PurchaseOrders {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -563,7 +568,7 @@ export class PurchaseOrders {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -648,7 +653,7 @@ export class PurchaseOrders {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -742,7 +747,7 @@ export class PurchaseOrders {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -839,7 +844,7 @@ export class PurchaseOrders {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:

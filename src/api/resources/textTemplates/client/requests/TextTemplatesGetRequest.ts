@@ -10,6 +10,6 @@ import * as Monite from "../../../../index";
  */
 export interface TextTemplatesGetRequest {
     type?: Monite.TextTemplateType;
-    document_type?: Monite.DocumentTypeEnum;
+    document_type?: Monite.TextTemplateDocumentTypeEnum;
     is_default?: boolean;
 }

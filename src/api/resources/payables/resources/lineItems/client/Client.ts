@@ -138,7 +138,7 @@ export class LineItems {
                 case 406:
                     throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -246,7 +246,7 @@ export class LineItems {
                 case 406:
                     throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -355,7 +355,7 @@ export class LineItems {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -458,7 +458,7 @@ export class LineItems {
                 case 406:
                     throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -558,7 +558,7 @@ export class LineItems {
                 case 406:
                     throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -664,7 +664,7 @@ export class LineItems {
                 case 406:
                     throw new Monite.NotAcceptableError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:

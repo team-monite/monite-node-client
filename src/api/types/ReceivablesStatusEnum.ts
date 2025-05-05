@@ -4,7 +4,9 @@
 
 export type ReceivablesStatusEnum =
     | "draft"
+    | "issuing"
     | "issued"
+    | "failed"
     | "accepted"
     | "expired"
     | "declined"
@@ -13,12 +15,13 @@ export type ReceivablesStatusEnum =
     | "paid"
     | "overdue"
     | "uncollectible"
-    | "canceled"
-    | "deleted";
+    | "canceled";
 
 export const ReceivablesStatusEnum = {
     Draft: "draft",
+    Issuing: "issuing",
     Issued: "issued",
+    Failed: "failed",
     Accepted: "accepted",
     Expired: "expired",
     Declined: "declined",
@@ -28,5 +31,4 @@ export const ReceivablesStatusEnum = {
     Overdue: "overdue",
     Uncollectible: "uncollectible",
     Canceled: "canceled",
-    Deleted: "deleted",
 } as const;

@@ -8,6 +8,7 @@ export interface AccountingConnectionResponse {
     id: string;
     created_at: string;
     updated_at: string;
+    business_info?: Monite.BusinessInfoSchema;
     connection_url: string;
     errors?: Monite.ErrorSchema[];
     last_pull?: string;

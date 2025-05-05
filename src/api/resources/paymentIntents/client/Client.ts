@@ -52,7 +52,14 @@ export class PaymentIntents {
         request: Monite.PaymentIntentsGetRequest = {},
         requestOptions?: PaymentIntents.RequestOptions
     ): Promise<Monite.PaymentIntentsListResponse> {
-        const { order, limit, pagination_token: paginationToken, sort, object_id: objectId } = request;
+        const {
+            order,
+            limit,
+            pagination_token: paginationToken,
+            sort,
+            object_id: objectId,
+            object_id__in: objectIdIn,
+        } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
         if (order != null) {
             _queryParams["order"] = order;
@@ -72,6 +79,14 @@ export class PaymentIntents {
 
         if (objectId != null) {
             _queryParams["object_id"] = objectId;
+        }
+
+        if (objectIdIn != null) {
+            if (Array.isArray(objectIdIn)) {
+                _queryParams["object_id__in"] = objectIdIn.map((item) => item);
+            } else {
+                _queryParams["object_id__in"] = objectIdIn;
+            }
         }
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -109,7 +124,7 @@ export class PaymentIntents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -183,7 +198,7 @@ export class PaymentIntents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -264,7 +279,7 @@ export class PaymentIntents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -340,7 +355,7 @@ export class PaymentIntents {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:

@@ -64,6 +64,7 @@ export class Analytics {
             metric,
             aggregation_function: aggregationFunction,
             date_dimension_breakdown: dateDimensionBreakdown,
+            limit,
             created_at__gt: createdAtGt,
             created_at__lt: createdAtLt,
             created_at__gte: createdAtGte,
@@ -77,6 +78,7 @@ export class Analytics {
             document_id__iexact: documentIdIexact,
             document_id__contains: documentIdContains,
             document_id__icontains: documentIdIcontains,
+            has_file: hasFile,
             total_amount__gt: totalAmountGt,
             total_amount__lt: totalAmountLt,
             total_amount__gte: totalAmountGte,
@@ -91,7 +93,10 @@ export class Analytics {
             status,
             status__in: statusIn,
             status__not_in: statusNotIn,
+            origin,
             currency,
+            project_id: projectId,
+            project_id__in: projectIdIn,
         } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
         if (dimension != null) {
@@ -102,6 +107,10 @@ export class Analytics {
         _queryParams["aggregation_function"] = aggregationFunction;
         if (dateDimensionBreakdown != null) {
             _queryParams["date_dimension_breakdown"] = dateDimensionBreakdown;
+        }
+
+        if (limit != null) {
+            _queryParams["limit"] = limit.toString();
         }
 
         if (createdAtGt != null) {
@@ -154,6 +163,10 @@ export class Analytics {
 
         if (documentIdIcontains != null) {
             _queryParams["document_id__icontains"] = documentIdIcontains;
+        }
+
+        if (hasFile != null) {
+            _queryParams["has_file"] = hasFile.toString();
         }
 
         if (totalAmountGt != null) {
@@ -220,8 +233,24 @@ export class Analytics {
             }
         }
 
+        if (origin != null) {
+            _queryParams["origin"] = origin;
+        }
+
         if (currency != null) {
             _queryParams["currency"] = currency;
+        }
+
+        if (projectId != null) {
+            _queryParams["project_id"] = projectId;
+        }
+
+        if (projectIdIn != null) {
+            if (Array.isArray(projectIdIn)) {
+                _queryParams["project_id__in"] = projectIdIn.map((item) => item);
+            } else {
+                _queryParams["project_id__in"] = projectIdIn;
+            }
         }
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -263,7 +292,7 @@ export class Analytics {
                 case 403:
                     throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -315,6 +344,7 @@ export class Analytics {
             metric,
             aggregation_function: aggregationFunction,
             date_dimension_breakdown: dateDimensionBreakdown,
+            limit,
             created_at__gt: createdAtGt,
             created_at__lt: createdAtLt,
             created_at__gte: createdAtGte,
@@ -342,6 +372,11 @@ export class Analytics {
             due_date__lt: dueDateLt,
             due_date__gte: dueDateGte,
             due_date__lte: dueDateLte,
+            issued_at: issuedAt,
+            issued_at__gt: issuedAtGt,
+            issued_at__lt: issuedAtLt,
+            issued_at__gte: issuedAtGte,
+            issued_at__lte: issuedAtLte,
             document_id: documentId,
             document_id__contains: documentIdContains,
             document_id__icontains: documentIdIcontains,
@@ -352,7 +387,11 @@ export class Analytics {
             line_item_id: lineItemId,
             purchase_order_id: purchaseOrderId,
             project_id: projectId,
+            project_id__in: projectIdIn,
             tag_ids: tagIds,
+            tag_ids__not_in: tagIdsNotIn,
+            origin,
+            has_file: hasFile,
         } = request;
         const _queryParams: Record<string, string | string[] | object | object[]> = {};
         if (dimension != null) {
@@ -363,6 +402,10 @@ export class Analytics {
         _queryParams["aggregation_function"] = aggregationFunction;
         if (dateDimensionBreakdown != null) {
             _queryParams["date_dimension_breakdown"] = dateDimensionBreakdown;
+        }
+
+        if (limit != null) {
+            _queryParams["limit"] = limit.toString();
         }
 
         if (createdAtGt != null) {
@@ -481,6 +524,26 @@ export class Analytics {
             _queryParams["due_date__lte"] = dueDateLte;
         }
 
+        if (issuedAt != null) {
+            _queryParams["issued_at"] = issuedAt;
+        }
+
+        if (issuedAtGt != null) {
+            _queryParams["issued_at__gt"] = issuedAtGt;
+        }
+
+        if (issuedAtLt != null) {
+            _queryParams["issued_at__lt"] = issuedAtLt;
+        }
+
+        if (issuedAtGte != null) {
+            _queryParams["issued_at__gte"] = issuedAtGte;
+        }
+
+        if (issuedAtLte != null) {
+            _queryParams["issued_at__lte"] = issuedAtLte;
+        }
+
         if (documentId != null) {
             _queryParams["document_id"] = documentId;
         }
@@ -521,12 +584,36 @@ export class Analytics {
             _queryParams["project_id"] = projectId;
         }
 
+        if (projectIdIn != null) {
+            if (Array.isArray(projectIdIn)) {
+                _queryParams["project_id__in"] = projectIdIn.map((item) => item);
+            } else {
+                _queryParams["project_id__in"] = projectIdIn;
+            }
+        }
+
         if (tagIds != null) {
             if (Array.isArray(tagIds)) {
                 _queryParams["tag_ids"] = tagIds.map((item) => item);
             } else {
                 _queryParams["tag_ids"] = tagIds;
             }
+        }
+
+        if (tagIdsNotIn != null) {
+            if (Array.isArray(tagIdsNotIn)) {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn.map((item) => item);
+            } else {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn;
+            }
+        }
+
+        if (origin != null) {
+            _queryParams["origin"] = origin;
+        }
+
+        if (hasFile != null) {
+            _queryParams["has_file"] = hasFile.toString();
         }
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -568,7 +655,7 @@ export class Analytics {
                 case 403:
                     throw new Monite.ForbiddenError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -587,6 +674,349 @@ export class Analytics {
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /analytics/payables.");
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Retrieve aggregated statistics for receivables with different breakdowns.
+     *
+     * @param {Monite.GetAnalyticsReceivablesRequest} request
+     * @param {Analytics.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.analytics.getAnalyticsReceivables({
+     *         metric: "id",
+     *         aggregation_function: "count"
+     *     })
+     */
+    public async getAnalyticsReceivables(
+        request: Monite.GetAnalyticsReceivablesRequest,
+        requestOptions?: Analytics.RequestOptions
+    ): Promise<Monite.ReceivablesAnalyticsResponse> {
+        const {
+            dimension,
+            metric,
+            aggregation_function: aggregationFunction,
+            date_dimension_breakdown: dateDimensionBreakdown,
+            order,
+            limit,
+            pagination_token: paginationToken,
+            id__in: idIn,
+            status__in: statusIn,
+            entity_user_id__in: entityUserIdIn,
+            sort,
+            tag_ids__in: tagIdsIn,
+            tag_ids: tagIds,
+            product_ids__in: productIdsIn,
+            product_ids: productIds,
+            project_id__in: projectIdIn,
+            type: type_,
+            document_id: documentId,
+            document_id__contains: documentIdContains,
+            document_id__icontains: documentIdIcontains,
+            issue_date__gt: issueDateGt,
+            issue_date__lt: issueDateLt,
+            issue_date__gte: issueDateGte,
+            issue_date__lte: issueDateLte,
+            created_at__gt: createdAtGt,
+            created_at__lt: createdAtLt,
+            created_at__gte: createdAtGte,
+            created_at__lte: createdAtLte,
+            counterpart_id: counterpartId,
+            counterpart_name: counterpartName,
+            counterpart_name__contains: counterpartNameContains,
+            counterpart_name__icontains: counterpartNameIcontains,
+            total_amount: totalAmount,
+            total_amount__gt: totalAmountGt,
+            total_amount__lt: totalAmountLt,
+            total_amount__gte: totalAmountGte,
+            total_amount__lte: totalAmountLte,
+            status,
+            entity_user_id: entityUserId,
+            based_on: basedOn,
+            due_date__gt: dueDateGt,
+            due_date__lt: dueDateLt,
+            due_date__gte: dueDateGte,
+            due_date__lte: dueDateLte,
+            project_id: projectId,
+        } = request;
+        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        if (dimension != null) {
+            _queryParams["dimension"] = dimension;
+        }
+
+        _queryParams["metric"] = metric;
+        _queryParams["aggregation_function"] = aggregationFunction;
+        if (dateDimensionBreakdown != null) {
+            _queryParams["date_dimension_breakdown"] = dateDimensionBreakdown;
+        }
+
+        if (order != null) {
+            _queryParams["order"] = order;
+        }
+
+        if (limit != null) {
+            _queryParams["limit"] = limit.toString();
+        }
+
+        if (paginationToken != null) {
+            _queryParams["pagination_token"] = paginationToken;
+        }
+
+        if (idIn != null) {
+            if (Array.isArray(idIn)) {
+                _queryParams["id__in"] = idIn.map((item) => item);
+            } else {
+                _queryParams["id__in"] = idIn;
+            }
+        }
+
+        if (statusIn != null) {
+            if (Array.isArray(statusIn)) {
+                _queryParams["status__in"] = statusIn.map((item) => item);
+            } else {
+                _queryParams["status__in"] = statusIn;
+            }
+        }
+
+        if (entityUserIdIn != null) {
+            if (Array.isArray(entityUserIdIn)) {
+                _queryParams["entity_user_id__in"] = entityUserIdIn.map((item) => item);
+            } else {
+                _queryParams["entity_user_id__in"] = entityUserIdIn;
+            }
+        }
+
+        if (sort != null) {
+            _queryParams["sort"] = sort;
+        }
+
+        if (tagIdsIn != null) {
+            if (Array.isArray(tagIdsIn)) {
+                _queryParams["tag_ids__in"] = tagIdsIn.map((item) => item);
+            } else {
+                _queryParams["tag_ids__in"] = tagIdsIn;
+            }
+        }
+
+        if (tagIds != null) {
+            if (Array.isArray(tagIds)) {
+                _queryParams["tag_ids"] = tagIds.map((item) => item);
+            } else {
+                _queryParams["tag_ids"] = tagIds;
+            }
+        }
+
+        if (productIdsIn != null) {
+            if (Array.isArray(productIdsIn)) {
+                _queryParams["product_ids__in"] = productIdsIn.map((item) => item);
+            } else {
+                _queryParams["product_ids__in"] = productIdsIn;
+            }
+        }
+
+        if (productIds != null) {
+            if (Array.isArray(productIds)) {
+                _queryParams["product_ids"] = productIds.map((item) => item);
+            } else {
+                _queryParams["product_ids"] = productIds;
+            }
+        }
+
+        if (projectIdIn != null) {
+            if (Array.isArray(projectIdIn)) {
+                _queryParams["project_id__in"] = projectIdIn.map((item) => item);
+            } else {
+                _queryParams["project_id__in"] = projectIdIn;
+            }
+        }
+
+        if (type_ != null) {
+            _queryParams["type"] = type_;
+        }
+
+        if (documentId != null) {
+            _queryParams["document_id"] = documentId;
+        }
+
+        if (documentIdContains != null) {
+            _queryParams["document_id__contains"] = documentIdContains;
+        }
+
+        if (documentIdIcontains != null) {
+            _queryParams["document_id__icontains"] = documentIdIcontains;
+        }
+
+        if (issueDateGt != null) {
+            _queryParams["issue_date__gt"] = issueDateGt;
+        }
+
+        if (issueDateLt != null) {
+            _queryParams["issue_date__lt"] = issueDateLt;
+        }
+
+        if (issueDateGte != null) {
+            _queryParams["issue_date__gte"] = issueDateGte;
+        }
+
+        if (issueDateLte != null) {
+            _queryParams["issue_date__lte"] = issueDateLte;
+        }
+
+        if (createdAtGt != null) {
+            _queryParams["created_at__gt"] = createdAtGt;
+        }
+
+        if (createdAtLt != null) {
+            _queryParams["created_at__lt"] = createdAtLt;
+        }
+
+        if (createdAtGte != null) {
+            _queryParams["created_at__gte"] = createdAtGte;
+        }
+
+        if (createdAtLte != null) {
+            _queryParams["created_at__lte"] = createdAtLte;
+        }
+
+        if (counterpartId != null) {
+            _queryParams["counterpart_id"] = counterpartId;
+        }
+
+        if (counterpartName != null) {
+            _queryParams["counterpart_name"] = counterpartName;
+        }
+
+        if (counterpartNameContains != null) {
+            _queryParams["counterpart_name__contains"] = counterpartNameContains;
+        }
+
+        if (counterpartNameIcontains != null) {
+            _queryParams["counterpart_name__icontains"] = counterpartNameIcontains;
+        }
+
+        if (totalAmount != null) {
+            _queryParams["total_amount"] = totalAmount.toString();
+        }
+
+        if (totalAmountGt != null) {
+            _queryParams["total_amount__gt"] = totalAmountGt.toString();
+        }
+
+        if (totalAmountLt != null) {
+            _queryParams["total_amount__lt"] = totalAmountLt.toString();
+        }
+
+        if (totalAmountGte != null) {
+            _queryParams["total_amount__gte"] = totalAmountGte.toString();
+        }
+
+        if (totalAmountLte != null) {
+            _queryParams["total_amount__lte"] = totalAmountLte.toString();
+        }
+
+        if (status != null) {
+            _queryParams["status"] = status;
+        }
+
+        if (entityUserId != null) {
+            _queryParams["entity_user_id"] = entityUserId;
+        }
+
+        if (basedOn != null) {
+            _queryParams["based_on"] = basedOn;
+        }
+
+        if (dueDateGt != null) {
+            _queryParams["due_date__gt"] = dueDateGt;
+        }
+
+        if (dueDateLt != null) {
+            _queryParams["due_date__lt"] = dueDateLt;
+        }
+
+        if (dueDateGte != null) {
+            _queryParams["due_date__gte"] = dueDateGte;
+        }
+
+        if (dueDateLte != null) {
+            _queryParams["due_date__lte"] = dueDateLte;
+        }
+
+        if (projectId != null) {
+            _queryParams["project_id"] = projectId;
+        }
+
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
+                "analytics/receivables"
+            ),
+            method: "GET",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            queryParameters: _queryParams,
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return _response.body as Monite.ReceivablesAnalyticsResponse;
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /analytics/receivables.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,

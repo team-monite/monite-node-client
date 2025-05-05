@@ -34,6 +34,8 @@ export interface PurchaseOrderPayloadSchema {
     items: Monite.PurchaseOrderItem[];
     /** Msg which will be send to counterpart for who the purchase order is issued. */
     message: string;
+    /** Project ID of a purchase order */
+    project_id?: string;
     /** Number of days for which purchase order is valid */
     valid_for_days: number;
 }

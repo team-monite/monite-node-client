@@ -4,9 +4,6 @@
 
 import * as Monite from "../index";
 
-/**
- * Represents counterparts that are individuals (natural persons).
- */
 export interface CounterpartIndividualResponse {
     /** The person's email address. */
     email?: string;

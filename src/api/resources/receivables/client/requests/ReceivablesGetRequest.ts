@@ -14,7 +14,7 @@ export interface ReceivablesGetRequest {
      */
     order?: Monite.OrderEnum;
     /**
-     * The number of items (0 .. 100) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+     * The number of items (0 .. 250) to return in a single page of the response. Default is 100. The response may contain fewer items if it is the last or only page.
      *
      * When using pagination with a non-default `limit`, you must provide the `limit` value alongside `pagination_token` in all subsequent pagination requests. Unlike other query parameters, `limit` is not inferred from `pagination_token`.
      */
@@ -82,6 +82,44 @@ export interface ReceivablesGetRequest {
      * `tag_ids=<tagA>&tag_ids=<tagB>` will return receivables 3 and 5.
      */
     tag_ids?: string | string[];
+    /**
+     * Return only receivables whose line items include at least one of the product IDs with the specified IDs.
+     *
+     * To specify multiple product IDs, repeat this parameter for each ID:
+     * `product_ids__in=<product1>&product_ids__in=<product2>`
+     *
+     * For example, given receivables with the following product IDs:
+     * 1. productA
+     * 2. productB
+     * 3. productA, productB
+     * 4. productC
+     * 5. productB, productC
+     *
+     *
+     * `product_ids__in=<productA>&product_ids__in=<productB>` will return receivables 1, 2, 3, and 5.Valid but nonexistent product IDs do not raise errors but produce no results.
+     */
+    product_ids__in?: string | string[];
+    /**
+     * Return only receivables whose line items include all of the product IDs with the specified IDs and optionally other products that are not specified.
+     *
+     * To specify multiple product IDs, repeat this parameter for each ID:
+     * `product_ids=<product1>&product_ids=<product2>`
+     *
+     * For example, given receivables with the following product IDs:
+     * 1. productA
+     * 2. productB
+     * 3. productA, productB
+     * 4. productC
+     * 5. productA, productB, productC
+     *
+     *
+     * `product_ids=<productA>&product_ids=<productB>` will return receivables 3 and 5.
+     */
+    product_ids?: string | string[];
+    /**
+     * Return only receivables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+     */
+    project_id__in?: string | string[];
     type?: Monite.ReceivableType;
     document_id?: string;
     document_id__contains?: string;

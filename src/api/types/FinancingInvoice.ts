@@ -31,6 +31,20 @@ export interface FinancingInvoice {
     payer_first_name?: string;
     /** Payer last name. Only applicable for INDIVIDUAL payer type. */
     payer_last_name?: string;
+    /** Amount the business requests to be financed in minor units. */
+    requested_amount?: number;
+    /** Principal amount of the loan in minor units. */
+    principal_amount?: number;
+    /** Amount the business will repay in minor units. */
+    repayment_amount?: number;
+    /** Amount after fees the business will receive in minor units. */
+    advance_amount?: number;
+    /** Advance rate percentage. 10000 means 100% */
+    advance_rate_percentage?: number;
+    /** Fee amount in minor units. */
+    fee_amount?: number;
+    /** Fee percentage. 300 means 3% */
+    fee_percentage?: number;
     /** Repayment schedule of the invoice. */
     repayment_schedule?: Monite.RepaymentSchedule;
 }

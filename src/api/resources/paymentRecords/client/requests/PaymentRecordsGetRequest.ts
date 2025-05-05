@@ -25,6 +25,72 @@ export interface PaymentRecordsGetRequest {
      * Allowed sort fields
      */
     sort?: Monite.PaymentRecordCursorFields;
+    /**
+     * Identifies whether payment is from our rails or external system
+     */
     is_external?: boolean;
+    /**
+     * ID of the object, that is connected to payment
+     */
     object_id?: string;
+    /**
+     * Type of an object, which is connected with payment
+     */
+    object_type?: Monite.ObjectTypeEnum;
+    /**
+     * Created after this datetime (exclusive)
+     */
+    created_at__gt?: string;
+    /**
+     * Created before this datetime (exclusive)
+     */
+    created_at__lt?: string;
+    /**
+     * Updated after this datetime (exclusive)
+     */
+    updated_at__gt?: string;
+    /**
+     * Updated before this datetime (exclusive)
+     */
+    updated_at__lt?: string;
+    /**
+     * Paid after this datetime (exclusive)
+     */
+    paid_at__gt?: string;
+    /**
+     * Paid before this datetime (exclusive)
+     */
+    paid_at__lt?: string;
+    /**
+     * Optional date of the upcoming payment (equality)
+     */
+    planned_payment_date?: string;
+    /**
+     * Planned after this date (exclusive)
+     */
+    planned_payment_date__gt?: string;
+    /**
+     * Planned before this date (exclusive)
+     */
+    planned_payment_date__lt?: string;
+    /**
+     * Planned at or after this date (inclusive)
+     */
+    planned_payment_date__gte?: string;
+    /**
+     * Planned at or before this date (inclusive)
+     */
+    planned_payment_date__lte?: string;
+    /**
+     * One of the payment record statuses
+     */
+    status?: Monite.PaymentRecordStatusEnum;
+    /**
+     * Payment intent status as a raw string
+     */
+    payment_intent_status?: string;
+    /**
+     * Payment method used for the transaction
+     */
+    payment_method?: string;
 }

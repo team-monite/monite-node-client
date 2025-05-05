@@ -17,6 +17,10 @@ export interface GetAnalyticsPayablesRequest {
     aggregation_function: Monite.AggregationFunctionEnum;
     date_dimension_breakdown?: Monite.DateDimensionBreakdownEnum;
     /**
+     * The number of items (0 .. 400) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+     */
+    limit?: number;
+    /**
      * Return only payables created in Monite after the specified date and time. The value must be in the ISO 8601 format YYYY-MM-DDThh:mm[:ss[.ffffff]][Z|±hh:mm].
      */
     created_at__gt?: string;
@@ -133,6 +137,26 @@ export interface GetAnalyticsPayablesRequest {
      */
     due_date__lte?: string;
     /**
+     * Return payables that are issued at the specified date (YYYY-MM-DD)
+     */
+    issued_at?: string;
+    /**
+     * Return payables that are issued after the specified date (exclusive, YYYY-MM-DD).
+     */
+    issued_at__gt?: string;
+    /**
+     * Return payables that are issued before the specified date (exclusive, YYYY-MM-DD).
+     */
+    issued_at__lt?: string;
+    /**
+     * Return payables that are issued on or after the specified date (YYYY-MM-DD).
+     */
+    issued_at__gte?: string;
+    /**
+     * Return payables that are issued before or on the specified date (YYYY-MM-DD).
+     */
+    issued_at__lte?: string;
+    /**
      * Return a payable with the exact specified document number (case-sensitive).
      *
      * The `document_id` is the user-facing document number such as INV-00042, not to be confused with Monite resource IDs (`id`).
@@ -181,7 +205,23 @@ export interface GetAnalyticsPayablesRequest {
      */
     project_id?: string;
     /**
+     * Return only payables whose `project_id` include at least one of the project_id with the specified IDs. Valid but nonexistent project IDs do not raise errors but produce no results.
+     */
+    project_id__in?: string | string[];
+    /**
      * Return only payables whose `tags` include at least one of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce no results.
      */
     tag_ids?: string | string[];
+    /**
+     * Return only payables whose `tags` do not include any of the tags with the specified IDs. Valid but nonexistent tag IDs do not raise errors but produce the results.
+     */
+    tag_ids__not_in?: string | string[];
+    /**
+     * Return only payables from a given origin ['einvoice', 'upload', 'email']
+     */
+    origin?: Monite.PayableOriginEnum;
+    /**
+     * Return only payables with or without attachments (files)
+     */
+    has_file?: boolean;
 }

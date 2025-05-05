@@ -6,6 +6,7 @@ export type ReceivableCursorFields =
     | "counterpart_name"
     | "counterpart_id"
     | "amount"
+    | "total_amount"
     | "status"
     | "due_date"
     | "issue_date"
@@ -17,6 +18,7 @@ export const ReceivableCursorFields = {
     CounterpartName: "counterpart_name",
     CounterpartId: "counterpart_id",
     Amount: "amount",
+    TotalAmount: "total_amount",
     Status: "status",
     DueDate: "due_date",
     IssueDate: "issue_date",

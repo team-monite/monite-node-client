@@ -134,6 +134,72 @@ await client.analytics.getAnalyticsPayables({
 </dl>
 </details>
 
+<details><summary><code>client.analytics.<a href="/src/api/resources/analytics/client/Client.ts">getAnalyticsReceivables</a>({ ...params }) -> Monite.ReceivablesAnalyticsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve aggregated statistics for receivables with different breakdowns.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analytics.getAnalyticsReceivables({
+    metric: "id",
+    aggregation_function: "count",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetAnalyticsReceivablesRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Analytics.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 ## Approval policies
 
 <details><summary><code>client.approvalPolicies.<a href="/src/api/resources/approvalPolicies/client/Client.ts">get</a>({ ...params }) -> Monite.ApprovalPolicyResourceList</code></summary>
@@ -229,7 +295,6 @@ Create a new approval policy.
 ```typescript
 await client.approvalPolicies.create({
     name: "name",
-    description: "description",
     script: [true],
 });
 ```
@@ -894,118 +959,6 @@ await client.accessTokens.create({
 </dl>
 </details>
 
-## Batch payments
-
-<details><summary><code>client.batchPayments.<a href="/src/api/resources/batchPayments/client/Client.ts">create</a>({ ...params }) -> Monite.PaymentsBatchPaymentResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.batchPayments.create({
-    payer_bank_account_id: "payer_bank_account_id",
-    payment_intents: [
-        {
-            object: {
-                id: "id",
-                type: "payable",
-            },
-            recipient: {
-                id: "id",
-                type: "counterpart",
-            },
-        },
-    ],
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `Monite.PaymentsBatchPaymentRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `BatchPayments.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.batchPayments.<a href="/src/api/resources/batchPayments/client/Client.ts">getById</a>(batchPaymentId) -> Monite.PaymentsBatchPaymentResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.batchPayments.getById("batch_payment_id");
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**batchPaymentId:** `string`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `BatchPayments.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
 ## Comments
 
 <details><summary><code>client.comments.<a href="/src/api/resources/comments/client/Client.ts">get</a>({ ...params }) -> Monite.CommentResourceList</code></summary>
@@ -1404,18 +1357,17 @@ await client.counterparts.get({
 
 ```typescript
 await client.counterparts.create({
-    type: "individual",
-    individual: {
+    type: "organization",
+    organization: {
         address: {
             city: "Berlin",
             country: "AF",
             line1: "Flughafenstrasse 52",
             postal_code: "10115",
         },
-        first_name: "Adnan",
         is_customer: true,
         is_vendor: true,
-        last_name: "Singh",
+        legal_name: "Acme Inc.",
     },
 });
 ```
@@ -1714,6 +1666,299 @@ await client.counterparts.updatePartnerMetadataById("counterpart_id", {
 </dl>
 </details>
 
+## Counterpart e-invoicing credentials
+
+<details><summary><code>client.counterpartEInvoicingCredentials.<a href="/src/api/resources/counterpartEInvoicingCredentials/client/Client.ts">getCounterpartsIdEinvoicingCredentials</a>(counterpartId) -> Monite.CounterpartEinvoicingCredentialResponseList</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.counterpartEInvoicingCredentials.getCounterpartsIdEinvoicingCredentials("counterpart_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**counterpartId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CounterpartEInvoicingCredentials.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.counterpartEInvoicingCredentials.<a href="/src/api/resources/counterpartEInvoicingCredentials/client/Client.ts">postCounterpartsIdEinvoicingCredentials</a>(counterpartId, { ...params }) -> Monite.CounterpartEinvoicingCredentialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.counterpartEInvoicingCredentials.postCounterpartsIdEinvoicingCredentials("counterpart_id", {
+    counterpart_vat_id_id: "counterpart_vat_id_id",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**counterpartId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.CreateCounterpartEinvoicingCredentialPayload`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CounterpartEInvoicingCredentials.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.counterpartEInvoicingCredentials.<a href="/src/api/resources/counterpartEInvoicingCredentials/client/Client.ts">getCounterpartsIdEinvoicingCredentialsId</a>(credentialId, counterpartId) -> Monite.CounterpartEinvoicingCredentialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.counterpartEInvoicingCredentials.getCounterpartsIdEinvoicingCredentialsId(
+    "credential_id",
+    "counterpart_id"
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**credentialId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpartId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CounterpartEInvoicingCredentials.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.counterpartEInvoicingCredentials.<a href="/src/api/resources/counterpartEInvoicingCredentials/client/Client.ts">deleteCounterpartsIdEinvoicingCredentialsId</a>(credentialId, counterpartId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.counterpartEInvoicingCredentials.deleteCounterpartsIdEinvoicingCredentialsId(
+    "credential_id",
+    "counterpart_id"
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**credentialId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpartId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CounterpartEInvoicingCredentials.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.counterpartEInvoicingCredentials.<a href="/src/api/resources/counterpartEInvoicingCredentials/client/Client.ts">patchCounterpartsIdEinvoicingCredentialsId</a>(credentialId, counterpartId, { ...params }) -> Monite.CounterpartEinvoicingCredentialResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.counterpartEInvoicingCredentials.patchCounterpartsIdEinvoicingCredentialsId(
+    "credential_id",
+    "counterpart_id"
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**credentialId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**counterpartId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.UpdateCounterpartEinvoicingCredentialSchema`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CounterpartEInvoicingCredentials.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 ## DataExports
 
 <details><summary><code>client.dataExports.<a href="/src/api/resources/dataExports/client/Client.ts">get</a>({ ...params }) -> Monite.AllDocumentExportResponseSchema</code></summary>
@@ -1798,7 +2043,7 @@ await client.dataExports.create({
     format: "csv",
     objects: [
         {
-            name: "receivable",
+            name: "payable",
             statuses: ["draft"],
         },
     ],
@@ -1915,6 +2160,391 @@ await client.dataExports.getById("document_export_id");
 <dd>
 
 **requestOptions:** `DataExports.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Delivery notes
+
+<details><summary><code>client.deliveryNotes.<a href="/src/api/resources/deliveryNotes/client/Client.ts">getDeliveryNotes</a>({ ...params }) -> Monite.DeliveryNoteResourceList</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get all delivery notes with filtering and pagination.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.deliveryNotes.getDeliveryNotes();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetDeliveryNotesRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DeliveryNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.deliveryNotes.<a href="/src/api/resources/deliveryNotes/client/Client.ts">postDeliveryNotes</a>({ ...params }) -> Monite.DeliveryNoteResource</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.deliveryNotes.postDeliveryNotes({
+    counterpart_address_id: "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+    counterpart_id: "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+    delivery_date: "2025-01-01",
+    delivery_number: "102-2025-0987",
+    display_signature_placeholder: true,
+    line_items: [
+        {
+            product_id: "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+            quantity: 10,
+        },
+        {
+            product: {
+                description: "Description of product 2",
+                measure_unit: {
+                    description: "pieces",
+                    name: "pcs",
+                },
+                name: "Product 2",
+            },
+            quantity: 20,
+        },
+    ],
+    memo: "This is a memo",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.Payload`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DeliveryNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.deliveryNotes.<a href="/src/api/resources/deliveryNotes/client/Client.ts">getDeliveryNotesId</a>(deliveryNoteId) -> Monite.DeliveryNoteResource</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.deliveryNotes.getDeliveryNotesId("delivery_note_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**deliveryNoteId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DeliveryNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.deliveryNotes.<a href="/src/api/resources/deliveryNotes/client/Client.ts">deleteDeliveryNotesId</a>(deliveryNoteId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.deliveryNotes.deleteDeliveryNotesId("delivery_note_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**deliveryNoteId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DeliveryNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.deliveryNotes.<a href="/src/api/resources/deliveryNotes/client/Client.ts">patchDeliveryNotesId</a>(deliveryNoteId, { ...params }) -> Monite.DeliveryNoteResource</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.deliveryNotes.patchDeliveryNotesId("delivery_note_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**deliveryNoteId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.DeliveryNoteUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DeliveryNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.deliveryNotes.<a href="/src/api/resources/deliveryNotes/client/Client.ts">postDeliveryNotesIdCancel</a>(deliveryNoteId) -> Monite.DeliveryNoteResource</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.deliveryNotes.postDeliveryNotesIdCancel("delivery_note_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**deliveryNoteId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DeliveryNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.deliveryNotes.<a href="/src/api/resources/deliveryNotes/client/Client.ts">postDeliveryNotesIdMarkAsDelivered</a>(deliveryNoteId) -> Monite.DeliveryNoteResource</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.deliveryNotes.postDeliveryNotesIdMarkAsDelivered("delivery_note_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**deliveryNoteId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DeliveryNotes.RequestOptions`
 
 </dd>
 </dl>
@@ -2900,7 +3530,7 @@ await client.entities.postEntitiesIdDeactivate("ea837e28-509b-4b6a-a600-d54b6aa0
 </dl>
 </details>
 
-<details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">uploadLogoById</a>(file, entityId) -> Monite.FileSchema3</code></summary>
+<details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">uploadLogoById</a>(file, entityId) -> Monite.FileSchema2</code></summary>
 <dl>
 <dd>
 
@@ -5854,9 +6484,9 @@ await client.measureUnits.updateById("unit_id");
 </dl>
 </details>
 
-## Onboarding links
+## OCR
 
-<details><summary><code>client.onboardingLinks.<a href="/src/api/resources/onboardingLinks/client/Client.ts">create</a>({ ...params }) -> Monite.OnboardingLinkPublicResponse</code></summary>
+<details><summary><code>client.ocr.<a href="/src/api/resources/ocr/client/Client.ts">getOcrTasks</a>({ ...params }) -> Monite.OcrTasksPaginationResponse</code></summary>
 <dl>
 <dd>
 
@@ -5869,10 +6499,56 @@ await client.measureUnits.updateById("unit_id");
 <dd>
 
 ```typescript
-await client.onboardingLinks.create({
-    expires_at: "2024-01-15T09:30:00Z",
-    refresh_url: "refresh_url",
-    return_url: "return_url",
+await client.ocr.getOcrTasks();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetOcrTasksRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Ocr.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocr.<a href="/src/api/resources/ocr/client/Client.ts">postOcrTasks</a>({ ...params }) -> Monite.OcrTaskResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocr.postOcrTasks({
+    file_url: "file_url",
 });
 ```
 
@@ -5889,7 +6565,7 @@ await client.onboardingLinks.create({
 <dl>
 <dd>
 
-**request:** `Monite.OnboardingLinkRequest`
+**request:** `Monite.CreateOcrRequestPayload`
 
 </dd>
 </dl>
@@ -5897,7 +6573,111 @@ await client.onboardingLinks.create({
 <dl>
 <dd>
 
-**requestOptions:** `OnboardingLinks.RequestOptions`
+**requestOptions:** `Ocr.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocr.<a href="/src/api/resources/ocr/client/Client.ts">postOcrTasksUploadFromFile</a>(file, { ...params }) -> Monite.OcrTaskResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocr.postOcrTasksUploadFromFile(fs.createReadStream("/path/to/your/file"), {});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**file:** `File | fs.ReadStream | Blob`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.OcrFileUpload`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Ocr.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocr.<a href="/src/api/resources/ocr/client/Client.ts">getOcrTasksId</a>(taskId) -> Monite.OcrTaskResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocr.getOcrTasksId("task_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Ocr.RequestOptions`
 
 </dd>
 </dl>
@@ -6301,6 +7081,181 @@ await client.creditNotes.postPayableCreditNotesUploadFromFile(fs.createReadStrea
 
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CreditNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.creditNotes.<a href="/src/api/resources/creditNotes/client/Client.ts">getPayableCreditNotesValidations</a>() -> Monite.CreditNoteValidationsResource</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get credit notes validations.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.creditNotes.getPayableCreditNotesValidations();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestOptions:** `CreditNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.creditNotes.<a href="/src/api/resources/creditNotes/client/Client.ts">putPayableCreditNotesValidations</a>({ ...params }) -> Monite.CreditNoteValidationsResource</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Update credit notes validations.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.creditNotes.putPayableCreditNotesValidations({
+    required_fields: ["currency"],
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.CreditNoteValidationsResource`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CreditNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.creditNotes.<a href="/src/api/resources/creditNotes/client/Client.ts">postPayableCreditNotesValidationsReset</a>() -> Monite.CreditNoteValidationsResource</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Reset credit notes validations.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.creditNotes.postPayableCreditNotesValidationsReset();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -7095,6 +8050,54 @@ Start the approval process once the uploaded credit note is validated.
 
 ```typescript
 await client.creditNotes.postPayableCreditNotesIdSubmitForApproval("credit_note_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**creditNoteId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CreditNotes.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.creditNotes.<a href="/src/api/resources/creditNotes/client/Client.ts">getPayableCreditNotesIdValidate</a>(creditNoteId) -> Monite.CreditNoteValidationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.creditNotes.getPayableCreditNotesIdValidate("credit_note_id");
 ```
 
 </dd>
@@ -9412,7 +10415,6 @@ await client.paymentRecords.create({
         id: "id",
         type: "receivable",
     },
-    paid_at: "2024-01-15T09:30:00Z",
     payment_intent_id: "payment_intent_id",
 });
 ```
@@ -9479,6 +10481,232 @@ await client.paymentRecords.getById("payment_record_id");
 <dd>
 
 **paymentRecordId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `PaymentRecords.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentRecords.<a href="/src/api/resources/paymentRecords/client/Client.ts">patchPaymentRecordsId</a>(paymentRecordId, { ...params }) -> Monite.PaymentRecordResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.paymentRecords.patchPaymentRecordsId("payment_record_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentRecordId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.PaymentRecordUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `PaymentRecords.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentRecords.<a href="/src/api/resources/paymentRecords/client/Client.ts">postPaymentRecordsIdCancel</a>(paymentRecordId, { ...params }) -> Monite.PaymentRecordResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.paymentRecords.postPaymentRecordsIdCancel("payment_record_id", {});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentRecordId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.PaymentRecordStatusUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `PaymentRecords.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentRecords.<a href="/src/api/resources/paymentRecords/client/Client.ts">postPaymentRecordsIdMarkAsSucceeded</a>(paymentRecordId, { ...params }) -> Monite.PaymentRecordResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.paymentRecords.postPaymentRecordsIdMarkAsSucceeded("payment_record_id", {
+    paid_at: "2024-01-15T09:30:00Z",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentRecordId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.PaymentRecordMarkAsSucceededRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `PaymentRecords.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.paymentRecords.<a href="/src/api/resources/paymentRecords/client/Client.ts">postPaymentRecordsIdStartProcessing</a>(paymentRecordId, { ...params }) -> Monite.PaymentRecordResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.paymentRecords.postPaymentRecordsIdStartProcessing("payment_record_id", {});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentRecordId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.PaymentRecordStatusUpdateRequest`
 
 </dd>
 </dl>
@@ -10738,6 +11966,69 @@ await client.receivables.create({
 <dd>
 
 **request:** `Monite.ReceivableFacadeCreatePayload`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receivables.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receivables.<a href="/src/api/resources/receivables/client/Client.ts">getReceivablesRequiredFields</a>({ ...params }) -> Monite.ReceivableRequiredFields</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get field requirements for invoice creation given the entity and counterpart details.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receivables.getReceivablesRequiredFields();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetReceivablesRequiredFieldsRequest`
 
 </dd>
 </dl>
@@ -12405,6 +13696,69 @@ await client.roles.create({
 
 ```typescript
 await client.roles.getById("role_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**roleId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Roles.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.roles.<a href="/src/api/resources/roles/client/Client.ts">deleteRolesId</a>(roleId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a role with the specified ID. The role being deleted must not be in use by any entity users, otherwise a 409 error is returned. To check if there are entity users that have this role, call `GET /entity_users?role_id=ROLE_ID`.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.roles.deleteRolesId("role_id");
 ```
 
 </dd>
@@ -16731,9 +18085,13 @@ await client.entities.bankAccounts.get();
 <dl>
 <dd>
 
-Add a new bank account for the specified entity.
+Adds a new bank account for the specified entity.
 
-The minimum required fields are `currency` and `country`. Other required fields depend on the currency:
+The minimum required fields are `currency` and `country`. Other required fields depend on the currency and country.
+
+Bank accounts in African countries can use any fields or combinations of fields.
+
+For other countries:
 
 -   EUR accounts require `iban`.
 -   GBP accounts require `account_holder_name`, `account_number`, and `sort_code`.
@@ -16776,144 +18134,6 @@ await client.entities.bankAccounts.create({
 <dd>
 
 **request:** `Monite.entities.CreateEntityBankAccountRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `BankAccounts.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entities.bankAccounts.<a href="/src/api/resources/entities/resources/bankAccounts/client/Client.ts">completeVerification</a>({ ...params }) -> Monite.CompleteVerificationResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.entities.bankAccounts.completeVerification({
-    airwallex_plaid: {
-        account: {
-            id: "id",
-            mask: "mask",
-            name: "name",
-        },
-        institution: {
-            id: "id",
-            name: "name",
-        },
-        mandate: {
-            email: "email",
-            signatory: "signatory",
-            type: "us_ach_debit",
-            version: "1.0",
-        },
-        public_token: "public_token",
-    },
-    type: "airwallex_plaid",
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `Monite.entities.CompleteVerificationRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `BankAccounts.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entities.bankAccounts.<a href="/src/api/resources/entities/resources/bankAccounts/client/Client.ts">startVerification</a>({ ...params }) -> Monite.VerificationResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Start entity bank account verification. The flow depends on verification type.
-For airwallex_plaid it generates Plaid Link token to init the Plaid SDK.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.entities.bankAccounts.startVerification({
-    airwallex_plaid: {
-        client_name: "client_name",
-        redirect_url: "redirect_url",
-    },
-    type: "airwallex_plaid",
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `Monite.VerificationRequest`
 
 </dd>
 </dl>
@@ -17129,64 +18349,6 @@ await client.entities.bankAccounts.updateById("bank_account_id");
 </dl>
 </details>
 
-<details><summary><code>client.entities.bankAccounts.<a href="/src/api/resources/entities/resources/bankAccounts/client/Client.ts">completeVerificationById</a>(bankAccountId, { ...params }) -> Monite.CompleteRefreshVerificationResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.entities.bankAccounts.completeVerificationById("bank_account_id", {
-    type: "airwallex_plaid",
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**bankAccountId:** `string`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `Monite.entities.CompleteRefreshVerificationRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `BankAccounts.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.entities.bankAccounts.<a href="/src/api/resources/entities/resources/bankAccounts/client/Client.ts">makeDefaultById</a>(bankAccountId) -> Monite.EntityBankAccountResponse</code></summary>
 <dl>
 <dd>
@@ -17216,116 +18378,6 @@ Set a bank account as the default for this entity per currency.
 
 ```typescript
 await client.entities.bankAccounts.makeDefaultById("bank_account_id");
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**bankAccountId:** `string`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `BankAccounts.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entities.bankAccounts.<a href="/src/api/resources/entities/resources/bankAccounts/client/Client.ts">refreshVerificationById</a>(bankAccountId, { ...params }) -> Monite.VerificationResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.entities.bankAccounts.refreshVerificationById("bank_account_id", {
-    airwallex_plaid: {
-        client_name: "client_name",
-        redirect_url: "redirect_url",
-    },
-    type: "airwallex_plaid",
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**bankAccountId:** `string`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `Monite.VerificationRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `BankAccounts.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.entities.bankAccounts.<a href="/src/api/resources/entities/resources/bankAccounts/client/Client.ts">getVerificationsById</a>(bankAccountId) -> Monite.BankAccountVerifications</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.entities.bankAccounts.getVerificationsById("bank_account_id");
 ```
 
 </dd>
@@ -17943,9 +18995,9 @@ await client.entities.persons.get();
 
 ```typescript
 await client.entities.persons.create({
+    email: "email",
     first_name: "first_name",
     last_name: "last_name",
-    email: "email",
     relationship: {},
 });
 ```

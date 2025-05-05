@@ -15,7 +15,7 @@ export interface TagReadSchema {
     /** Date and time when the tag was last updated. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. */
     updated_at: string;
     /** The tag category. */
-    category?: Monite.TagCategory;
+    category?: Monite.ReceivableTagCategory;
     /** ID of the user who created the tag. */
     created_by_entity_user_id?: string;
     /** The tag description. */

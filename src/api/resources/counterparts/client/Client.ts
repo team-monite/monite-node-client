@@ -262,7 +262,7 @@ export class Counterparts {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -297,18 +297,17 @@ export class Counterparts {
      *
      * @example
      *     await client.counterparts.create({
-     *         type: "individual",
-     *         individual: {
+     *         type: "organization",
+     *         organization: {
      *             address: {
      *                 city: "Berlin",
      *                 country: "AF",
      *                 line1: "Flughafenstrasse 52",
      *                 postal_code: "10115"
      *             },
-     *             first_name: "Adnan",
      *             is_customer: true,
      *             is_vendor: true,
-     *             last_name: "Singh"
+     *             legal_name: "Acme Inc."
      *         }
      *     })
      */
@@ -351,7 +350,7 @@ export class Counterparts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -428,7 +427,7 @@ export class Counterparts {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -504,7 +503,7 @@ export class Counterparts {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -588,7 +587,7 @@ export class Counterparts {
                 case 404:
                     throw new Monite.NotFoundError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -664,7 +663,7 @@ export class Counterparts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -747,7 +746,7 @@ export class Counterparts {
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:

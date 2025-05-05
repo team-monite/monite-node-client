@@ -6,13 +6,26 @@ import * as Monite from "../index";
 
 export interface PaymentRecordResponse {
     id: string;
+    /** Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents). */
     amount: number;
+    /** Currency code (ISO 4217) indicating the currency in which the payment was made. */
     currency: Monite.CurrencyEnum;
+    /** ID of the user associated with the payment, if applicable. */
     entity_user_id?: string;
     is_external: boolean;
     object: Monite.PaymentRecordObjectResponse;
     /** Filled in a case, if payment amount is more, than total_amount */
     overpaid_amount?: number;
-    paid_at: string;
+    /** Timestamp marking when the payment was executed. Null if payment hasn't occurred yet. */
+    paid_at?: string;
+    /** Identifier for an payment intent. */
     payment_intent_id: string;
+    /** Raw status string of the external payment intent. */
+    payment_intent_status?: string;
+    /** Payment method used or planned for the transaction. */
+    payment_method?: string;
+    /** Scheduled date for future payments, required when the payment is planned but not yet executed. */
+    planned_payment_date?: string;
+    /** The current status of the payment record. Possible values: `created`, `processing`, `succeeded`, `canceled`. */
+    status?: string;
 }

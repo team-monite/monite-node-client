@@ -8,10 +8,11 @@ import { Analytics } from "./api/resources/analytics/client/Client";
 import { ApprovalPolicies } from "./api/resources/approvalPolicies/client/Client";
 import { ApprovalRequests } from "./api/resources/approvalRequests/client/Client";
 import { AccessTokens } from "./api/resources/accessTokens/client/Client";
-import { BatchPayments } from "./api/resources/batchPayments/client/Client";
 import { Comments } from "./api/resources/comments/client/Client";
 import { Counterparts } from "./api/resources/counterparts/client/Client";
+import { CounterpartEInvoicingCredentials } from "./api/resources/counterpartEInvoicingCredentials/client/Client";
 import { DataExports } from "./api/resources/dataExports/client/Client";
+import { DeliveryNotes } from "./api/resources/deliveryNotes/client/Client";
 import { PdfTemplates } from "./api/resources/pdfTemplates/client/Client";
 import { EInvoicingConnections } from "./api/resources/eInvoicingConnections/client/Client";
 import { Entities } from "./api/resources/entities/client/Client";
@@ -23,7 +24,7 @@ import { MailTemplates } from "./api/resources/mailTemplates/client/Client";
 import { MailboxDomains } from "./api/resources/mailboxDomains/client/Client";
 import { Mailboxes } from "./api/resources/mailboxes/client/Client";
 import { MeasureUnits } from "./api/resources/measureUnits/client/Client";
-import { OnboardingLinks } from "./api/resources/onboardingLinks/client/Client";
+import { Ocr } from "./api/resources/ocr/client/Client";
 import { OverdueReminders } from "./api/resources/overdueReminders/client/Client";
 import { CreditNotes } from "./api/resources/creditNotes/client/Client";
 import { PurchaseOrders } from "./api/resources/purchaseOrders/client/Client";
@@ -100,12 +101,6 @@ export class MoniteClient {
         return (this._accessTokens ??= new AccessTokens(this._options));
     }
 
-    protected _batchPayments: BatchPayments | undefined;
-
-    public get batchPayments(): BatchPayments {
-        return (this._batchPayments ??= new BatchPayments(this._options));
-    }
-
     protected _comments: Comments | undefined;
 
     public get comments(): Comments {
@@ -118,10 +113,22 @@ export class MoniteClient {
         return (this._counterparts ??= new Counterparts(this._options));
     }
 
+    protected _counterpartEInvoicingCredentials: CounterpartEInvoicingCredentials | undefined;
+
+    public get counterpartEInvoicingCredentials(): CounterpartEInvoicingCredentials {
+        return (this._counterpartEInvoicingCredentials ??= new CounterpartEInvoicingCredentials(this._options));
+    }
+
     protected _dataExports: DataExports | undefined;
 
     public get dataExports(): DataExports {
         return (this._dataExports ??= new DataExports(this._options));
+    }
+
+    protected _deliveryNotes: DeliveryNotes | undefined;
+
+    public get deliveryNotes(): DeliveryNotes {
+        return (this._deliveryNotes ??= new DeliveryNotes(this._options));
     }
 
     protected _pdfTemplates: PdfTemplates | undefined;
@@ -190,10 +197,10 @@ export class MoniteClient {
         return (this._measureUnits ??= new MeasureUnits(this._options));
     }
 
-    protected _onboardingLinks: OnboardingLinks | undefined;
+    protected _ocr: Ocr | undefined;
 
-    public get onboardingLinks(): OnboardingLinks {
-        return (this._onboardingLinks ??= new OnboardingLinks(this._options));
+    public get ocr(): Ocr {
+        return (this._ocr ??= new Ocr(this._options));
     }
 
     protected _overdueReminders: OverdueReminders | undefined;

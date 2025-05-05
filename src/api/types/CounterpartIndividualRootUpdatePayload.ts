@@ -12,6 +12,8 @@ export interface CounterpartIndividualRootUpdatePayload {
     default_billing_address_id?: string;
     /** ID of the shipping address. */
     default_shipping_address_id?: string;
+    /** A user-defined identifier of the counterpart. For example, the customer or vendor reference number in the entity's CRM system. If specified, it will be displayed in PDF invoices and other accounts receivable documents created by the entity. */
+    external_reference?: string;
     individual: Monite.CounterpartIndividualUpdatePayload;
     /** The language used to generate PDF documents for this counterpart. */
     language?: Monite.LanguageCodeEnum;

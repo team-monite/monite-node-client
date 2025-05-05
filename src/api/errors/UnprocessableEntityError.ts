@@ -3,10 +3,9 @@
  */
 
 import * as errors from "../../errors/index";
-import * as Monite from "../index";
 
 export class UnprocessableEntityError extends errors.MoniteError {
-    constructor(body: Monite.HttpValidationError) {
+    constructor(body?: unknown) {
         super({
             message: "UnprocessableEntityError",
             statusCode: 422,

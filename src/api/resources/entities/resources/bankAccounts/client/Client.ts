@@ -89,7 +89,7 @@ export class BankAccounts {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -116,10 +116,13 @@ export class BankAccounts {
     }
 
     /**
-     * Add a new bank account for the specified entity.
+     * Adds a new bank account for the specified entity.
      *
-     * The minimum required fields are `currency` and `country`. Other required fields depend on the currency:
+     * The minimum required fields are `currency` and `country`. Other required fields depend on the currency and country.
      *
+     * Bank accounts in African countries can use any fields or combinations of fields.
+     *
+     * For other countries:
      * * EUR accounts require `iban`.
      * * GBP accounts require `account_holder_name`, `account_number`, and `sort_code`.
      * * USD accounts require `account_holder_name`, `account_number`, and `routing_number`.
@@ -182,7 +185,7 @@ export class BankAccounts {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -201,189 +204,6 @@ export class BankAccounts {
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /bank_accounts.");
-            case "unknown":
-                throw new errors.MoniteError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
-     * @param {Monite.entities.CompleteVerificationRequest} request
-     * @param {BankAccounts.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Monite.UnprocessableEntityError}
-     * @throws {@link Monite.InternalServerError}
-     *
-     * @example
-     *     await client.entities.bankAccounts.completeVerification({
-     *         airwallex_plaid: {
-     *             account: {
-     *                 id: "id",
-     *                 mask: "mask",
-     *                 name: "name"
-     *             },
-     *             institution: {
-     *                 id: "id",
-     *                 name: "name"
-     *             },
-     *             mandate: {
-     *                 email: "email",
-     *                 signatory: "signatory",
-     *                 type: "us_ach_debit",
-     *                 version: "1.0"
-     *             },
-     *             public_token: "public_token"
-     *         },
-     *         type: "airwallex_plaid"
-     *     })
-     */
-    public async completeVerification(
-        request: Monite.entities.CompleteVerificationRequest,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.CompleteVerificationResponse> {
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "bank_accounts/complete_verification"
-            ),
-            method: "POST",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
-                "x-monite-entity-id":
-                    (await core.Supplier.get(this._options.moniteEntityId)) != null
-                        ? await core.Supplier.get(this._options.moniteEntityId)
-                        : undefined,
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.2.0",
-                "User-Agent": "@monite/node-client/0.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            body: request,
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return _response.body as Monite.CompleteVerificationResponse;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
-                case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
-                default:
-                    throw new errors.MoniteError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.MoniteError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /bank_accounts/complete_verification."
-                );
-            case "unknown":
-                throw new errors.MoniteError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
-     * Start entity bank account verification. The flow depends on verification type.
-     * For airwallex_plaid it generates Plaid Link token to init the Plaid SDK.
-     *
-     * @param {Monite.VerificationRequest} request
-     * @param {BankAccounts.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Monite.UnprocessableEntityError}
-     * @throws {@link Monite.InternalServerError}
-     *
-     * @example
-     *     await client.entities.bankAccounts.startVerification({
-     *         airwallex_plaid: {
-     *             client_name: "client_name",
-     *             redirect_url: "redirect_url"
-     *         },
-     *         type: "airwallex_plaid"
-     *     })
-     */
-    public async startVerification(
-        request: Monite.VerificationRequest,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.VerificationResponse> {
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "bank_accounts/start_verification"
-            ),
-            method: "POST",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
-                "x-monite-entity-id":
-                    (await core.Supplier.get(this._options.moniteEntityId)) != null
-                        ? await core.Supplier.get(this._options.moniteEntityId)
-                        : undefined,
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.2.0",
-                "User-Agent": "@monite/node-client/0.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            body: request,
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return _response.body as Monite.VerificationResponse;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
-                case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
-                default:
-                    throw new errors.MoniteError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.MoniteError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /bank_accounts/start_verification."
-                );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
@@ -447,7 +267,7 @@ export class BankAccounts {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -528,7 +348,7 @@ export class BankAccounts {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -615,7 +435,7 @@ export class BankAccounts {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -635,87 +455,6 @@ export class BankAccounts {
             case "timeout":
                 throw new errors.MoniteTimeoutError(
                     "Timeout exceeded when calling PATCH /bank_accounts/{bank_account_id}."
-                );
-            case "unknown":
-                throw new errors.MoniteError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
-     * @param {string} bankAccountId
-     * @param {Monite.entities.CompleteRefreshVerificationRequest} request
-     * @param {BankAccounts.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Monite.UnprocessableEntityError}
-     * @throws {@link Monite.InternalServerError}
-     *
-     * @example
-     *     await client.entities.bankAccounts.completeVerificationById("bank_account_id", {
-     *         type: "airwallex_plaid"
-     *     })
-     */
-    public async completeVerificationById(
-        bankAccountId: string,
-        request: Monite.entities.CompleteRefreshVerificationRequest,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.CompleteRefreshVerificationResponse> {
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `bank_accounts/${encodeURIComponent(bankAccountId)}/complete_verification`
-            ),
-            method: "POST",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
-                "x-monite-entity-id":
-                    (await core.Supplier.get(this._options.moniteEntityId)) != null
-                        ? await core.Supplier.get(this._options.moniteEntityId)
-                        : undefined,
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.2.0",
-                "User-Agent": "@monite/node-client/0.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            body: request,
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return _response.body as Monite.CompleteRefreshVerificationResponse;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
-                case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
-                default:
-                    throw new errors.MoniteError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.MoniteError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /bank_accounts/{bank_account_id}/complete_verification."
                 );
             case "unknown":
                 throw new errors.MoniteError({
@@ -780,7 +519,7 @@ export class BankAccounts {
                 case 409:
                     throw new Monite.ConflictError(_response.error.body as unknown);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown);
                 case 500:
                     throw new Monite.InternalServerError(_response.error.body as unknown);
                 default:
@@ -800,167 +539,6 @@ export class BankAccounts {
             case "timeout":
                 throw new errors.MoniteTimeoutError(
                     "Timeout exceeded when calling POST /bank_accounts/{bank_account_id}/make_default."
-                );
-            case "unknown":
-                throw new errors.MoniteError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
-     * @param {string} bankAccountId
-     * @param {Monite.VerificationRequest} request
-     * @param {BankAccounts.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Monite.UnprocessableEntityError}
-     * @throws {@link Monite.InternalServerError}
-     *
-     * @example
-     *     await client.entities.bankAccounts.refreshVerificationById("bank_account_id", {
-     *         airwallex_plaid: {
-     *             client_name: "client_name",
-     *             redirect_url: "redirect_url"
-     *         },
-     *         type: "airwallex_plaid"
-     *     })
-     */
-    public async refreshVerificationById(
-        bankAccountId: string,
-        request: Monite.VerificationRequest,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.VerificationResponse> {
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `bank_accounts/${encodeURIComponent(bankAccountId)}/refresh_verification`
-            ),
-            method: "POST",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
-                "x-monite-entity-id":
-                    (await core.Supplier.get(this._options.moniteEntityId)) != null
-                        ? await core.Supplier.get(this._options.moniteEntityId)
-                        : undefined,
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.2.0",
-                "User-Agent": "@monite/node-client/0.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            body: request,
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return _response.body as Monite.VerificationResponse;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
-                case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
-                default:
-                    throw new errors.MoniteError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.MoniteError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /bank_accounts/{bank_account_id}/refresh_verification."
-                );
-            case "unknown":
-                throw new errors.MoniteError({
-                    message: _response.error.errorMessage,
-                });
-        }
-    }
-
-    /**
-     * @param {string} bankAccountId
-     * @param {BankAccounts.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Monite.UnprocessableEntityError}
-     * @throws {@link Monite.InternalServerError}
-     *
-     * @example
-     *     await client.entities.bankAccounts.getVerificationsById("bank_account_id")
-     */
-    public async getVerificationsById(
-        bankAccountId: string,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.BankAccountVerifications> {
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `bank_accounts/${encodeURIComponent(bankAccountId)}/verifications`
-            ),
-            method: "GET",
-            headers: {
-                Authorization: await this._getAuthorizationHeader(),
-                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
-                "x-monite-entity-id":
-                    (await core.Supplier.get(this._options.moniteEntityId)) != null
-                        ? await core.Supplier.get(this._options.moniteEntityId)
-                        : undefined,
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.2.0",
-                "User-Agent": "@monite/node-client/0.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return _response.body as Monite.BankAccountVerifications;
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
-                case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
-                default:
-                    throw new errors.MoniteError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.MoniteError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                });
-            case "timeout":
-                throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /bank_accounts/{bank_account_id}/verifications."
                 );
             case "unknown":
                 throw new errors.MoniteError({

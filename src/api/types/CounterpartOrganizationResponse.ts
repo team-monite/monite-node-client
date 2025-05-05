@@ -4,9 +4,6 @@
 
 import * as Monite from "../index";
 
-/**
- * Represents counterparts that are organizations (juridical persons).
- */
 export interface CounterpartOrganizationResponse {
     /** The email address of the organization */
     email?: string;
