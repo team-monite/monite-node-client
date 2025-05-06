@@ -8,7 +8,7 @@ export interface TextTemplateResponse {
     id: string;
     created_at: string;
     updated_at: string;
-    document_type: Monite.DocumentTypeEnum;
+    document_type: Monite.TextTemplateDocumentTypeEnum;
     is_default: boolean;
     name: string;
     template: string;

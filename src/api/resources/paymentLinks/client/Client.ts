@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace PaymentLinks {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace PaymentLinks {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -54,14 +56,23 @@ export class PaymentLinks {
      *         }
      *     })
      */
-    public async create(
+    public create(
         request: Monite.CreatePaymentLinkRequest,
-        requestOptions?: PaymentLinks.RequestOptions
-    ): Promise<Monite.PublicPaymentLinkResponse> {
+        requestOptions?: PaymentLinks.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PublicPaymentLinkResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.CreatePaymentLinkRequest,
+        requestOptions?: PaymentLinks.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PublicPaymentLinkResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payment_links"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payment_links",
             ),
             method: "POST",
             headers: {
@@ -87,19 +98,20 @@ export class PaymentLinks {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PublicPaymentLinkResponse;
+            return { data: _response.body as Monite.PublicPaymentLinkResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -109,12 +121,14 @@ export class PaymentLinks {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payment_links.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -129,14 +143,23 @@ export class PaymentLinks {
      * @example
      *     await client.paymentLinks.getById("payment_link_id")
      */
-    public async getById(
+    public getById(
         paymentLinkId: string,
-        requestOptions?: PaymentLinks.RequestOptions
-    ): Promise<Monite.PublicPaymentLinkResponse> {
+        requestOptions?: PaymentLinks.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PublicPaymentLinkResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(paymentLinkId, requestOptions));
+    }
+
+    private async __getById(
+        paymentLinkId: string,
+        requestOptions?: PaymentLinks.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PublicPaymentLinkResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payment_links/${encodeURIComponent(paymentLinkId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_links/${encodeURIComponent(paymentLinkId)}`,
             ),
             method: "GET",
             headers: {
@@ -161,19 +184,20 @@ export class PaymentLinks {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PublicPaymentLinkResponse;
+            return { data: _response.body as Monite.PublicPaymentLinkResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -183,14 +207,16 @@ export class PaymentLinks {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /payment_links/{payment_link_id}."
+                    "Timeout exceeded when calling GET /payment_links/{payment_link_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -205,14 +231,23 @@ export class PaymentLinks {
      * @example
      *     await client.paymentLinks.expireById("payment_link_id")
      */
-    public async expireById(
+    public expireById(
         paymentLinkId: string,
-        requestOptions?: PaymentLinks.RequestOptions
-    ): Promise<Monite.PublicPaymentLinkResponse> {
+        requestOptions?: PaymentLinks.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PublicPaymentLinkResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__expireById(paymentLinkId, requestOptions));
+    }
+
+    private async __expireById(
+        paymentLinkId: string,
+        requestOptions?: PaymentLinks.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PublicPaymentLinkResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payment_links/${encodeURIComponent(paymentLinkId)}/expire`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_links/${encodeURIComponent(paymentLinkId)}/expire`,
             ),
             method: "POST",
             headers: {
@@ -237,19 +272,20 @@ export class PaymentLinks {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PublicPaymentLinkResponse;
+            return { data: _response.body as Monite.PublicPaymentLinkResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -259,14 +295,16 @@ export class PaymentLinks {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payment_links/{payment_link_id}/expire."
+                    "Timeout exceeded when calling POST /payment_links/{payment_link_id}/expire.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

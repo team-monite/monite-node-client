@@ -9,16 +9,16 @@ export type ReceivableResponse =
     | Monite.ReceivableResponse.Invoice
     | Monite.ReceivableResponse.CreditNote;
 
-export declare namespace ReceivableResponse {
-    interface Quote extends Monite.QuoteResponsePayload {
+export namespace ReceivableResponse {
+    export interface Quote extends Monite.QuoteResponsePayload {
         type: "quote";
     }
 
-    interface Invoice extends Monite.InvoiceResponsePayload {
+    export interface Invoice extends Monite.InvoiceResponsePayload {
         type: "invoice";
     }
 
-    interface CreditNote extends Monite.CreditNoteResponsePayload {
+    export interface CreditNote extends Monite.CreditNoteResponsePayload {
         type: "credit_note";
     }
 }

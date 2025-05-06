@@ -3,7 +3,6 @@
  */
 
 export type CounterpartType = "individual" | "organization";
-
 export const CounterpartType = {
     Individual: "individual",
     Organization: "organization",

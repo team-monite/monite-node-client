@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace BankAccounts {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace BankAccounts {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -48,14 +50,23 @@ export class BankAccounts {
      * @example
      *     await client.counterparts.bankAccounts.get("counterpart_id")
      */
-    public async get(
+    public get(
         counterpartId: string,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.CounterpartBankAccountResourceList> {
+        requestOptions?: BankAccounts.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CounterpartBankAccountResourceList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(counterpartId, requestOptions));
+    }
+
+    private async __get(
+        counterpartId: string,
+        requestOptions?: BankAccounts.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CounterpartBankAccountResourceList>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts`,
             ),
             method: "GET",
             headers: {
@@ -80,19 +91,23 @@ export class BankAccounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CounterpartBankAccountResourceList;
+            return {
+                data: _response.body as Monite.CounterpartBankAccountResourceList,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -102,14 +117,16 @@ export class BankAccounts {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /counterparts/{counterpart_id}/bank_accounts."
+                    "Timeout exceeded when calling GET /counterparts/{counterpart_id}/bank_accounts.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -129,15 +146,25 @@ export class BankAccounts {
      *         currency: "AED"
      *     })
      */
-    public async create(
+    public create(
         counterpartId: string,
         request: Monite.counterparts.CreateCounterpartBankAccount,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.CounterpartBankAccountResponse> {
+        requestOptions?: BankAccounts.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CounterpartBankAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(counterpartId, request, requestOptions));
+    }
+
+    private async __create(
+        counterpartId: string,
+        request: Monite.counterparts.CreateCounterpartBankAccount,
+        requestOptions?: BankAccounts.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CounterpartBankAccountResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts`,
             ),
             method: "POST",
             headers: {
@@ -163,21 +190,25 @@ export class BankAccounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CounterpartBankAccountResponse;
+            return {
+                data: _response.body as Monite.CounterpartBankAccountResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -187,14 +218,16 @@ export class BankAccounts {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /counterparts/{counterpart_id}/bank_accounts."
+                    "Timeout exceeded when calling POST /counterparts/{counterpart_id}/bank_accounts.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -211,15 +244,25 @@ export class BankAccounts {
      * @example
      *     await client.counterparts.bankAccounts.getById("bank_account_id", "counterpart_id")
      */
-    public async getById(
+    public getById(
         bankAccountId: string,
         counterpartId: string,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.CounterpartBankAccountResponse> {
+        requestOptions?: BankAccounts.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CounterpartBankAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(bankAccountId, counterpartId, requestOptions));
+    }
+
+    private async __getById(
+        bankAccountId: string,
+        counterpartId: string,
+        requestOptions?: BankAccounts.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CounterpartBankAccountResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts/${encodeURIComponent(bankAccountId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts/${encodeURIComponent(bankAccountId)}`,
             ),
             method: "GET",
             headers: {
@@ -244,21 +287,25 @@ export class BankAccounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CounterpartBankAccountResponse;
+            return {
+                data: _response.body as Monite.CounterpartBankAccountResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -268,14 +315,16 @@ export class BankAccounts {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /counterparts/{counterpart_id}/bank_accounts/{bank_account_id}."
+                    "Timeout exceeded when calling GET /counterparts/{counterpart_id}/bank_accounts/{bank_account_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -292,15 +341,25 @@ export class BankAccounts {
      * @example
      *     await client.counterparts.bankAccounts.deleteById("bank_account_id", "counterpart_id")
      */
-    public async deleteById(
+    public deleteById(
         bankAccountId: string,
         counterpartId: string,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<void> {
+        requestOptions?: BankAccounts.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(bankAccountId, counterpartId, requestOptions));
+    }
+
+    private async __deleteById(
+        bankAccountId: string,
+        counterpartId: string,
+        requestOptions?: BankAccounts.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts/${encodeURIComponent(bankAccountId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts/${encodeURIComponent(bankAccountId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -325,21 +384,22 @@ export class BankAccounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -349,14 +409,16 @@ export class BankAccounts {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /counterparts/{counterpart_id}/bank_accounts/{bank_account_id}."
+                    "Timeout exceeded when calling DELETE /counterparts/{counterpart_id}/bank_accounts/{bank_account_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -374,16 +436,29 @@ export class BankAccounts {
      * @example
      *     await client.counterparts.bankAccounts.updateById("bank_account_id", "counterpart_id")
      */
-    public async updateById(
+    public updateById(
         bankAccountId: string,
         counterpartId: string,
         request: Monite.counterparts.UpdateCounterpartBankAccount = {},
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<Monite.CounterpartBankAccountResponse> {
+        requestOptions?: BankAccounts.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CounterpartBankAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__updateById(bankAccountId, counterpartId, request, requestOptions),
+        );
+    }
+
+    private async __updateById(
+        bankAccountId: string,
+        counterpartId: string,
+        request: Monite.counterparts.UpdateCounterpartBankAccount = {},
+        requestOptions?: BankAccounts.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CounterpartBankAccountResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts/${encodeURIComponent(bankAccountId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts/${encodeURIComponent(bankAccountId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -409,21 +484,25 @@ export class BankAccounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CounterpartBankAccountResponse;
+            return {
+                data: _response.body as Monite.CounterpartBankAccountResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -433,14 +512,16 @@ export class BankAccounts {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /counterparts/{counterpart_id}/bank_accounts/{bank_account_id}."
+                    "Timeout exceeded when calling PATCH /counterparts/{counterpart_id}/bank_accounts/{bank_account_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -456,17 +537,27 @@ export class BankAccounts {
      * @example
      *     await client.counterparts.bankAccounts.makeDefaultById("bank_account_id", "counterpart_id")
      */
-    public async makeDefaultById(
+    public makeDefaultById(
         bankAccountId: string,
         counterpartId: string,
-        requestOptions?: BankAccounts.RequestOptions
-    ): Promise<unknown> {
+        requestOptions?: BankAccounts.RequestOptions,
+    ): core.HttpResponsePromise<unknown> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__makeDefaultById(bankAccountId, counterpartId, requestOptions),
+        );
+    }
+
+    private async __makeDefaultById(
+        bankAccountId: string,
+        counterpartId: string,
+        requestOptions?: BankAccounts.RequestOptions,
+    ): Promise<core.WithRawResponse<unknown>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts/${encodeURIComponent(
-                    bankAccountId
-                )}/make_default`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/bank_accounts/${encodeURIComponent(bankAccountId)}/make_default`,
             ),
             method: "POST",
             headers: {
@@ -491,19 +582,20 @@ export class BankAccounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body;
+            return { data: _response.body, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -513,14 +605,16 @@ export class BankAccounts {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /counterparts/{counterpart_id}/bank_accounts/{bank_account_id}/make_default."
+                    "Timeout exceeded when calling POST /counterparts/{counterpart_id}/bank_accounts/{bank_account_id}/make_default.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

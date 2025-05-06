@@ -11,6 +11,16 @@ interface FormDataRequest<Body> {
 function isNamedValue(value: unknown): value is { name: string } {
     return typeof value === "object" && value != null && "name" in value;
 }
+function isPathedValue(value: unknown): value is { path: unknown } {
+    return typeof value === "object" && value != null && "path" in value;
+}
+
+function getLastPathSegment(pathStr: string): string {
+    const lastForwardSlash = pathStr.lastIndexOf("/");
+    const lastBackSlash = pathStr.lastIndexOf("\\");
+    const lastSlashIndex = Math.max(lastForwardSlash, lastBackSlash);
+    return lastSlashIndex >= 0 ? pathStr.substring(lastSlashIndex + 1) : pathStr;
+}
 
 export interface CrossPlatformFormData {
     setup(): Promise<void>;
@@ -55,10 +65,21 @@ export class Node18FormData implements CrossPlatformFormData {
         this.fd?.append(key, value);
     }
 
-    public async appendFile(key: string, value: unknown, fileName?: string): Promise<void> {
-        if (fileName == null && isNamedValue(value)) {
-            fileName = value.name;
+    private getFileName(value: any, filename?: string): string | undefined {
+        if (filename != null) {
+            return filename;
         }
+        if (isNamedValue(value)) {
+            return value.name;
+        }
+        if (isPathedValue(value) && value.path) {
+            return getLastPathSegment(value.path.toString());
+        }
+        return undefined;
+    }
+
+    public async appendFile(key: string, value: unknown, fileName?: string): Promise<void> {
+        fileName = this.getFileName(value, fileName);
 
         if (value instanceof Blob) {
             this.fd?.append(key, value, fileName);
@@ -97,7 +118,7 @@ export type Node16FormDataFd =
                         filename?: string;
                         filepath?: string;
                         contentType?: string;
-                    }
+                    },
           ): void;
 
           getHeaders(): Record<string, string>;
@@ -118,10 +139,21 @@ export class Node16FormData implements CrossPlatformFormData {
         this.fd?.append(key, value);
     }
 
-    public async appendFile(key: string, value: unknown, fileName?: string): Promise<void> {
-        if (fileName == null && isNamedValue(value)) {
-            fileName = value.name;
+    private getFileName(value: any, filename?: string): string | undefined {
+        if (filename != null) {
+            return filename;
         }
+        if (isNamedValue(value)) {
+            return value.name;
+        }
+        if (isPathedValue(value) && value.path) {
+            return getLastPathSegment(value.path.toString());
+        }
+        return undefined;
+    }
+
+    public async appendFile(key: string, value: unknown, fileName?: string): Promise<void> {
+        fileName = this.getFileName(value, fileName);
 
         let bufferedValue;
         if (value instanceof Blob) {
@@ -161,9 +193,25 @@ export class WebFormData implements CrossPlatformFormData {
         this.fd?.append(key, value);
     }
 
+    private getFileName(value: any, filename?: string): string | undefined {
+        if (filename != null) {
+            return filename;
+        }
+        if (isNamedValue(value)) {
+            return value.name;
+        }
+        if (isPathedValue(value) && value.path) {
+            return getLastPathSegment(value.path.toString());
+        }
+        return undefined;
+    }
+
     public async appendFile(key: string, value: any, fileName?: string): Promise<void> {
-        if (fileName == null && isNamedValue(value)) {
-            fileName = value.name;
+        fileName = this.getFileName(value, fileName);
+
+        if (value instanceof Blob) {
+            this.fd?.append(key, value, fileName);
+            return;
         }
         this.fd?.append(key, new Blob([value]), fileName);
     }

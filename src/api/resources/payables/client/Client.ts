@@ -12,8 +12,10 @@ import { Blob } from "buffer";
 import { LineItems } from "../resources/lineItems/client/Client";
 
 export declare namespace Payables {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -22,7 +24,7 @@ export declare namespace Payables {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -39,7 +41,13 @@ export declare namespace Payables {
 }
 
 export class Payables {
+    protected _lineItems: LineItems | undefined;
+
     constructor(protected readonly _options: Payables.Options) {}
+
+    public get lineItems(): LineItems {
+        return (this._lineItems ??= new LineItems(this._options));
+    }
 
     /**
      * Lists all payables from the connected entity.
@@ -88,10 +96,17 @@ export class Payables {
      * @example
      *     await client.payables.get()
      */
-    public async get(
+    public get(
         request: Monite.PayablesGetRequest = {},
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayablePaginationResponse> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayablePaginationResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.PayablesGetRequest = {},
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayablePaginationResponse>> {
         const {
             order,
             limit,
@@ -124,6 +139,11 @@ export class Payables {
             due_date__lt: dueDateLt,
             due_date__gte: dueDateGte,
             due_date__lte: dueDateLte,
+            issued_at: issuedAt,
+            issued_at__gt: issuedAtGt,
+            issued_at__lt: issuedAtLt,
+            issued_at__gte: issuedAtGte,
+            issued_at__lte: issuedAtLte,
             document_id: documentId,
             document_id__contains: documentIdContains,
             document_id__icontains: documentIdIcontains,
@@ -134,9 +154,13 @@ export class Payables {
             line_item_id: lineItemId,
             purchase_order_id: purchaseOrderId,
             project_id: projectId,
+            project_id__in: projectIdIn,
             tag_ids: tagIds,
+            tag_ids__not_in: tagIdsNotIn,
+            origin,
+            has_file: hasFile,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -269,6 +293,26 @@ export class Payables {
             _queryParams["due_date__lte"] = dueDateLte;
         }
 
+        if (issuedAt != null) {
+            _queryParams["issued_at"] = issuedAt;
+        }
+
+        if (issuedAtGt != null) {
+            _queryParams["issued_at__gt"] = issuedAtGt;
+        }
+
+        if (issuedAtLt != null) {
+            _queryParams["issued_at__lt"] = issuedAtLt;
+        }
+
+        if (issuedAtGte != null) {
+            _queryParams["issued_at__gte"] = issuedAtGte;
+        }
+
+        if (issuedAtLte != null) {
+            _queryParams["issued_at__lte"] = issuedAtLte;
+        }
+
         if (documentId != null) {
             _queryParams["document_id"] = documentId;
         }
@@ -309,6 +353,14 @@ export class Payables {
             _queryParams["project_id"] = projectId;
         }
 
+        if (projectIdIn != null) {
+            if (Array.isArray(projectIdIn)) {
+                _queryParams["project_id__in"] = projectIdIn.map((item) => item);
+            } else {
+                _queryParams["project_id__in"] = projectIdIn;
+            }
+        }
+
         if (tagIds != null) {
             if (Array.isArray(tagIds)) {
                 _queryParams["tag_ids"] = tagIds.map((item) => item);
@@ -317,10 +369,28 @@ export class Payables {
             }
         }
 
+        if (tagIdsNotIn != null) {
+            if (Array.isArray(tagIdsNotIn)) {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn.map((item) => item);
+            } else {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn;
+            }
+        }
+
+        if (origin != null) {
+            _queryParams["origin"] = origin;
+        }
+
+        if (hasFile != null) {
+            _queryParams["has_file"] = hasFile.toString();
+        }
+
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payables"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payables",
             ),
             method: "GET",
             headers: {
@@ -346,27 +416,28 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayablePaginationResponse;
+            return { data: _response.body as Monite.PayablePaginationResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
+                    throw new Monite.NotAcceptableError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -376,12 +447,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -407,14 +480,23 @@ export class Payables {
      * @example
      *     await client.payables.create()
      */
-    public async create(
+    public create(
         request: Monite.PayableUploadWithDataSchema = {},
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.PayableUploadWithDataSchema = {},
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payables"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payables",
             ),
             method: "POST",
             headers: {
@@ -440,25 +522,26 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -468,12 +551,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payables.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -494,10 +579,17 @@ export class Payables {
      * @example
      *     await client.payables.getAnalytics()
      */
-    public async getAnalytics(
+    public getAnalytics(
         request: Monite.PayablesGetAnalyticsRequest = {},
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableAggregatedDataResponse> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableAggregatedDataResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getAnalytics(request, requestOptions));
+    }
+
+    private async __getAnalytics(
+        request: Monite.PayablesGetAnalyticsRequest = {},
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableAggregatedDataResponse>> {
         const {
             created_at__gt: createdAtGt,
             created_at__lt: createdAtLt,
@@ -526,6 +618,11 @@ export class Payables {
             due_date__lt: dueDateLt,
             due_date__gte: dueDateGte,
             due_date__lte: dueDateLte,
+            issued_at: issuedAt,
+            issued_at__gt: issuedAtGt,
+            issued_at__lt: issuedAtLt,
+            issued_at__gte: issuedAtGte,
+            issued_at__lte: issuedAtLte,
             document_id: documentId,
             document_id__contains: documentIdContains,
             document_id__icontains: documentIdIcontains,
@@ -536,9 +633,13 @@ export class Payables {
             line_item_id: lineItemId,
             purchase_order_id: purchaseOrderId,
             project_id: projectId,
+            project_id__in: projectIdIn,
             tag_ids: tagIds,
+            tag_ids__not_in: tagIdsNotIn,
+            origin,
+            has_file: hasFile,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (createdAtGt != null) {
             _queryParams["created_at__gt"] = createdAtGt;
         }
@@ -655,6 +756,26 @@ export class Payables {
             _queryParams["due_date__lte"] = dueDateLte;
         }
 
+        if (issuedAt != null) {
+            _queryParams["issued_at"] = issuedAt;
+        }
+
+        if (issuedAtGt != null) {
+            _queryParams["issued_at__gt"] = issuedAtGt;
+        }
+
+        if (issuedAtLt != null) {
+            _queryParams["issued_at__lt"] = issuedAtLt;
+        }
+
+        if (issuedAtGte != null) {
+            _queryParams["issued_at__gte"] = issuedAtGte;
+        }
+
+        if (issuedAtLte != null) {
+            _queryParams["issued_at__lte"] = issuedAtLte;
+        }
+
         if (documentId != null) {
             _queryParams["document_id"] = documentId;
         }
@@ -695,6 +816,14 @@ export class Payables {
             _queryParams["project_id"] = projectId;
         }
 
+        if (projectIdIn != null) {
+            if (Array.isArray(projectIdIn)) {
+                _queryParams["project_id__in"] = projectIdIn.map((item) => item);
+            } else {
+                _queryParams["project_id__in"] = projectIdIn;
+            }
+        }
+
         if (tagIds != null) {
             if (Array.isArray(tagIds)) {
                 _queryParams["tag_ids"] = tagIds.map((item) => item);
@@ -703,10 +832,28 @@ export class Payables {
             }
         }
 
+        if (tagIdsNotIn != null) {
+            if (Array.isArray(tagIdsNotIn)) {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn.map((item) => item);
+            } else {
+                _queryParams["tag_ids__not_in"] = tagIdsNotIn;
+            }
+        }
+
+        if (origin != null) {
+            _queryParams["origin"] = origin;
+        }
+
+        if (hasFile != null) {
+            _queryParams["has_file"] = hasFile.toString();
+        }
+
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payables/analytics"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payables/analytics",
             ),
             method: "GET",
             headers: {
@@ -732,23 +879,24 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableAggregatedDataResponse;
+            return { data: _response.body as Monite.PayableAggregatedDataResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -758,12 +906,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables/analytics.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -784,17 +934,26 @@ export class Payables {
      * @example
      *     await client.payables.uploadFromFile(fs.createReadStream("/path/to/your/file"))
      */
-    public async uploadFromFile(
+    public uploadFromFile(
         file: File | fs.ReadStream | Blob,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__uploadFromFile(file, requestOptions));
+    }
+
+    private async __uploadFromFile(
+        file: File | fs.ReadStream | Blob,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _request = await core.newFormData();
         await _request.appendFile("file", file);
         const _maybeEncodedRequest = await _request.getRequest();
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payables/upload_from_file"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payables/upload_from_file",
             ),
             method: "POST",
             headers: {
@@ -821,27 +980,28 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -851,12 +1011,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payables/upload_from_file.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -875,11 +1037,21 @@ export class Payables {
      * @example
      *     await client.payables.getValidations()
      */
-    public async getValidations(requestOptions?: Payables.RequestOptions): Promise<Monite.PayableValidationsResource> {
+    public getValidations(
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableValidationsResource> {
+        return core.HttpResponsePromise.fromPromise(this.__getValidations(requestOptions));
+    }
+
+    private async __getValidations(
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableValidationsResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payables/validations"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payables/validations",
             ),
             method: "GET",
             headers: {
@@ -904,25 +1076,26 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableValidationsResource;
+            return { data: _response.body as Monite.PayableValidationsResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -932,12 +1105,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables/validations.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -959,14 +1134,23 @@ export class Payables {
      *         required_fields: ["currency"]
      *     })
      */
-    public async updateValidations(
+    public updateValidations(
         request: Monite.PayableValidationsUpdateRequest,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableValidationsResource> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableValidationsResource> {
+        return core.HttpResponsePromise.fromPromise(this.__updateValidations(request, requestOptions));
+    }
+
+    private async __updateValidations(
+        request: Monite.PayableValidationsUpdateRequest,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableValidationsResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payables/validations"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payables/validations",
             ),
             method: "PUT",
             headers: {
@@ -992,25 +1176,26 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableValidationsResource;
+            return { data: _response.body as Monite.PayableValidationsResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1020,12 +1205,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling PUT /payables/validations.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1044,13 +1231,21 @@ export class Payables {
      * @example
      *     await client.payables.resetValidations()
      */
-    public async resetValidations(
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableValidationsResource> {
+    public resetValidations(
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableValidationsResource> {
+        return core.HttpResponsePromise.fromPromise(this.__resetValidations(requestOptions));
+    }
+
+    private async __resetValidations(
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableValidationsResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payables/validations/reset"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payables/validations/reset",
             ),
             method: "POST",
             headers: {
@@ -1075,25 +1270,26 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableValidationsResource;
+            return { data: _response.body as Monite.PayableValidationsResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1103,12 +1299,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payables/validations/reset.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1125,13 +1323,21 @@ export class Payables {
      * @example
      *     await client.payables.getVariables()
      */
-    public async getVariables(
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableTemplatesVariablesObjectList> {
+    public getVariables(
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableTemplatesVariablesObjectList> {
+        return core.HttpResponsePromise.fromPromise(this.__getVariables(requestOptions));
+    }
+
+    private async __getVariables(
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableTemplatesVariablesObjectList>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payables/variables"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payables/variables",
             ),
             method: "GET",
             headers: {
@@ -1156,21 +1362,25 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableTemplatesVariablesObjectList;
+            return {
+                data: _response.body as Monite.PayableTemplatesVariablesObjectList,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1180,12 +1390,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables/variables.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1206,14 +1418,23 @@ export class Payables {
      * @example
      *     await client.payables.getById("payable_id")
      */
-    public async getById(
+    public getById(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(payableId, requestOptions));
+    }
+
+    private async __getById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}`,
             ),
             method: "GET",
             headers: {
@@ -1238,27 +1459,28 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1268,12 +1490,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payables/{payable_id}.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1294,11 +1518,20 @@ export class Payables {
      * @example
      *     await client.payables.deleteById("payable_id")
      */
-    public async deleteById(payableId: string, requestOptions?: Payables.RequestOptions): Promise<void> {
+    public deleteById(payableId: string, requestOptions?: Payables.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(payableId, requestOptions));
+    }
+
+    private async __deleteById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -1323,27 +1556,28 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1353,12 +1587,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling DELETE /payables/{payable_id}.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1380,15 +1616,25 @@ export class Payables {
      * @example
      *     await client.payables.updateById("payable_id")
      */
-    public async updateById(
+    public updateById(
         payableId: string,
         request: Monite.PayableUpdateSchema = {},
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(payableId, request, requestOptions));
+    }
+
+    private async __updateById(
+        payableId: string,
+        request: Monite.PayableUpdateSchema = {},
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -1414,27 +1660,28 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1444,12 +1691,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling PATCH /payables/{payable_id}.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1471,14 +1720,23 @@ export class Payables {
      * @example
      *     await client.payables.approvePaymentById("payable_id")
      */
-    public async approvePaymentById(
+    public approvePaymentById(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__approvePaymentById(payableId, requestOptions));
+    }
+
+    private async __approvePaymentById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/approve_payment_operation`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/approve_payment_operation`,
             ),
             method: "POST",
             headers: {
@@ -1503,29 +1761,30 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1535,14 +1794,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/approve_payment_operation."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/approve_payment_operation.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1564,18 +1825,28 @@ export class Payables {
      * @example
      *     await client.payables.attachFileById(fs.createReadStream("/path/to/your/file"), "payable_id")
      */
-    public async attachFileById(
+    public attachFileById(
         file: File | fs.ReadStream | Blob,
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__attachFileById(file, payableId, requestOptions));
+    }
+
+    private async __attachFileById(
+        file: File | fs.ReadStream | Blob,
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _request = await core.newFormData();
         await _request.appendFile("file", file);
         const _maybeEncodedRequest = await _request.getRequest();
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/attach_file`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/attach_file`,
             ),
             method: "POST",
             headers: {
@@ -1602,27 +1873,28 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1632,14 +1904,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/attach_file."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/attach_file.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1661,14 +1935,23 @@ export class Payables {
      * @example
      *     await client.payables.cancelById("payable_id")
      */
-    public async cancelById(
+    public cancelById(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__cancelById(payableId, requestOptions));
+    }
+
+    private async __cancelById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/cancel`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/cancel`,
             ),
             method: "POST",
             headers: {
@@ -1693,29 +1976,30 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1725,14 +2009,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/cancel."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/cancel.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1754,14 +2040,23 @@ export class Payables {
      * @example
      *     await client.payables.postPayablesIdCancelOcr("payable_id")
      */
-    public async postPayablesIdCancelOcr(
+    public postPayablesIdCancelOcr(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__postPayablesIdCancelOcr(payableId, requestOptions));
+    }
+
+    private async __postPayablesIdCancelOcr(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/cancel_ocr`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/cancel_ocr`,
             ),
             method: "POST",
             headers: {
@@ -1786,29 +2081,30 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1818,14 +2114,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/cancel_ocr."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/cancel_ocr.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1869,15 +2167,25 @@ export class Payables {
      * @example
      *     await client.payables.markAsPaidById("payable_id")
      */
-    public async markAsPaidById(
+    public markAsPaidById(
         payableId: string,
         request: Monite.CommentPayload = {},
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__markAsPaidById(payableId, request, requestOptions));
+    }
+
+    private async __markAsPaidById(
+        payableId: string,
+        request: Monite.CommentPayload = {},
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/mark_as_paid`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/mark_as_paid`,
             ),
             method: "POST",
             headers: {
@@ -1903,29 +2211,30 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -1935,14 +2244,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/mark_as_paid."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/mark_as_paid.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -1990,15 +2301,25 @@ export class Payables {
      *         amount_paid: 1
      *     })
      */
-    public async markAsPartiallyPaidById(
+    public markAsPartiallyPaidById(
         payableId: string,
         request: Monite.PartiallyPaidPayload,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__markAsPartiallyPaidById(payableId, request, requestOptions));
+    }
+
+    private async __markAsPartiallyPaidById(
+        payableId: string,
+        request: Monite.PartiallyPaidPayload,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/mark_as_partially_paid`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/mark_as_partially_paid`,
             ),
             method: "POST",
             headers: {
@@ -2024,29 +2345,30 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -2056,14 +2378,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/mark_as_partially_paid."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/mark_as_partially_paid.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -2085,14 +2409,23 @@ export class Payables {
      * @example
      *     await client.payables.rejectById("payable_id")
      */
-    public async rejectById(
+    public rejectById(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__rejectById(payableId, requestOptions));
+    }
+
+    private async __rejectById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/reject`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/reject`,
             ),
             method: "POST",
             headers: {
@@ -2117,29 +2450,30 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -2149,14 +2483,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/reject."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/reject.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -2178,14 +2514,23 @@ export class Payables {
      * @example
      *     await client.payables.reopenById("payable_id")
      */
-    public async reopenById(
+    public reopenById(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__reopenById(payableId, requestOptions));
+    }
+
+    private async __reopenById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/reopen`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/reopen`,
             ),
             method: "POST",
             headers: {
@@ -2210,29 +2555,30 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -2242,14 +2588,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/reopen."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/reopen.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -2271,14 +2619,23 @@ export class Payables {
      * @example
      *     await client.payables.submitForApprovalById("payable_id")
      */
-    public async submitForApprovalById(
+    public submitForApprovalById(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableResponseSchema> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__submitForApprovalById(payableId, requestOptions));
+    }
+
+    private async __submitForApprovalById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/submit_for_approval`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/submit_for_approval`,
             ),
             method: "POST",
             headers: {
@@ -2303,29 +2660,30 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableResponseSchema;
+            return { data: _response.body as Monite.PayableResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -2335,14 +2693,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/submit_for_approval."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/submit_for_approval.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -2363,14 +2723,23 @@ export class Payables {
      * @example
      *     await client.payables.validateById("payable_id")
      */
-    public async validateById(
+    public validateById(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.PayableValidationResponse> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PayableValidationResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__validateById(payableId, requestOptions));
+    }
+
+    private async __validateById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PayableValidationResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payables/${encodeURIComponent(payableId)}/validate`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payables/${encodeURIComponent(payableId)}/validate`,
             ),
             method: "POST",
             headers: {
@@ -2395,27 +2764,28 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PayableValidationResponse;
+            return { data: _response.body as Monite.PayableValidationResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -2425,22 +2795,18 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payables/{payable_id}/validate."
+                    "Timeout exceeded when calling POST /payables/{payable_id}/validate.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
-    }
-
-    protected _lineItems: LineItems | undefined;
-
-    public get lineItems(): LineItems {
-        return (this._lineItems ??= new LineItems(this._options));
     }
 
     protected async _getAuthorizationHeader(): Promise<string | undefined> {

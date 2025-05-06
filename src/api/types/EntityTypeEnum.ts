@@ -3,7 +3,6 @@
  */
 
 export type EntityTypeEnum = "individual" | "organization";
-
 export const EntityTypeEnum = {
     Individual: "individual",
     Organization: "organization",

@@ -48,4 +48,5 @@ export interface PurchaseOrdersGetRequest {
     "counterpart.name"?: string;
     currency?: Monite.CurrencyEnum;
     currency__in?: Monite.CurrencyEnum | Monite.CurrencyEnum[];
+    project_id?: string;
 }

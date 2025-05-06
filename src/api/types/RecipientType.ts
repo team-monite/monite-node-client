@@ -3,7 +3,6 @@
  */
 
 export type RecipientType = "entity" | "counterpart";
-
 export const RecipientType = {
     Entity: "entity",
     Counterpart: "counterpart",

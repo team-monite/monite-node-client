@@ -31,6 +31,8 @@ export interface ReceivableFacadeCreateQuotePayload {
     entity_vat_id_id?: string;
     /** The date (in ISO 8601 format) until which the quote is valid. */
     expiry_date?: string;
+    /** Optional text displayed below the line items table in the PDF. */
+    footer?: string;
     line_items: Monite.LineItem[];
     /** A note with additional information for a receivable */
     memo?: string;

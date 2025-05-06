@@ -3,7 +3,6 @@
  */
 
 export type RoleCursorFields = "updated_at" | "created_at";
-
 export const RoleCursorFields = {
     UpdatedAt: "updated_at",
     CreatedAt: "created_at",

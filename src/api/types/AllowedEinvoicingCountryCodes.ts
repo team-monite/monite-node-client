@@ -3,7 +3,6 @@
  */
 
 export type AllowedEinvoicingCountryCodes = "DE" | "NL" | "BE";
-
 export const AllowedEinvoicingCountryCodes = {
     De: "DE",
     Nl: "NL",

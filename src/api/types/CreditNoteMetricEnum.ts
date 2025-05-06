@@ -3,7 +3,6 @@
  */
 
 export type CreditNoteMetricEnum = "id" | "total_amount";
-
 export const CreditNoteMetricEnum = {
     Id: "id",
     TotalAmount: "total_amount",

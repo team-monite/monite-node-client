@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace PaymentMethods {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace PaymentMethods {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,14 +52,23 @@ export class PaymentMethods {
      * @example
      *     await client.entities.paymentMethods.get("entity_id")
      */
-    public async get(
+    public get(
         entityId: string,
-        requestOptions?: PaymentMethods.RequestOptions
-    ): Promise<Monite.OnboardingPaymentMethodsResponse> {
+        requestOptions?: PaymentMethods.RequestOptions,
+    ): core.HttpResponsePromise<Monite.OnboardingPaymentMethodsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(entityId, requestOptions));
+    }
+
+    private async __get(
+        entityId: string,
+        requestOptions?: PaymentMethods.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.OnboardingPaymentMethodsResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/payment_methods`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/payment_methods`,
             ),
             method: "GET",
             headers: {
@@ -82,19 +93,23 @@ export class PaymentMethods {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.OnboardingPaymentMethodsResponse;
+            return {
+                data: _response.body as Monite.OnboardingPaymentMethodsResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -104,14 +119,16 @@ export class PaymentMethods {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /entities/{entity_id}/payment_methods."
+                    "Timeout exceeded when calling GET /entities/{entity_id}/payment_methods.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -129,15 +146,25 @@ export class PaymentMethods {
      * @example
      *     await client.entities.paymentMethods.set("entity_id")
      */
-    public async set(
+    public set(
         entityId: string,
         request: Monite.entities.EnabledPaymentMethods = {},
-        requestOptions?: PaymentMethods.RequestOptions
-    ): Promise<Monite.OnboardingPaymentMethodsResponse> {
+        requestOptions?: PaymentMethods.RequestOptions,
+    ): core.HttpResponsePromise<Monite.OnboardingPaymentMethodsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__set(entityId, request, requestOptions));
+    }
+
+    private async __set(
+        entityId: string,
+        request: Monite.entities.EnabledPaymentMethods = {},
+        requestOptions?: PaymentMethods.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.OnboardingPaymentMethodsResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/payment_methods`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/payment_methods`,
             ),
             method: "PUT",
             headers: {
@@ -163,19 +190,23 @@ export class PaymentMethods {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.OnboardingPaymentMethodsResponse;
+            return {
+                data: _response.body as Monite.OnboardingPaymentMethodsResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -185,14 +216,16 @@ export class PaymentMethods {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PUT /entities/{entity_id}/payment_methods."
+                    "Timeout exceeded when calling PUT /entities/{entity_id}/payment_methods.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

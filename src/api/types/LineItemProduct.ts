@@ -7,6 +7,8 @@ import * as Monite from "../index";
 export interface LineItemProduct {
     /** Unique ID of the product. */
     id: string;
+    /** Unique identifier of the accounting tax rate object. */
+    accounting_tax_rate_id?: string;
     /** Description of the product. */
     description?: string;
     /** Indicates whether the product is inline */

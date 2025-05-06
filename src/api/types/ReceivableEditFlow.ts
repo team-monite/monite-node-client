@@ -3,7 +3,6 @@
  */
 
 export type ReceivableEditFlow = "compliant" | "partially_compliant" | "non_compliant";
-
 export const ReceivableEditFlow = {
     Compliant: "compliant",
     PartiallyCompliant: "partially_compliant",

@@ -3,7 +3,6 @@
  */
 
 export type EntityCursorFields = "created_at" | "updated_at";
-
 export const EntityCursorFields = {
     CreatedAt: "created_at",
     UpdatedAt: "updated_at",

@@ -3,7 +3,6 @@
  */
 
 export type ApprovalPolicyCursorFields = "created_at" | "updated_at";
-
 export const ApprovalPolicyCursorFields = {
     CreatedAt: "created_at",
     UpdatedAt: "updated_at",

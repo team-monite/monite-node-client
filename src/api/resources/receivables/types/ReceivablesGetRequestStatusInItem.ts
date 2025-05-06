@@ -4,7 +4,9 @@
 
 export type ReceivablesGetRequestStatusInItem =
     | "draft"
+    | "issuing"
     | "issued"
+    | "failed"
     | "accepted"
     | "expired"
     | "declined"
@@ -14,10 +16,11 @@ export type ReceivablesGetRequestStatusInItem =
     | "overdue"
     | "uncollectible"
     | "canceled";
-
 export const ReceivablesGetRequestStatusInItem = {
     Draft: "draft",
+    Issuing: "issuing",
     Issued: "issued",
+    Failed: "failed",
     Accepted: "accepted",
     Expired: "expired",
     Declined: "declined",

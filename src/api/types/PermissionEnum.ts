@@ -3,7 +3,6 @@
  */
 
 export type PermissionEnum = "allowed" | "allowed_for_own" | "not_allowed";
-
 export const PermissionEnum = {
     Allowed: "allowed",
     AllowedForOwn: "allowed_for_own",

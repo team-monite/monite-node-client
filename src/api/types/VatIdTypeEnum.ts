@@ -50,7 +50,6 @@ export type VatIdTypeEnum =
     | "us_ein"
     | "za_vat"
     | "unknown";
-
 export const VatIdTypeEnum = {
     AeTrn: "ae_trn",
     AuAbn: "au_abn",

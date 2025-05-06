@@ -22,6 +22,10 @@ export interface CreditNoteResponsePayload {
     counterpart_business_type?: string;
     /** Additional information about counterpart contacts. */
     counterpart_contact?: Monite.ReceivableCounterpartContact;
+    /** E-invoicing credentials of the counterpart */
+    counterpart_einvoicing_credentials?: Monite.EinvoicingCredentials;
+    /** The external reference of the counterpart. */
+    counterpart_external_reference?: string;
     /** Unique ID of the counterpart. */
     counterpart_id: string;
     /** A legal name of a counterpart it is an organization or first and last name if it is an individual */
@@ -47,6 +51,10 @@ export interface CreditNoteResponsePayload {
     document_id?: string;
     /** Optional field representing date until which invoice should be paid */
     due_date?: string;
+    /** Error that was returned by E-invoicing */
+    einvoice_error_comment?: string;
+    /** E-invoice XML file that was sent to the counterpart via an e-invoicing network. Available only if `is_einvoice` is `true`. */
+    einvoice_file_url?: string;
     entity: Monite.CreditNoteResponsePayloadEntity;
     entity_address: Monite.ReceivableEntityAddressSchema;
     entity_bank_account?: Monite.ReceivablesRepresentationOfEntityBankAccount;
@@ -57,11 +65,15 @@ export interface CreditNoteResponsePayload {
     file_language: Monite.LanguageCodeEnum;
     /** The receivable's PDF URL in the counterpart's default language. */
     file_url?: string;
+    /** Optional text displayed below the line items table in the PDF. */
+    footer?: string;
     /** Optional field for the issue of the entry. */
     issue_date?: string;
     line_items: Monite.ResponseItem[];
     /** A note with additional information for a receivable. */
     memo?: string;
+    /** E-invoicing credentials of the entity */
+    network_credentials?: Monite.EinvoicingCredentials;
     /** The language of the entity's copy of the PDF file (`original_file_url`). The value matches the entity's `language` at the time when this PDF file was generated. */
     original_file_language: Monite.LanguageCodeEnum;
     /** The receivable's PDF URL in the entity's default language. */
@@ -76,6 +88,8 @@ export interface CreditNoteResponsePayload {
     status: Monite.CreditNoteStateEnum;
     /** The subtotal (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units). */
     subtotal?: number;
+    /** The subtotal including VAT but without invoice discount, in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    subtotal_after_vat?: number;
     /** The list of tags for this receivable. */
     tags?: Monite.TagReadSchema[];
     /** Total price of the receivable in [minor units](https://docs.monite.com/references/currencies#minor-units). Calculated as a subtotal + total_vat_amount. */
@@ -92,6 +106,8 @@ export interface CreditNoteResponsePayload {
     vat_exempt?: boolean;
     /** The reason for the VAT exemption, if applicable. */
     vat_exemption_rationale?: string;
+    /** Indicates whether the discount is applied to the VAT-inclusive or VAT-exclusive amount. */
+    vat_inclusive_discount_mode?: Monite.VatModeEnum;
     /** Defines whether the prices of products in receivable will already include VAT or not. */
     vat_mode?: Monite.VatModeEnum;
     /** The amount of tax withheld in percent minor units */

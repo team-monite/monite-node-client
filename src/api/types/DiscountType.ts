@@ -3,7 +3,6 @@
  */
 
 export type DiscountType = "amount" | "percentage";
-
 export const DiscountType = {
     Amount: "amount",
     Percentage: "percentage",

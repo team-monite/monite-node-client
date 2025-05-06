@@ -3,7 +3,6 @@
  */
 
 export type CreditNoteCursorFields = "id" | "created_at";
-
 export const CreditNoteCursorFields = {
     Id: "id",
     CreatedAt: "created_at",

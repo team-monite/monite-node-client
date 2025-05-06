@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace PaymentRecords {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace PaymentRecords {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -48,10 +50,17 @@ export class PaymentRecords {
      * @example
      *     await client.paymentRecords.get()
      */
-    public async get(
+    public get(
         request: Monite.PaymentRecordsGetRequest = {},
-        requestOptions?: PaymentRecords.RequestOptions
-    ): Promise<Monite.PaymentRecordResponseList> {
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentRecordResponseList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.PaymentRecordsGetRequest = {},
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentRecordResponseList>> {
         const {
             order,
             limit,
@@ -59,8 +68,23 @@ export class PaymentRecords {
             sort,
             is_external: isExternal,
             object_id: objectId,
+            object_type: objectType,
+            created_at__gt: createdAtGt,
+            created_at__lt: createdAtLt,
+            updated_at__gt: updatedAtGt,
+            updated_at__lt: updatedAtLt,
+            paid_at__gt: paidAtGt,
+            paid_at__lt: paidAtLt,
+            planned_payment_date: plannedPaymentDate,
+            planned_payment_date__gt: plannedPaymentDateGt,
+            planned_payment_date__lt: plannedPaymentDateLt,
+            planned_payment_date__gte: plannedPaymentDateGte,
+            planned_payment_date__lte: plannedPaymentDateLte,
+            status,
+            payment_intent_status: paymentIntentStatus,
+            payment_method: paymentMethod,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -85,10 +109,72 @@ export class PaymentRecords {
             _queryParams["object_id"] = objectId;
         }
 
+        if (objectType != null) {
+            _queryParams["object_type"] = objectType;
+        }
+
+        if (createdAtGt != null) {
+            _queryParams["created_at__gt"] = createdAtGt;
+        }
+
+        if (createdAtLt != null) {
+            _queryParams["created_at__lt"] = createdAtLt;
+        }
+
+        if (updatedAtGt != null) {
+            _queryParams["updated_at__gt"] = updatedAtGt;
+        }
+
+        if (updatedAtLt != null) {
+            _queryParams["updated_at__lt"] = updatedAtLt;
+        }
+
+        if (paidAtGt != null) {
+            _queryParams["paid_at__gt"] = paidAtGt;
+        }
+
+        if (paidAtLt != null) {
+            _queryParams["paid_at__lt"] = paidAtLt;
+        }
+
+        if (plannedPaymentDate != null) {
+            _queryParams["planned_payment_date"] = plannedPaymentDate;
+        }
+
+        if (plannedPaymentDateGt != null) {
+            _queryParams["planned_payment_date__gt"] = plannedPaymentDateGt;
+        }
+
+        if (plannedPaymentDateLt != null) {
+            _queryParams["planned_payment_date__lt"] = plannedPaymentDateLt;
+        }
+
+        if (plannedPaymentDateGte != null) {
+            _queryParams["planned_payment_date__gte"] = plannedPaymentDateGte;
+        }
+
+        if (plannedPaymentDateLte != null) {
+            _queryParams["planned_payment_date__lte"] = plannedPaymentDateLte;
+        }
+
+        if (status != null) {
+            _queryParams["status"] = status;
+        }
+
+        if (paymentIntentStatus != null) {
+            _queryParams["payment_intent_status"] = paymentIntentStatus;
+        }
+
+        if (paymentMethod != null) {
+            _queryParams["payment_method"] = paymentMethod;
+        }
+
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payment_records"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payment_records",
             ),
             method: "GET",
             headers: {
@@ -114,19 +200,20 @@ export class PaymentRecords {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PaymentRecordResponseList;
+            return { data: _response.body as Monite.PaymentRecordResponseList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -136,12 +223,14 @@ export class PaymentRecords {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payment_records.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -161,18 +250,26 @@ export class PaymentRecords {
      *             id: "id",
      *             type: "receivable"
      *         },
-     *         paid_at: "2024-01-15T09:30:00Z",
      *         payment_intent_id: "payment_intent_id"
      *     })
      */
-    public async create(
+    public create(
         request: Monite.PaymentRecordRequest,
-        requestOptions?: PaymentRecords.RequestOptions
-    ): Promise<Monite.PaymentRecordResponse> {
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentRecordResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.PaymentRecordRequest,
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentRecordResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payment_records"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payment_records",
             ),
             method: "POST",
             headers: {
@@ -198,19 +295,20 @@ export class PaymentRecords {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PaymentRecordResponse;
+            return { data: _response.body as Monite.PaymentRecordResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -220,12 +318,14 @@ export class PaymentRecords {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payment_records.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -240,14 +340,23 @@ export class PaymentRecords {
      * @example
      *     await client.paymentRecords.getById("payment_record_id")
      */
-    public async getById(
+    public getById(
         paymentRecordId: string,
-        requestOptions?: PaymentRecords.RequestOptions
-    ): Promise<Monite.PaymentRecordResponse> {
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentRecordResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(paymentRecordId, requestOptions));
+    }
+
+    private async __getById(
+        paymentRecordId: string,
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentRecordResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payment_records/${encodeURIComponent(paymentRecordId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_records/${encodeURIComponent(paymentRecordId)}`,
             ),
             method: "GET",
             headers: {
@@ -272,19 +381,20 @@ export class PaymentRecords {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PaymentRecordResponse;
+            return { data: _response.body as Monite.PaymentRecordResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -294,14 +404,394 @@ export class PaymentRecords {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /payment_records/{payment_record_id}."
+                    "Timeout exceeded when calling GET /payment_records/{payment_record_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * @param {string} paymentRecordId
+     * @param {Monite.PaymentRecordUpdateRequest} request
+     * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.paymentRecords.patchPaymentRecordsId("payment_record_id")
+     */
+    public patchPaymentRecordsId(
+        paymentRecordId: string,
+        request: Monite.PaymentRecordUpdateRequest = {},
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentRecordResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__patchPaymentRecordsId(paymentRecordId, request, requestOptions),
+        );
+    }
+
+    private async __patchPaymentRecordsId(
+        paymentRecordId: string,
+        request: Monite.PaymentRecordUpdateRequest = {},
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentRecordResponse>> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_records/${encodeURIComponent(paymentRecordId)}`,
+            ),
+            method: "PATCH",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: request,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Monite.PaymentRecordResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling PATCH /payment_records/{payment_record_id}.",
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * @param {string} paymentRecordId
+     * @param {Monite.PaymentRecordStatusUpdateRequest} request
+     * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.paymentRecords.postPaymentRecordsIdCancel("payment_record_id", {})
+     */
+    public postPaymentRecordsIdCancel(
+        paymentRecordId: string,
+        request: Monite.PaymentRecordStatusUpdateRequest,
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentRecordResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__postPaymentRecordsIdCancel(paymentRecordId, request, requestOptions),
+        );
+    }
+
+    private async __postPaymentRecordsIdCancel(
+        paymentRecordId: string,
+        request: Monite.PaymentRecordStatusUpdateRequest,
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentRecordResponse>> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_records/${encodeURIComponent(paymentRecordId)}/cancel`,
+            ),
+            method: "POST",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: request,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Monite.PaymentRecordResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling POST /payment_records/{payment_record_id}/cancel.",
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * @param {string} paymentRecordId
+     * @param {Monite.PaymentRecordMarkAsSucceededRequest} request
+     * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.paymentRecords.postPaymentRecordsIdMarkAsSucceeded("payment_record_id", {
+     *         paid_at: "2024-01-15T09:30:00Z"
+     *     })
+     */
+    public postPaymentRecordsIdMarkAsSucceeded(
+        paymentRecordId: string,
+        request: Monite.PaymentRecordMarkAsSucceededRequest,
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentRecordResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__postPaymentRecordsIdMarkAsSucceeded(paymentRecordId, request, requestOptions),
+        );
+    }
+
+    private async __postPaymentRecordsIdMarkAsSucceeded(
+        paymentRecordId: string,
+        request: Monite.PaymentRecordMarkAsSucceededRequest,
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentRecordResponse>> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_records/${encodeURIComponent(paymentRecordId)}/mark_as_succeeded`,
+            ),
+            method: "POST",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: request,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Monite.PaymentRecordResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling POST /payment_records/{payment_record_id}/mark_as_succeeded.",
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * @param {string} paymentRecordId
+     * @param {Monite.PaymentRecordStatusUpdateRequest} request
+     * @param {PaymentRecords.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.paymentRecords.postPaymentRecordsIdStartProcessing("payment_record_id", {})
+     */
+    public postPaymentRecordsIdStartProcessing(
+        paymentRecordId: string,
+        request: Monite.PaymentRecordStatusUpdateRequest,
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentRecordResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__postPaymentRecordsIdStartProcessing(paymentRecordId, request, requestOptions),
+        );
+    }
+
+    private async __postPaymentRecordsIdStartProcessing(
+        paymentRecordId: string,
+        request: Monite.PaymentRecordStatusUpdateRequest,
+        requestOptions?: PaymentRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentRecordResponse>> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_records/${encodeURIComponent(paymentRecordId)}/start_processing`,
+            ),
+            method: "POST",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.2.0",
+                "User-Agent": "@monite/node-client/0.2.0",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: request,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Monite.PaymentRecordResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling POST /payment_records/{payment_record_id}/start_processing.",
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

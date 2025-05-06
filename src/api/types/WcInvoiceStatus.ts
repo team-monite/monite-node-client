@@ -3,6 +3,7 @@
  */
 
 /**
+ * - DRAFT: The invoice is in draft state. The business has not submitted the invoice for funding.
  * - NEW: The business has submitted an invoice and it is under review.
  * - FUNDED: The funds for the invoice have been disbursed. The business is now expected to pay back the funds.
  * - PAID: A payment was made that fully paid off an outstanding invoice.
@@ -10,9 +11,9 @@
  * - REJECTED: An invoice was rejected during the funding step.
  * - DEFAULTED: A payment was not made towards an outstanding invoice.
  */
-export type WcInvoiceStatus = "NEW" | "FUNDED" | "PAID" | "LATE" | "REJECTED" | "DEFAULTED";
-
+export type WcInvoiceStatus = "DRAFT" | "NEW" | "FUNDED" | "PAID" | "LATE" | "REJECTED" | "DEFAULTED";
 export const WcInvoiceStatus = {
+    Draft: "DRAFT",
     New: "NEW",
     Funded: "FUNDED",
     Paid: "PAID",

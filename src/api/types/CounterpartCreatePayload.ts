@@ -13,12 +13,12 @@ export type CounterpartCreatePayload =
     | Monite.CounterpartCreatePayload.Organization
     | Monite.CounterpartCreatePayload.Individual;
 
-export declare namespace CounterpartCreatePayload {
-    interface Organization extends Monite.CounterpartOrganizationRootCreatePayload {
+export namespace CounterpartCreatePayload {
+    export interface Organization extends Monite.CounterpartOrganizationRootCreatePayload {
         type: "organization";
     }
 
-    interface Individual extends Monite.CounterpartIndividualRootCreatePayload {
+    export interface Individual extends Monite.CounterpartIndividualRootCreatePayload {
         type: "individual";
     }
 }

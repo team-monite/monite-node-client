@@ -3,7 +3,6 @@
  */
 
 export type VerificationStatusEnum = "enabled" | "disabled" | "pending";
-
 export const VerificationStatusEnum = {
     Enabled: "enabled",
     Disabled: "disabled",

@@ -3,7 +3,6 @@
  */
 
 export type TagCursorFields = "created_at" | "updated_at";
-
 export const TagCursorFields = {
     CreatedAt: "created_at",
     UpdatedAt: "updated_at",

@@ -3,7 +3,6 @@
  */
 
 export type ProjectCursorFields = "id" | "created_at";
-
 export const ProjectCursorFields = {
     Id: "id",
     CreatedAt: "created_at",

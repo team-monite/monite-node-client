@@ -3,7 +3,6 @@
  */
 
 export type SourceOfPayableDataEnum = "ocr" | "user_specified" | "einvoicing";
-
 export const SourceOfPayableDataEnum = {
     Ocr: "ocr",
     UserSpecified: "user_specified",

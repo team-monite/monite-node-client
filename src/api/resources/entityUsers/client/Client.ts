@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace EntityUsers {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace EntityUsers {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -54,10 +56,17 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.get()
      */
-    public async get(
+    public get(
         request: Monite.EntityUsersGetRequest = {},
-        requestOptions?: EntityUsers.RequestOptions
-    ): Promise<Monite.EntityUserPaginationResponse> {
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityUserPaginationResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.EntityUsersGetRequest = {},
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityUserPaginationResponse>> {
         const {
             order,
             limit,
@@ -76,7 +85,7 @@ export class EntityUsers {
             created_at__gte: createdAtGte,
             created_at__lte: createdAtLte,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -155,8 +164,10 @@ export class EntityUsers {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "entity_users"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "entity_users",
             ),
             method: "GET",
             headers: {
@@ -182,27 +193,28 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityUserPaginationResponse;
+            return { data: _response.body as Monite.EntityUserPaginationResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
+                    throw new Monite.NotAcceptableError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -212,12 +224,14 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /entity_users.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -238,14 +252,23 @@ export class EntityUsers {
      *         login: "login"
      *     })
      */
-    public async create(
+    public create(
         request: Monite.CreateEntityUserRequest,
-        requestOptions?: EntityUsers.RequestOptions
-    ): Promise<Monite.EntityUserResponse> {
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityUserResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.CreateEntityUserRequest,
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityUserResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "entity_users"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "entity_users",
             ),
             method: "POST",
             headers: {
@@ -271,21 +294,22 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityUserResponse;
+            return { data: _response.body as Monite.EntityUserResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -295,12 +319,14 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /entity_users.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -317,11 +343,21 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.getCurrent()
      */
-    public async getCurrent(requestOptions?: EntityUsers.RequestOptions): Promise<Monite.EntityUserResponse> {
+    public getCurrent(
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityUserResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getCurrent(requestOptions));
+    }
+
+    private async __getCurrent(
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityUserResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "entity_users/me"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "entity_users/me",
             ),
             method: "GET",
             headers: {
@@ -346,21 +382,22 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityUserResponse;
+            return { data: _response.body as Monite.EntityUserResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -370,12 +407,14 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /entity_users/me.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -393,14 +432,23 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.updateCurrent()
      */
-    public async updateCurrent(
+    public updateCurrent(
         request: Monite.UpdateMeEntityUserRequest = {},
-        requestOptions?: EntityUsers.RequestOptions
-    ): Promise<Monite.EntityUserResponse> {
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityUserResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__updateCurrent(request, requestOptions));
+    }
+
+    private async __updateCurrent(
+        request: Monite.UpdateMeEntityUserRequest = {},
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityUserResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "entity_users/me"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "entity_users/me",
             ),
             method: "PATCH",
             headers: {
@@ -426,21 +474,22 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityUserResponse;
+            return { data: _response.body as Monite.EntityUserResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -450,12 +499,14 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling PATCH /entity_users/me.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -472,11 +523,21 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.getCurrentEntity()
      */
-    public async getCurrentEntity(requestOptions?: EntityUsers.RequestOptions): Promise<Monite.EntityResponse> {
+    public getCurrentEntity(
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getCurrentEntity(requestOptions));
+    }
+
+    private async __getCurrentEntity(
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "entity_users/my_entity"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "entity_users/my_entity",
             ),
             method: "GET",
             headers: {
@@ -501,21 +562,22 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityResponse;
+            return { data: _response.body as Monite.EntityResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -525,12 +587,14 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /entity_users/my_entity.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -548,14 +612,23 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.updateCurrentEntity({})
      */
-    public async updateCurrentEntity(
+    public updateCurrentEntity(
         request: Monite.UpdateEntityRequest,
-        requestOptions?: EntityUsers.RequestOptions
-    ): Promise<Monite.EntityResponse> {
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__updateCurrentEntity(request, requestOptions));
+    }
+
+    private async __updateCurrentEntity(
+        request: Monite.UpdateEntityRequest,
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "entity_users/my_entity"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "entity_users/my_entity",
             ),
             method: "PATCH",
             headers: {
@@ -581,21 +654,22 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityResponse;
+            return { data: _response.body as Monite.EntityResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -605,12 +679,14 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling PATCH /entity_users/my_entity.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -626,11 +702,19 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.getCurrentRole()
      */
-    public async getCurrentRole(requestOptions?: EntityUsers.RequestOptions): Promise<Monite.RoleResponse> {
+    public getCurrentRole(requestOptions?: EntityUsers.RequestOptions): core.HttpResponsePromise<Monite.RoleResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getCurrentRole(requestOptions));
+    }
+
+    private async __getCurrentRole(
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.RoleResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "entity_users/my_role"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "entity_users/my_role",
             ),
             method: "GET",
             headers: {
@@ -655,19 +739,20 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.RoleResponse;
+            return { data: _response.body as Monite.RoleResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -677,12 +762,14 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /entity_users/my_role.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -700,14 +787,23 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.getById("entity_user_id")
      */
-    public async getById(
+    public getById(
         entityUserId: string,
-        requestOptions?: EntityUsers.RequestOptions
-    ): Promise<Monite.EntityUserResponse> {
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityUserResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(entityUserId, requestOptions));
+    }
+
+    private async __getById(
+        entityUserId: string,
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityUserResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entity_users/${encodeURIComponent(entityUserId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entity_users/${encodeURIComponent(entityUserId)}`,
             ),
             method: "GET",
             headers: {
@@ -732,21 +828,22 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityUserResponse;
+            return { data: _response.body as Monite.EntityUserResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -756,14 +853,16 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /entity_users/{entity_user_id}."
+                    "Timeout exceeded when calling GET /entity_users/{entity_user_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -779,11 +878,23 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.deleteById("entity_user_id")
      */
-    public async deleteById(entityUserId: string, requestOptions?: EntityUsers.RequestOptions): Promise<void> {
+    public deleteById(
+        entityUserId: string,
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(entityUserId, requestOptions));
+    }
+
+    private async __deleteById(
+        entityUserId: string,
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entity_users/${encodeURIComponent(entityUserId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entity_users/${encodeURIComponent(entityUserId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -808,21 +919,22 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -832,14 +944,16 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /entity_users/{entity_user_id}."
+                    "Timeout exceeded when calling DELETE /entity_users/{entity_user_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -858,15 +972,25 @@ export class EntityUsers {
      * @example
      *     await client.entityUsers.updateById("entity_user_id")
      */
-    public async updateById(
+    public updateById(
         entityUserId: string,
         request: Monite.UpdateEntityUserRequest = {},
-        requestOptions?: EntityUsers.RequestOptions
-    ): Promise<Monite.EntityUserResponse> {
+        requestOptions?: EntityUsers.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityUserResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(entityUserId, request, requestOptions));
+    }
+
+    private async __updateById(
+        entityUserId: string,
+        request: Monite.UpdateEntityUserRequest = {},
+        requestOptions?: EntityUsers.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityUserResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entity_users/${encodeURIComponent(entityUserId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entity_users/${encodeURIComponent(entityUserId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -892,21 +1016,22 @@ export class EntityUsers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityUserResponse;
+            return { data: _response.body as Monite.EntityUserResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -916,14 +1041,16 @@ export class EntityUsers {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /entity_users/{entity_user_id}."
+                    "Timeout exceeded when calling PATCH /entity_users/{entity_user_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

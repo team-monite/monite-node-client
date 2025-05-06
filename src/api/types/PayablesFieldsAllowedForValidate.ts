@@ -32,7 +32,6 @@ export type PayablesFieldsAllowedForValidate =
     | "line_items.subtotal"
     | "line_items.total"
     | "line_items.tax_amount";
-
 export const PayablesFieldsAllowedForValidate = {
     Currency: "currency",
     DocumentId: "document_id",

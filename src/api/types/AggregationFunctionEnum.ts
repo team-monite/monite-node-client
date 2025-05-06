@@ -3,7 +3,6 @@
  */
 
 export type AggregationFunctionEnum = "count" | "average" | "summary" | "min" | "max";
-
 export const AggregationFunctionEnum = {
     Count: "count",
     Average: "average",

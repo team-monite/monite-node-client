@@ -6,12 +6,12 @@ import * as Monite from "../index";
 
 export type ExportObjectSchema = Monite.ExportObjectSchema.Payable | Monite.ExportObjectSchema.Receivable;
 
-export declare namespace ExportObjectSchema {
-    interface Payable extends Monite.ExportPayableSchema {
+export namespace ExportObjectSchema {
+    export interface Payable extends Monite.ExportPayableSchema {
         name: "payable";
     }
 
-    interface Receivable extends Monite.ExportReceivableSchema {
+    export interface Receivable extends Monite.ExportReceivableSchema {
         name: "receivable";
     }
 }

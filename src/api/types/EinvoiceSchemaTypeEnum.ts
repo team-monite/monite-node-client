@@ -3,7 +3,6 @@
  */
 
 export type EinvoiceSchemaTypeEnum = "DE:VAT" | "NL:KVK" | "NL:VAT" | "BE:VAT" | "BE:EN";
-
 export const EinvoiceSchemaTypeEnum = {
     DeVat: "DE:VAT",
     NlKvk: "NL:KVK",

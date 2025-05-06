@@ -3,7 +3,6 @@
  */
 
 export type ApprovalPoliciesGetRequestStatus = "active" | "pending";
-
 export const ApprovalPoliciesGetRequestStatus = {
     Active: "active",
     Pending: "pending",

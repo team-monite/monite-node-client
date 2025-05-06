@@ -6,18 +6,18 @@ import * as Monite from "../index";
 
 export interface ProcessResource {
     id: string;
-    /** Tthe current status of the approval policy process. */
-    status: Monite.ProcessStatusEnum;
-    /** The input for the script. */
-    input: Record<string, unknown>;
-    /** The error for the process. */
-    error?: Record<string, unknown>;
-    /** The script snapshot taken when script started. */
-    script_snapshot?: Monite.ProcessResourceScriptSnapshot;
-    /** The metadata for the process. */
-    metadata: Record<string, unknown>;
     created_at: string;
     updated_at?: string;
     created_by?: string;
+    /** The error for the process. */
+    error?: Record<string, unknown>;
+    /** The input for the script. */
+    input: Record<string, unknown>;
+    /** The metadata for the process. */
+    metadata: Record<string, unknown>;
+    /** The script snapshot taken when script started. */
+    script_snapshot?: Monite.ProcessResourceScriptSnapshot;
+    /** Tthe current status of the approval policy process. */
+    status: Monite.ProcessStatusEnum;
     updated_by?: string;
 }

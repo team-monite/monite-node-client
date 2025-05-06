@@ -3,7 +3,6 @@
  */
 
 export type OrderEnum = "asc" | "desc";
-
 export const OrderEnum = {
     Asc: "asc",
     Desc: "desc",

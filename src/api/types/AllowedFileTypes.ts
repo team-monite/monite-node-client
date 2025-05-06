@@ -7,6 +7,7 @@ export type AllowedFileTypes =
     | "ocr_files"
     | "payables"
     | "receivables"
+    | "delivery_notes"
     | "receipts"
     | "userpics"
     | "entity_logo"
@@ -14,13 +15,14 @@ export type AllowedFileTypes =
     | "zip"
     | "identity_documents"
     | "additional_identity_documents"
-    | "receivable_signatures";
-
+    | "receivable_signatures"
+    | "einvoices_xml";
 export const AllowedFileTypes = {
     OcrResults: "ocr_results",
     OcrFiles: "ocr_files",
     Payables: "payables",
     Receivables: "receivables",
+    DeliveryNotes: "delivery_notes",
     Receipts: "receipts",
     Userpics: "userpics",
     EntityLogo: "entity_logo",
@@ -29,4 +31,5 @@ export const AllowedFileTypes = {
     IdentityDocuments: "identity_documents",
     AdditionalIdentityDocuments: "additional_identity_documents",
     ReceivableSignatures: "receivable_signatures",
+    EinvoicesXml: "einvoices_xml",
 } as const;

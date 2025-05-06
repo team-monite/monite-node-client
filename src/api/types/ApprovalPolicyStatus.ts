@@ -3,7 +3,6 @@
  */
 
 export type ApprovalPolicyStatus = "active" | "deleted" | "pending";
-
 export const ApprovalPolicyStatus = {
     Active: "active",
     Deleted: "deleted",

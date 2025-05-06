@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace ExtraData {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace ExtraData {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,10 +52,17 @@ export class ExtraData {
      * @example
      *     await client.dataExports.extraData.get()
      */
-    public async get(
+    public get(
         request: Monite.dataExports.ExtraDataGetRequest = {},
-        requestOptions?: ExtraData.RequestOptions
-    ): Promise<Monite.ExtraDataResourceList> {
+        requestOptions?: ExtraData.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ExtraDataResourceList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.dataExports.ExtraDataGetRequest = {},
+        requestOptions?: ExtraData.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ExtraDataResourceList>> {
         const {
             order,
             limit,
@@ -71,7 +80,7 @@ export class ExtraData {
             field_name: fieldName,
             field_value: fieldValue,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -134,8 +143,10 @@ export class ExtraData {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "data_exports/extra_data"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "data_exports/extra_data",
             ),
             method: "GET",
             headers: {
@@ -161,23 +172,24 @@ export class ExtraData {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ExtraDataResourceList;
+            return { data: _response.body as Monite.ExtraDataResourceList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -187,12 +199,14 @@ export class ExtraData {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /data_exports/extra_data.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -214,14 +228,23 @@ export class ExtraData {
      *         object_id: "object_id"
      *     })
      */
-    public async create(
+    public create(
         request: Monite.dataExports.ExtraDataCreateRequest,
-        requestOptions?: ExtraData.RequestOptions
-    ): Promise<Monite.ExtraDataResource> {
+        requestOptions?: ExtraData.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ExtraDataResource> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.dataExports.ExtraDataCreateRequest,
+        requestOptions?: ExtraData.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ExtraDataResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "data_exports/extra_data"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "data_exports/extra_data",
             ),
             method: "POST",
             headers: {
@@ -247,25 +270,26 @@ export class ExtraData {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ExtraDataResource;
+            return { data: _response.body as Monite.ExtraDataResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -275,12 +299,14 @@ export class ExtraData {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /data_exports/extra_data.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -298,14 +324,23 @@ export class ExtraData {
      * @example
      *     await client.dataExports.extraData.getById("extra_data_id")
      */
-    public async getById(
+    public getById(
         extraDataId: string,
-        requestOptions?: ExtraData.RequestOptions
-    ): Promise<Monite.ExtraDataResource> {
+        requestOptions?: ExtraData.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ExtraDataResource> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(extraDataId, requestOptions));
+    }
+
+    private async __getById(
+        extraDataId: string,
+        requestOptions?: ExtraData.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ExtraDataResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `data_exports/extra_data/${encodeURIComponent(extraDataId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `data_exports/extra_data/${encodeURIComponent(extraDataId)}`,
             ),
             method: "GET",
             headers: {
@@ -330,25 +365,26 @@ export class ExtraData {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ExtraDataResource;
+            return { data: _response.body as Monite.ExtraDataResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -358,14 +394,16 @@ export class ExtraData {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /data_exports/extra_data/{extra_data_id}."
+                    "Timeout exceeded when calling GET /data_exports/extra_data/{extra_data_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -383,14 +421,23 @@ export class ExtraData {
      * @example
      *     await client.dataExports.extraData.deleteById("extra_data_id")
      */
-    public async deleteById(
+    public deleteById(
         extraDataId: string,
-        requestOptions?: ExtraData.RequestOptions
-    ): Promise<Monite.ExtraDataResource> {
+        requestOptions?: ExtraData.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ExtraDataResource> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(extraDataId, requestOptions));
+    }
+
+    private async __deleteById(
+        extraDataId: string,
+        requestOptions?: ExtraData.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ExtraDataResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `data_exports/extra_data/${encodeURIComponent(extraDataId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `data_exports/extra_data/${encodeURIComponent(extraDataId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -415,25 +462,26 @@ export class ExtraData {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ExtraDataResource;
+            return { data: _response.body as Monite.ExtraDataResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -443,14 +491,16 @@ export class ExtraData {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /data_exports/extra_data/{extra_data_id}."
+                    "Timeout exceeded when calling DELETE /data_exports/extra_data/{extra_data_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -470,15 +520,25 @@ export class ExtraData {
      * @example
      *     await client.dataExports.extraData.updateById("extra_data_id")
      */
-    public async updateById(
+    public updateById(
         extraDataId: string,
         request: Monite.dataExports.ExtraDataUpdateRequest = {},
-        requestOptions?: ExtraData.RequestOptions
-    ): Promise<Monite.ExtraDataResource> {
+        requestOptions?: ExtraData.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ExtraDataResource> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(extraDataId, request, requestOptions));
+    }
+
+    private async __updateById(
+        extraDataId: string,
+        request: Monite.dataExports.ExtraDataUpdateRequest = {},
+        requestOptions?: ExtraData.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ExtraDataResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `data_exports/extra_data/${encodeURIComponent(extraDataId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `data_exports/extra_data/${encodeURIComponent(extraDataId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -504,27 +564,28 @@ export class ExtraData {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ExtraDataResource;
+            return { data: _response.body as Monite.ExtraDataResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -534,14 +595,16 @@ export class ExtraData {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /data_exports/extra_data/{extra_data_id}."
+                    "Timeout exceeded when calling PATCH /data_exports/extra_data/{extra_data_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

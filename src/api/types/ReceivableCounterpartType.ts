@@ -3,7 +3,6 @@
  */
 
 export type ReceivableCounterpartType = "individual" | "organization";
-
 export const ReceivableCounterpartType = {
     Individual: "individual",
     Organization: "organization",

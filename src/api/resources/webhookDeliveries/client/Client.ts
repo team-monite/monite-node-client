@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace WebhookDeliveries {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace WebhookDeliveries {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -54,10 +56,17 @@ export class WebhookDeliveries {
      * @example
      *     await client.webhookDeliveries.get()
      */
-    public async get(
+    public get(
         request: Monite.WebhookDeliveriesGetRequest = {},
-        requestOptions?: WebhookDeliveries.RequestOptions
-    ): Promise<Monite.WebhookDeliveryPaginationResource> {
+        requestOptions?: WebhookDeliveries.RequestOptions,
+    ): core.HttpResponsePromise<Monite.WebhookDeliveryPaginationResource> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.WebhookDeliveriesGetRequest = {},
+        requestOptions?: WebhookDeliveries.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.WebhookDeliveryPaginationResource>> {
         const {
             order,
             limit,
@@ -71,7 +80,7 @@ export class WebhookDeliveries {
             created_at__gte: createdAtGte,
             created_at__lte: createdAtLte,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -118,8 +127,10 @@ export class WebhookDeliveries {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "webhook_deliveries"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "webhook_deliveries",
             ),
             method: "GET",
             headers: {
@@ -145,19 +156,23 @@ export class WebhookDeliveries {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.WebhookDeliveryPaginationResource;
+            return {
+                data: _response.body as Monite.WebhookDeliveryPaginationResource,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -167,12 +182,14 @@ export class WebhookDeliveries {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /webhook_deliveries.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

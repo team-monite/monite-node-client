@@ -14,7 +14,7 @@ import * as Monite from "../../../../index";
  *     }
  */
 export interface CreateTextTemplatePayload {
-    document_type: Monite.DocumentTypeEnum;
+    document_type: Monite.TextTemplateDocumentTypeEnum;
     name: string;
     template: string;
     type: Monite.TextTemplateType;

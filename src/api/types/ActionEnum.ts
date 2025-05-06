@@ -3,7 +3,6 @@
  */
 
 export type ActionEnum = "create" | "read" | "update" | "delete";
-
 export const ActionEnum = {
     Create: "create",
     Read: "read",

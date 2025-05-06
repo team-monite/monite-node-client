@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace TextTemplates {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace TextTemplates {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,12 +52,19 @@ export class TextTemplates {
      * @example
      *     await client.textTemplates.get()
      */
-    public async get(
+    public get(
         request: Monite.TextTemplatesGetRequest = {},
-        requestOptions?: TextTemplates.RequestOptions
-    ): Promise<Monite.TextTemplateResponseList> {
+        requestOptions?: TextTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.TextTemplateResponseList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.TextTemplatesGetRequest = {},
+        requestOptions?: TextTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TextTemplateResponseList>> {
         const { type: type_, document_type: documentType, is_default: isDefault } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (type_ != null) {
             _queryParams["type"] = type_;
         }
@@ -70,8 +79,10 @@ export class TextTemplates {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "text_templates"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "text_templates",
             ),
             method: "GET",
             headers: {
@@ -97,19 +108,20 @@ export class TextTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TextTemplateResponseList;
+            return { data: _response.body as Monite.TextTemplateResponseList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -119,12 +131,14 @@ export class TextTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /text_templates.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -146,14 +160,23 @@ export class TextTemplates {
      *         type: "email_header"
      *     })
      */
-    public async create(
+    public create(
         request: Monite.CreateTextTemplatePayload,
-        requestOptions?: TextTemplates.RequestOptions
-    ): Promise<Monite.TextTemplateResponse> {
+        requestOptions?: TextTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.TextTemplateResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.CreateTextTemplatePayload,
+        requestOptions?: TextTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TextTemplateResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "text_templates"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "text_templates",
             ),
             method: "POST",
             headers: {
@@ -179,19 +202,20 @@ export class TextTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TextTemplateResponse;
+            return { data: _response.body as Monite.TextTemplateResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -201,12 +225,14 @@ export class TextTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /text_templates.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -223,14 +249,23 @@ export class TextTemplates {
      * @example
      *     await client.textTemplates.getById("text_template_id")
      */
-    public async getById(
+    public getById(
         textTemplateId: string,
-        requestOptions?: TextTemplates.RequestOptions
-    ): Promise<Monite.TextTemplateResponse> {
+        requestOptions?: TextTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.TextTemplateResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(textTemplateId, requestOptions));
+    }
+
+    private async __getById(
+        textTemplateId: string,
+        requestOptions?: TextTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TextTemplateResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `text_templates/${encodeURIComponent(textTemplateId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `text_templates/${encodeURIComponent(textTemplateId)}`,
             ),
             method: "GET",
             headers: {
@@ -255,19 +290,20 @@ export class TextTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TextTemplateResponse;
+            return { data: _response.body as Monite.TextTemplateResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -277,14 +313,16 @@ export class TextTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /text_templates/{text_template_id}."
+                    "Timeout exceeded when calling GET /text_templates/{text_template_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -301,11 +339,23 @@ export class TextTemplates {
      * @example
      *     await client.textTemplates.deleteById("text_template_id")
      */
-    public async deleteById(textTemplateId: string, requestOptions?: TextTemplates.RequestOptions): Promise<void> {
+    public deleteById(
+        textTemplateId: string,
+        requestOptions?: TextTemplates.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(textTemplateId, requestOptions));
+    }
+
+    private async __deleteById(
+        textTemplateId: string,
+        requestOptions?: TextTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `text_templates/${encodeURIComponent(textTemplateId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `text_templates/${encodeURIComponent(textTemplateId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -330,19 +380,20 @@ export class TextTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -352,14 +403,16 @@ export class TextTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /text_templates/{text_template_id}."
+                    "Timeout exceeded when calling DELETE /text_templates/{text_template_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -377,15 +430,25 @@ export class TextTemplates {
      * @example
      *     await client.textTemplates.updateById("text_template_id")
      */
-    public async updateById(
+    public updateById(
         textTemplateId: string,
         request: Monite.UpdateTextTemplatePayload = {},
-        requestOptions?: TextTemplates.RequestOptions
-    ): Promise<Monite.TextTemplateResponse> {
+        requestOptions?: TextTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.TextTemplateResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(textTemplateId, request, requestOptions));
+    }
+
+    private async __updateById(
+        textTemplateId: string,
+        request: Monite.UpdateTextTemplatePayload = {},
+        requestOptions?: TextTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TextTemplateResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `text_templates/${encodeURIComponent(textTemplateId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `text_templates/${encodeURIComponent(textTemplateId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -411,19 +474,20 @@ export class TextTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TextTemplateResponse;
+            return { data: _response.body as Monite.TextTemplateResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -433,14 +497,16 @@ export class TextTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /text_templates/{text_template_id}."
+                    "Timeout exceeded when calling PATCH /text_templates/{text_template_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -457,14 +523,23 @@ export class TextTemplates {
      * @example
      *     await client.textTemplates.makeDefaultById("text_template_id")
      */
-    public async makeDefaultById(
+    public makeDefaultById(
         textTemplateId: string,
-        requestOptions?: TextTemplates.RequestOptions
-    ): Promise<Monite.TextTemplateResponse> {
+        requestOptions?: TextTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.TextTemplateResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__makeDefaultById(textTemplateId, requestOptions));
+    }
+
+    private async __makeDefaultById(
+        textTemplateId: string,
+        requestOptions?: TextTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TextTemplateResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `text_templates/${encodeURIComponent(textTemplateId)}/make_default`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `text_templates/${encodeURIComponent(textTemplateId)}/make_default`,
             ),
             method: "POST",
             headers: {
@@ -489,19 +564,20 @@ export class TextTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TextTemplateResponse;
+            return { data: _response.body as Monite.TextTemplateResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -511,14 +587,16 @@ export class TextTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /text_templates/{text_template_id}/make_default."
+                    "Timeout exceeded when calling POST /text_templates/{text_template_id}/make_default.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

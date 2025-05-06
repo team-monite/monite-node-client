@@ -3,7 +3,6 @@
  */
 
 export type DayOfMonth = "first_day" | "last_day";
-
 export const DayOfMonth = {
     FirstDay: "first_day",
     LastDay: "last_day",

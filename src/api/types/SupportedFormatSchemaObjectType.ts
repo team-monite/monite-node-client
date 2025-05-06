@@ -3,7 +3,6 @@
  */
 
 export type SupportedFormatSchemaObjectType = "payable" | "receivable";
-
 export const SupportedFormatSchemaObjectType = {
     Payable: "payable",
     Receivable: "receivable",

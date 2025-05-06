@@ -9,7 +9,6 @@ export type VariablesType =
     | "discount_reminder"
     | "final_reminder"
     | "overdue_reminder";
-
 export const VariablesType = {
     Quote: "quote",
     Invoice: "invoice",

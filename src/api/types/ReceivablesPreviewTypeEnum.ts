@@ -3,7 +3,6 @@
  */
 
 export type ReceivablesPreviewTypeEnum = "receivable" | "discount_reminder" | "final_reminder";
-
 export const ReceivablesPreviewTypeEnum = {
     Receivable: "receivable",
     DiscountReminder: "discount_reminder",

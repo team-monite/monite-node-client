@@ -3,7 +3,6 @@
  */
 
 export type ObjectMatchTypes = "product" | "customer" | "vendor" | "receivable" | "bill" | "payment_record";
-
 export const ObjectMatchTypes = {
     Product: "product",
     Customer: "customer",
