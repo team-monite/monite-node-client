@@ -3,7 +3,6 @@
  */
 
 export type ObjectTypeEnum = "receivable" | "payable";
-
 export const ObjectTypeEnum = {
     Receivable: "receivable",
     Payable: "payable",

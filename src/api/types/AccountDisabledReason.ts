@@ -13,7 +13,6 @@ export type AccountDisabledReason =
     | "rejected.other"
     | "under_review"
     | "other";
-
 export const AccountDisabledReason = {
     RequirementsPastDue: "requirements.past_due",
     RequirementsPendingVerification: "requirements.pending_verification",

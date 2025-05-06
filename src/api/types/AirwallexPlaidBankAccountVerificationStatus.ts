@@ -3,7 +3,6 @@
  */
 
 export type AirwallexPlaidBankAccountVerificationStatus = "verified" | "expired" | "suspended";
-
 export const AirwallexPlaidBankAccountVerificationStatus = {
     Verified: "verified",
     Expired: "expired",

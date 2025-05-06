@@ -18,12 +18,16 @@ export interface CreditNoteResponse {
     based_on?: string;
     /** The document ID of the original payable that this credit note refers to */
     based_on_document_id?: string;
+    /** Object representing de-normalized counterpart data */
+    counterpart?: Monite.CounterpartRawData;
     /** ID of the counterpart's address */
     counterpart_address_id?: string;
     /** ID of the counterpart's bank account */
     counterpart_bank_account_id?: string;
     /** ID of the counterpart */
     counterpart_id?: string;
+    /** Object representing counterpart data which was extracted by OCR. Used for informational purposes. */
+    counterpart_raw?: Monite.CounterpartRawData;
     /** ID of the counterpart's VAT registration */
     counterpart_vat_id_id?: string;
     /** External system's user ID for the creator */

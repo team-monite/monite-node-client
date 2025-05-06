@@ -8,7 +8,6 @@
  * - FIXED_DATE: The business must repay the loan on a fixed date.
  */
 export type WcRepaymentType = "MULTIPLE_DURATION" | "FIXED_DURATION" | "FIXED_DATE";
-
 export const WcRepaymentType = {
     MultipleDuration: "MULTIPLE_DURATION",
     FixedDuration: "FIXED_DURATION",

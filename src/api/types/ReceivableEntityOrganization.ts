@@ -14,6 +14,10 @@ export interface ReceivableEntityOrganization {
     name: string;
     /** A phone number of the entity */
     phone?: string;
+    /** The registration authority of the entity */
+    registration_authority?: string;
+    /** The registration number of the entity */
+    registration_number?: string;
     /** The Tax ID of the entity issuing the receivable */
     tax_id?: string;
     /** The VAT ID of the entity issuing the receivable, when it is an organization. */

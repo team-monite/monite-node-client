@@ -3,7 +3,6 @@
  */
 
 export type PayableMetricEnum = "id" | "total_amount";
-
 export const PayableMetricEnum = {
     Id: "id",
     TotalAmount: "total_amount",

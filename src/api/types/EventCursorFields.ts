@@ -3,7 +3,6 @@
  */
 
 export type EventCursorFields = "created_at" | "updated_at";
-
 export const EventCursorFields = {
     CreatedAt: "created_at",
     UpdatedAt: "updated_at",

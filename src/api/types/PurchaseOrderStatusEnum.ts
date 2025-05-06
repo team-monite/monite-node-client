@@ -3,7 +3,6 @@
  */
 
 export type PurchaseOrderStatusEnum = "draft" | "issued";
-
 export const PurchaseOrderStatusEnum = {
     Draft: "draft",
     Issued: "issued",

@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace OnboardingData {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace OnboardingData {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,14 +52,23 @@ export class OnboardingData {
      * @example
      *     await client.entities.onboardingData.get("entity_id")
      */
-    public async get(
+    public get(
         entityId: string,
-        requestOptions?: OnboardingData.RequestOptions
-    ): Promise<Monite.EntityOnboardingDataResponse> {
+        requestOptions?: OnboardingData.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityOnboardingDataResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(entityId, requestOptions));
+    }
+
+    private async __get(
+        entityId: string,
+        requestOptions?: OnboardingData.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityOnboardingDataResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/onboarding_data`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/onboarding_data`,
             ),
             method: "GET",
             headers: {
@@ -82,23 +93,24 @@ export class OnboardingData {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityOnboardingDataResponse;
+            return { data: _response.body as Monite.EntityOnboardingDataResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -108,14 +120,16 @@ export class OnboardingData {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /entities/{entity_id}/onboarding_data."
+                    "Timeout exceeded when calling GET /entities/{entity_id}/onboarding_data.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -133,15 +147,25 @@ export class OnboardingData {
      * @example
      *     await client.entities.onboardingData.update("entity_id")
      */
-    public async update(
+    public update(
         entityId: string,
         request: Monite.entities.EntityOnboardingDataRequest = {},
-        requestOptions?: OnboardingData.RequestOptions
-    ): Promise<Monite.EntityOnboardingDataResponse> {
+        requestOptions?: OnboardingData.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityOnboardingDataResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__update(entityId, request, requestOptions));
+    }
+
+    private async __update(
+        entityId: string,
+        request: Monite.entities.EntityOnboardingDataRequest = {},
+        requestOptions?: OnboardingData.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityOnboardingDataResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/onboarding_data`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/onboarding_data`,
             ),
             method: "PATCH",
             headers: {
@@ -167,23 +191,24 @@ export class OnboardingData {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityOnboardingDataResponse;
+            return { data: _response.body as Monite.EntityOnboardingDataResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -193,14 +218,16 @@ export class OnboardingData {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /entities/{entity_id}/onboarding_data."
+                    "Timeout exceeded when calling PATCH /entities/{entity_id}/onboarding_data.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

@@ -8,7 +8,6 @@
  * - INPUT_REQUIRED: A business will be asked to provide required data
  */
 export type WcBusinessStatus = "NEW" | "INPUT_REQUIRED" | "ONBOARDED";
-
 export const WcBusinessStatus = {
     New: "NEW",
     InputRequired: "INPUT_REQUIRED",

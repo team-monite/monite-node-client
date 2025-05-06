@@ -3,7 +3,6 @@
  */
 
 export type PaymentRecordCursorFields = "paid_at" | "amount" | "overpaid_amount";
-
 export const PaymentRecordCursorFields = {
     PaidAt: "paid_at",
     Amount: "amount",

@@ -3,7 +3,6 @@
  */
 
 export type CustomTemplatesCursorFields = "type" | "name";
-
 export const CustomTemplatesCursorFields = {
     Type: "type",
     Name: "name",

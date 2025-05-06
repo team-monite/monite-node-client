@@ -5,6 +5,8 @@
 import * as Monite from "../index";
 
 export interface LineItem {
+    /** ID of the tax rate in the connected accounting system, to be used when pushing the invoice to that accounting system. Use `GET /accounting_tax_rates` to get these IDs. If omitted, Monite will attempt to match the tax rates based on their numeric value. */
+    accounting_tax_rate_id?: string;
     /** The discount for a product. */
     discount?: Monite.Discount;
     /** Object of product. Can be used instead of product_id, created in product's catalog */

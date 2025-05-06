@@ -3,7 +3,6 @@
  */
 
 export type PaymentMethodDirection = "receive" | "send";
-
 export const PaymentMethodDirection = {
     Receive: "receive",
     Send: "send",

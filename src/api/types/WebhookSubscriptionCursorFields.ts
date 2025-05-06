@@ -3,7 +3,6 @@
  */
 
 export type WebhookSubscriptionCursorFields = "created_at" | "updated_at";
-
 export const WebhookSubscriptionCursorFields = {
     CreatedAt: "created_at",
     UpdatedAt: "updated_at",

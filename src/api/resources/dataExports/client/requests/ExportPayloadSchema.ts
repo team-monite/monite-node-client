@@ -11,7 +11,7 @@ import * as Monite from "../../../../index";
  *         date_to: "date_to",
  *         format: "csv",
  *         objects: [{
- *                 name: "receivable",
+ *                 name: "payable",
  *                 statuses: ["draft"]
  *             }]
  *     }

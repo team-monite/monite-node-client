@@ -3,7 +3,6 @@
  */
 
 export type VatModeEnum = "exclusive" | "inclusive";
-
 export const VatModeEnum = {
     Exclusive: "exclusive",
     Inclusive: "inclusive",

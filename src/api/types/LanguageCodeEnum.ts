@@ -183,7 +183,6 @@ export type LanguageCodeEnum =
     | "yo"
     | "za"
     | "zu";
-
 export const LanguageCodeEnum = {
     Ab: "ab",
     Aa: "aa",

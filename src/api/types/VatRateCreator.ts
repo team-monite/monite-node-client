@@ -3,7 +3,6 @@
  */
 
 export type VatRateCreator = "monite" | "accounting";
-
 export const VatRateCreator = {
     Monite: "monite",
     Accounting: "accounting",

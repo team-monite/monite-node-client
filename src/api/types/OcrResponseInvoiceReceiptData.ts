@@ -6,22 +6,16 @@ import * as Monite from "../index";
 
 export interface OcrResponseInvoiceReceiptData {
     type?: "invoice";
-    /** Total in cents/eurocents. Outdated, actual conversion happens in payables. */
-    total?: number;
+    /** Discount Raw amount */
+    discount_raw?: number;
     /** Total paid amount */
     total_paid_amount_raw?: number;
     /** Total, without minor units */
     total_raw?: number;
-    /** Subtotal cents/eurocents. Outdated, actual conversion happens in payables. */
-    total_excl_vat?: number;
     /** Subtotal, without minor units */
     total_excl_vat_raw?: number;
-    /** VAT amount in cents. Outdated, actual conversion happens in payables. */
-    total_vat_amount?: number;
     /** VAT amount, without minor units */
     total_vat_amount_raw?: number;
-    /** VAT Percent minor units. Example: 12.5% is 1250. Outdated, actual conversion happens in payables. */
-    total_vat_rate?: number;
     /** VAT Percent raw, without minor units. */
     total_vat_rate_raw?: number;
     /** ISO 4217 currency code */
@@ -30,6 +24,8 @@ export interface OcrResponseInvoiceReceiptData {
     purchase_order_number?: string;
     /** Counterpart name */
     counterpart_name?: string;
+    /** Email address of the counterpart */
+    counterpart_email?: string;
     /** Counterpart address */
     counterpart_address?: string;
     /** Counterpart bank ID */
@@ -52,8 +48,6 @@ export interface OcrResponseInvoiceReceiptData {
     counterpart_account_number?: string;
     /** The bank routing number */
     counterpart_routing_number?: string;
-    /** List of line items from document. Outdated, actual conversion happens in payables. */
-    line_items?: Monite.OcrResponseInvoiceReceiptLineItem[];
     /** List of line items from document raw, without minor units conversion. */
     line_items_raw?: Monite.OcrResponseInvoiceReceiptLineItemRaw[];
 }

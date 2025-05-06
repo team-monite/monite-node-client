@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace Addresses {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace Addresses {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -49,14 +51,23 @@ export class Addresses {
      * @example
      *     await client.counterparts.addresses.get("counterpart_id")
      */
-    public async get(
+    public get(
         counterpartId: string,
-        requestOptions?: Addresses.RequestOptions
-    ): Promise<Monite.CounterpartAddressResourceList> {
+        requestOptions?: Addresses.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CounterpartAddressResourceList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(counterpartId, requestOptions));
+    }
+
+    private async __get(
+        counterpartId: string,
+        requestOptions?: Addresses.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CounterpartAddressResourceList>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/addresses`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/addresses`,
             ),
             method: "GET",
             headers: {
@@ -81,21 +92,25 @@ export class Addresses {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CounterpartAddressResourceList;
+            return {
+                data: _response.body as Monite.CounterpartAddressResourceList,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -105,14 +120,16 @@ export class Addresses {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /counterparts/{counterpart_id}/addresses."
+                    "Timeout exceeded when calling GET /counterparts/{counterpart_id}/addresses.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -134,15 +151,25 @@ export class Addresses {
      *         postal_code: "10115"
      *     })
      */
-    public async create(
+    public create(
         counterpartId: string,
         request: Monite.CounterpartAddress,
-        requestOptions?: Addresses.RequestOptions
-    ): Promise<Monite.CounterpartAddressResponseWithCounterpartId> {
+        requestOptions?: Addresses.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CounterpartAddressResponseWithCounterpartId> {
+        return core.HttpResponsePromise.fromPromise(this.__create(counterpartId, request, requestOptions));
+    }
+
+    private async __create(
+        counterpartId: string,
+        request: Monite.CounterpartAddress,
+        requestOptions?: Addresses.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CounterpartAddressResponseWithCounterpartId>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/addresses`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/addresses`,
             ),
             method: "POST",
             headers: {
@@ -168,21 +195,25 @@ export class Addresses {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CounterpartAddressResponseWithCounterpartId;
+            return {
+                data: _response.body as Monite.CounterpartAddressResponseWithCounterpartId,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -192,14 +223,16 @@ export class Addresses {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /counterparts/{counterpart_id}/addresses."
+                    "Timeout exceeded when calling POST /counterparts/{counterpart_id}/addresses.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -216,15 +249,25 @@ export class Addresses {
      * @example
      *     await client.counterparts.addresses.getById("address_id", "counterpart_id")
      */
-    public async getById(
+    public getById(
         addressId: string,
         counterpartId: string,
-        requestOptions?: Addresses.RequestOptions
-    ): Promise<Monite.CounterpartAddressResponseWithCounterpartId> {
+        requestOptions?: Addresses.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CounterpartAddressResponseWithCounterpartId> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(addressId, counterpartId, requestOptions));
+    }
+
+    private async __getById(
+        addressId: string,
+        counterpartId: string,
+        requestOptions?: Addresses.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CounterpartAddressResponseWithCounterpartId>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/addresses/${encodeURIComponent(addressId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/addresses/${encodeURIComponent(addressId)}`,
             ),
             method: "GET",
             headers: {
@@ -249,21 +292,25 @@ export class Addresses {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CounterpartAddressResponseWithCounterpartId;
+            return {
+                data: _response.body as Monite.CounterpartAddressResponseWithCounterpartId,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -273,14 +320,16 @@ export class Addresses {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /counterparts/{counterpart_id}/addresses/{address_id}."
+                    "Timeout exceeded when calling GET /counterparts/{counterpart_id}/addresses/{address_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -297,15 +346,25 @@ export class Addresses {
      * @example
      *     await client.counterparts.addresses.deleteById("address_id", "counterpart_id")
      */
-    public async deleteById(
+    public deleteById(
         addressId: string,
         counterpartId: string,
-        requestOptions?: Addresses.RequestOptions
-    ): Promise<void> {
+        requestOptions?: Addresses.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(addressId, counterpartId, requestOptions));
+    }
+
+    private async __deleteById(
+        addressId: string,
+        counterpartId: string,
+        requestOptions?: Addresses.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/addresses/${encodeURIComponent(addressId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/addresses/${encodeURIComponent(addressId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -330,21 +389,22 @@ export class Addresses {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -354,14 +414,16 @@ export class Addresses {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /counterparts/{counterpart_id}/addresses/{address_id}."
+                    "Timeout exceeded when calling DELETE /counterparts/{counterpart_id}/addresses/{address_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -379,16 +441,29 @@ export class Addresses {
      * @example
      *     await client.counterparts.addresses.updateById("address_id", "counterpart_id")
      */
-    public async updateById(
+    public updateById(
         addressId: string,
         counterpartId: string,
         request: Monite.counterparts.CounterpartUpdateAddress = {},
-        requestOptions?: Addresses.RequestOptions
-    ): Promise<Monite.CounterpartAddressResponseWithCounterpartId> {
+        requestOptions?: Addresses.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CounterpartAddressResponseWithCounterpartId> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__updateById(addressId, counterpartId, request, requestOptions),
+        );
+    }
+
+    private async __updateById(
+        addressId: string,
+        counterpartId: string,
+        request: Monite.counterparts.CounterpartUpdateAddress = {},
+        requestOptions?: Addresses.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CounterpartAddressResponseWithCounterpartId>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `counterparts/${encodeURIComponent(counterpartId)}/addresses/${encodeURIComponent(addressId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `counterparts/${encodeURIComponent(counterpartId)}/addresses/${encodeURIComponent(addressId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -414,21 +489,25 @@ export class Addresses {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CounterpartAddressResponseWithCounterpartId;
+            return {
+                data: _response.body as Monite.CounterpartAddressResponseWithCounterpartId,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -438,14 +517,16 @@ export class Addresses {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /counterparts/{counterpart_id}/addresses/{address_id}."
+                    "Timeout exceeded when calling PATCH /counterparts/{counterpart_id}/addresses/{address_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

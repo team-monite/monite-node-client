@@ -9,7 +9,6 @@ export type CreditNoteDimensionEnum =
     | "currency"
     | "issued_at"
     | "project_id";
-
 export const CreditNoteDimensionEnum = {
     CreatedAt: "created_at",
     Status: "status",

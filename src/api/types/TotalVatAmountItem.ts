@@ -6,6 +6,8 @@ export interface TotalVatAmountItem {
     id?: string;
     /** The total VAT of all line items, in [minor units](https://docs.monite.com/references/currencies#minor-units). */
     amount: number;
+    /** The amount on which this VAT is calculated, in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    taxable_amount: number;
     /** Percent minor units. Example: 12.5% is 1250. */
     value: number;
 }

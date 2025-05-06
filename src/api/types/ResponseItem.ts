@@ -10,6 +10,8 @@ export interface ResponseItem {
     product: Monite.LineItemProduct;
     /** The quantity of each of the goods, materials, or services listed in the receivable. */
     quantity: number;
+    /** Total of line_item after VAT with applied line item discount in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    total_after_vat: number;
     /** Total of line_item before VAT in [minor units](https://docs.monite.com/references/currencies#minor-units). */
     total_before_vat: number;
 }

@@ -7,7 +7,9 @@ export interface OcrResponseInvoiceReceiptLineItemRaw {
     line_item_ocr_id?: string;
     /** Human-readable line item description */
     description?: string;
-    /** Quanity */
+    /** Item Quantity/Unit Price adjusted */
+    item_adjusted?: boolean;
+    /** Quantity */
     quantity?: number;
     /** Price as parsed */
     unit_price?: number;

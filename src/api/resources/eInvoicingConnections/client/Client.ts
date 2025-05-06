@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace EInvoicingConnections {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace EInvoicingConnections {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,13 +52,21 @@ export class EInvoicingConnections {
      * @example
      *     await client.eInvoicingConnections.getEinvoicingConnections()
      */
-    public async getEinvoicingConnections(
-        requestOptions?: EInvoicingConnections.RequestOptions
-    ): Promise<Monite.EInvoicingRetrieveListData> {
+    public getEinvoicingConnections(
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EInvoicingRetrieveListData> {
+        return core.HttpResponsePromise.fromPromise(this.__getEinvoicingConnections(requestOptions));
+    }
+
+    private async __getEinvoicingConnections(
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EInvoicingRetrieveListData>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "einvoicing_connections"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "einvoicing_connections",
             ),
             method: "GET",
             headers: {
@@ -81,25 +91,26 @@ export class EInvoicingConnections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EInvoicingRetrieveListData;
+            return { data: _response.body as Monite.EInvoicingRetrieveListData, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -109,12 +120,14 @@ export class EInvoicingConnections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /einvoicing_connections.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -140,14 +153,23 @@ export class EInvoicingConnections {
      *         }
      *     })
      */
-    public async postEinvoicingConnections(
+    public postEinvoicingConnections(
         request: Monite.EinvoicingConnectionCreateRequest,
-        requestOptions?: EInvoicingConnections.RequestOptions
-    ): Promise<Monite.EinvoicingConnectionResponse> {
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EinvoicingConnectionResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__postEinvoicingConnections(request, requestOptions));
+    }
+
+    private async __postEinvoicingConnections(
+        request: Monite.EinvoicingConnectionCreateRequest,
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EinvoicingConnectionResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "einvoicing_connections"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "einvoicing_connections",
             ),
             method: "POST",
             headers: {
@@ -173,27 +195,28 @@ export class EInvoicingConnections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EinvoicingConnectionResponse;
+            return { data: _response.body as Monite.EinvoicingConnectionResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -203,12 +226,14 @@ export class EInvoicingConnections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /einvoicing_connections.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -227,14 +252,25 @@ export class EInvoicingConnections {
      * @example
      *     await client.eInvoicingConnections.getEinvoicingConnectionsId("einvoicing_connection_id")
      */
-    public async getEinvoicingConnectionsId(
+    public getEinvoicingConnectionsId(
         einvoicingConnectionId: string,
-        requestOptions?: EInvoicingConnections.RequestOptions
-    ): Promise<Monite.EinvoicingConnectionResponse> {
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EinvoicingConnectionResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__getEinvoicingConnectionsId(einvoicingConnectionId, requestOptions),
+        );
+    }
+
+    private async __getEinvoicingConnectionsId(
+        einvoicingConnectionId: string,
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EinvoicingConnectionResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `einvoicing_connections/${encodeURIComponent(einvoicingConnectionId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `einvoicing_connections/${encodeURIComponent(einvoicingConnectionId)}`,
             ),
             method: "GET",
             headers: {
@@ -259,27 +295,28 @@ export class EInvoicingConnections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EinvoicingConnectionResponse;
+            return { data: _response.body as Monite.EinvoicingConnectionResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -289,14 +326,16 @@ export class EInvoicingConnections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /einvoicing_connections/{einvoicing_connection_id}."
+                    "Timeout exceeded when calling GET /einvoicing_connections/{einvoicing_connection_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -315,14 +354,25 @@ export class EInvoicingConnections {
      * @example
      *     await client.eInvoicingConnections.deleteEinvoicingConnectionsId("einvoicing_connection_id")
      */
-    public async deleteEinvoicingConnectionsId(
+    public deleteEinvoicingConnectionsId(
         einvoicingConnectionId: string,
-        requestOptions?: EInvoicingConnections.RequestOptions
-    ): Promise<void> {
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__deleteEinvoicingConnectionsId(einvoicingConnectionId, requestOptions),
+        );
+    }
+
+    private async __deleteEinvoicingConnectionsId(
+        einvoicingConnectionId: string,
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `einvoicing_connections/${encodeURIComponent(einvoicingConnectionId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `einvoicing_connections/${encodeURIComponent(einvoicingConnectionId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -347,27 +397,28 @@ export class EInvoicingConnections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -377,14 +428,16 @@ export class EInvoicingConnections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /einvoicing_connections/{einvoicing_connection_id}."
+                    "Timeout exceeded when calling DELETE /einvoicing_connections/{einvoicing_connection_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -408,15 +461,27 @@ export class EInvoicingConnections {
      *         network_credentials_schema: "DE:VAT"
      *     })
      */
-    public async postEinvoicingConnectionsIdNetworkCredentials(
+    public postEinvoicingConnectionsIdNetworkCredentials(
         einvoicingConnectionId: string,
         request: Monite.EinvoicingNetworkCredentialsCreateRequest,
-        requestOptions?: EInvoicingConnections.RequestOptions
-    ): Promise<Monite.EinvoicingNetworkCredentialsResponse> {
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EinvoicingNetworkCredentialsResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__postEinvoicingConnectionsIdNetworkCredentials(einvoicingConnectionId, request, requestOptions),
+        );
+    }
+
+    private async __postEinvoicingConnectionsIdNetworkCredentials(
+        einvoicingConnectionId: string,
+        request: Monite.EinvoicingNetworkCredentialsCreateRequest,
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EinvoicingNetworkCredentialsResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `einvoicing_connections/${encodeURIComponent(einvoicingConnectionId)}/network_credentials`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `einvoicing_connections/${encodeURIComponent(einvoicingConnectionId)}/network_credentials`,
             ),
             method: "POST",
             headers: {
@@ -442,29 +507,33 @@ export class EInvoicingConnections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EinvoicingNetworkCredentialsResponse;
+            return {
+                data: _response.body as Monite.EinvoicingNetworkCredentialsResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -474,14 +543,16 @@ export class EInvoicingConnections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /einvoicing_connections/{einvoicing_connection_id}/network_credentials."
+                    "Timeout exceeded when calling POST /einvoicing_connections/{einvoicing_connection_id}/network_credentials.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

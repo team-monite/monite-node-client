@@ -3,7 +3,6 @@
  */
 
 export type DnsRecordType = "TXT" | "MX" | "CNAME";
-
 export const DnsRecordType = {
     Txt: "TXT",
     Mx: "MX",

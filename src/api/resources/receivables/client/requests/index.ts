@@ -1,4 +1,5 @@
 export { type ReceivablesGetRequest } from "./ReceivablesGetRequest";
+export { type GetReceivablesRequiredFieldsRequest } from "./GetReceivablesRequiredFieldsRequest";
 export { type QuoteAcceptRequest } from "./QuoteAcceptRequest";
 export { type ReceivableDeclinePayload } from "./ReceivableDeclinePayload";
 export { type ReceivablesGetHistoryRequest } from "./ReceivablesGetHistoryRequest";

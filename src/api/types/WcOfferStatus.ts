@@ -12,7 +12,6 @@
  * - DEFAULTED: The business has failed to meet agreed-upon terms of the loan agreement.
  */
 export type WcOfferStatus = "NEW" | "ACCEPTED" | "EXPIRED" | "CURRENT" | "LATE" | "CLOSED" | "DEFAULTED";
-
 export const WcOfferStatus = {
     New: "NEW",
     Accepted: "ACCEPTED",

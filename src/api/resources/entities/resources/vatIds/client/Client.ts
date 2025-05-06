@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace VatIds {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace VatIds {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -48,14 +50,23 @@ export class VatIds {
      * @example
      *     await client.entities.vatIds.get("entity_id")
      */
-    public async get(
+    public get(
         entityId: string,
-        requestOptions?: VatIds.RequestOptions
-    ): Promise<Monite.EntityVatIdResourceList> {
+        requestOptions?: VatIds.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityVatIdResourceList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(entityId, requestOptions));
+    }
+
+    private async __get(
+        entityId: string,
+        requestOptions?: VatIds.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityVatIdResourceList>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/vat_ids`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/vat_ids`,
             ),
             method: "GET",
             headers: {
@@ -80,19 +91,20 @@ export class VatIds {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityVatIdResourceList;
+            return { data: _response.body as Monite.EntityVatIdResourceList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -102,12 +114,14 @@ export class VatIds {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /entities/{entity_id}/vat_ids.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -127,15 +141,25 @@ export class VatIds {
      *         value: "123456789"
      *     })
      */
-    public async create(
+    public create(
         entityId: string,
         request: Monite.entities.EntityVatId,
-        requestOptions?: VatIds.RequestOptions
-    ): Promise<Monite.EntityVatIdResponse> {
+        requestOptions?: VatIds.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityVatIdResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(entityId, request, requestOptions));
+    }
+
+    private async __create(
+        entityId: string,
+        request: Monite.entities.EntityVatId,
+        requestOptions?: VatIds.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityVatIdResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/vat_ids`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/vat_ids`,
             ),
             method: "POST",
             headers: {
@@ -161,21 +185,22 @@ export class VatIds {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityVatIdResponse;
+            return { data: _response.body as Monite.EntityVatIdResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -185,14 +210,16 @@ export class VatIds {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /entities/{entity_id}/vat_ids."
+                    "Timeout exceeded when calling POST /entities/{entity_id}/vat_ids.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -209,15 +236,25 @@ export class VatIds {
      * @example
      *     await client.entities.vatIds.getById("id", "entity_id")
      */
-    public async getById(
+    public getById(
         id: string,
         entityId: string,
-        requestOptions?: VatIds.RequestOptions
-    ): Promise<Monite.EntityVatIdResponse> {
+        requestOptions?: VatIds.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityVatIdResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(id, entityId, requestOptions));
+    }
+
+    private async __getById(
+        id: string,
+        entityId: string,
+        requestOptions?: VatIds.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityVatIdResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/vat_ids/${encodeURIComponent(id)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/vat_ids/${encodeURIComponent(id)}`,
             ),
             method: "GET",
             headers: {
@@ -242,21 +279,22 @@ export class VatIds {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityVatIdResponse;
+            return { data: _response.body as Monite.EntityVatIdResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -266,14 +304,16 @@ export class VatIds {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /entities/{entity_id}/vat_ids/{id}."
+                    "Timeout exceeded when calling GET /entities/{entity_id}/vat_ids/{id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -290,11 +330,25 @@ export class VatIds {
      * @example
      *     await client.entities.vatIds.deleteById("id", "entity_id")
      */
-    public async deleteById(id: string, entityId: string, requestOptions?: VatIds.RequestOptions): Promise<void> {
+    public deleteById(
+        id: string,
+        entityId: string,
+        requestOptions?: VatIds.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(id, entityId, requestOptions));
+    }
+
+    private async __deleteById(
+        id: string,
+        entityId: string,
+        requestOptions?: VatIds.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/vat_ids/${encodeURIComponent(id)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/vat_ids/${encodeURIComponent(id)}`,
             ),
             method: "DELETE",
             headers: {
@@ -319,21 +373,22 @@ export class VatIds {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -343,14 +398,16 @@ export class VatIds {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /entities/{entity_id}/vat_ids/{id}."
+                    "Timeout exceeded when calling DELETE /entities/{entity_id}/vat_ids/{id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -368,16 +425,27 @@ export class VatIds {
      * @example
      *     await client.entities.vatIds.updateById("id", "entity_id")
      */
-    public async updateById(
+    public updateById(
         id: string,
         entityId: string,
         request: Monite.entities.EntityUpdateVatId = {},
-        requestOptions?: VatIds.RequestOptions
-    ): Promise<Monite.EntityVatIdResponse> {
+        requestOptions?: VatIds.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EntityVatIdResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(id, entityId, request, requestOptions));
+    }
+
+    private async __updateById(
+        id: string,
+        entityId: string,
+        request: Monite.entities.EntityUpdateVatId = {},
+        requestOptions?: VatIds.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EntityVatIdResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `entities/${encodeURIComponent(entityId)}/vat_ids/${encodeURIComponent(id)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `entities/${encodeURIComponent(entityId)}/vat_ids/${encodeURIComponent(id)}`,
             ),
             method: "PATCH",
             headers: {
@@ -403,21 +471,22 @@ export class VatIds {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.EntityVatIdResponse;
+            return { data: _response.body as Monite.EntityVatIdResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -427,14 +496,16 @@ export class VatIds {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /entities/{entity_id}/vat_ids/{id}."
+                    "Timeout exceeded when calling PATCH /entities/{entity_id}/vat_ids/{id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

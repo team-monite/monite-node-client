@@ -3,7 +3,6 @@
  */
 
 export type ReceivableType = "quote" | "invoice" | "credit_note";
-
 export const ReceivableType = {
     Quote: "quote",
     Invoice: "invoice",

@@ -52,7 +52,7 @@ export interface PayableResponseSchema {
     /** The ID of the entity to which the payable was issued. */
     entity_id: string;
     /** The original file from which this payable was created. */
-    file?: Monite.FileSchema2;
+    file?: Monite.FileSchema;
     /** File id to retrieve file info from file saver. */
     file_id?: string;
     /** The date when the payable was issued, in the YYYY-MM-DD format. */

@@ -12,7 +12,6 @@ export type ApiVersion =
     | "2023-03-01"
     | "2023-02-07"
     | "2022-11-16";
-
 export const ApiVersion = {
     TwoThousandTwentyFour0525: "2024-05-25",
     TwoThousandTwentyFour0131: "2024-01-31",

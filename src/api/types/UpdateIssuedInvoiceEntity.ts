@@ -8,12 +8,12 @@ export type UpdateIssuedInvoiceEntity =
     | Monite.UpdateIssuedInvoiceEntity.Organization
     | Monite.UpdateIssuedInvoiceEntity.Individual;
 
-export declare namespace UpdateIssuedInvoiceEntity {
-    interface Organization extends Monite.ReceivableEntityOrganizationRequest {
+export namespace UpdateIssuedInvoiceEntity {
+    export interface Organization extends Monite.ReceivableEntityOrganizationRequest {
         type: "organization";
     }
 
-    interface Individual extends Monite.ReceivableEntityIndividualRequest {
+    export interface Individual extends Monite.ReceivableEntityIndividualRequest {
         type: "individual";
     }
 }

@@ -3,7 +3,6 @@
  */
 
 export type Platform = "xero" | "quickbooks" | "quickbooks_online" | "quickbooks_online_sandbox";
-
 export const Platform = {
     Xero: "xero",
     Quickbooks: "quickbooks",

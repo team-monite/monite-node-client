@@ -12,7 +12,6 @@ export type DocumentObjectTypeRequestEnum =
     | "payables_purchase_order"
     | "payables_notify_approver"
     | "payables_notify_payer";
-
 export const DocumentObjectTypeRequestEnum = {
     ReceivablesQuote: "receivables_quote",
     ReceivablesInvoice: "receivables_invoice",

@@ -3,7 +3,6 @@
  */
 
 export type DocumentIdSeparators = "/" | "-" | "|" | "." | "";
-
 export const DocumentIdSeparators = {
     Slash: "/",
     Hyphen: "-",

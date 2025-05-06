@@ -12,6 +12,8 @@ export interface UpdateCreditNote {
     /** Address where goods were shipped / where services were provided. */
     counterpart_shipping_address_id?: string;
     entity?: Monite.ReceivableEntityBase;
+    /** Optional text displayed below the line items table in the PDF. */
+    footer?: string;
     line_items?: Monite.UpdateLineItemForCreditNote;
     /** A note with additional information for a receivable */
     memo?: string;

@@ -3,7 +3,6 @@
  */
 
 export type WebhookSubscriptionStatus = "enabled" | "disabled";
-
 export const WebhookSubscriptionStatus = {
     Enabled: "enabled",
     Disabled: "disabled",

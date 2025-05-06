@@ -3,7 +3,6 @@
  */
 
 export type PaymentPriorityEnum = "working_capital" | "balanced" | "bottom_line";
-
 export const PaymentPriorityEnum = {
     WorkingCapital: "working_capital",
     Balanced: "balanced",

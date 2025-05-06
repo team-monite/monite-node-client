@@ -3,7 +3,6 @@
  */
 
 export type TemplateTypeEnum = "block" | "source_object";
-
 export const TemplateTypeEnum = {
     Block: "block",
     SourceObject: "source_object",

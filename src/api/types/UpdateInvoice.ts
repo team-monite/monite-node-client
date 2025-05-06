@@ -9,6 +9,8 @@ export interface UpdateInvoice {
     contact_id?: string;
     /** Address of invoicing, need to state as a separate fields for some countries if it differs from address of a company. */
     counterpart_billing_address_id?: string;
+    /** E-invoicing credentials ID of the counterpart */
+    counterpart_einvoicing_credentials_id?: string;
     /** Unique ID of the counterpart. */
     counterpart_id?: string;
     /** Address where goods were shipped / where services were provided. */
@@ -27,15 +29,23 @@ export interface UpdateInvoice {
     entity_bank_account_id?: string;
     /** Entity VAT ID id */
     entity_vat_id_id?: string;
+    /** Optional text displayed below the line items table in the PDF. */
+    footer?: string;
     /**
      * The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
      *
-     * If omitted or `null`, defaults to the invoice issue date and the value is automatically set when the invoice is moved to the `issued` status.
+     * Some countries require the fulfillment date in invoices for regulatory compliance. In this case, if the fulfillment date was not provided by the user, it is automatically set to the invoice issue date once the invoice gets issued.
+     *
+     * In countries where the fulfillment date is optional, Monite does not auto-assign it if it was omitted by the user.
      */
     fulfillment_date?: string;
+    /** Is this Invoice will be sent through E-invoice system */
+    is_einvoice?: boolean;
     line_items?: Monite.LineItemUpdate[];
     /** A note with additional information for a receivable */
     memo?: string;
+    /** E-invoicing network credentials ID of the entity */
+    network_credentials_id?: string;
     overdue_reminder_id?: string;
     /** Metadata for partner needs */
     partner_metadata?: Record<string, unknown>;

@@ -8,10 +8,11 @@ import { Analytics } from "./api/resources/analytics/client/Client";
 import { ApprovalPolicies } from "./api/resources/approvalPolicies/client/Client";
 import { ApprovalRequests } from "./api/resources/approvalRequests/client/Client";
 import { AccessTokens } from "./api/resources/accessTokens/client/Client";
-import { BatchPayments } from "./api/resources/batchPayments/client/Client";
 import { Comments } from "./api/resources/comments/client/Client";
 import { Counterparts } from "./api/resources/counterparts/client/Client";
+import { CounterpartEInvoicingCredentials } from "./api/resources/counterpartEInvoicingCredentials/client/Client";
 import { DataExports } from "./api/resources/dataExports/client/Client";
+import { DeliveryNotes } from "./api/resources/deliveryNotes/client/Client";
 import { PdfTemplates } from "./api/resources/pdfTemplates/client/Client";
 import { EInvoicingConnections } from "./api/resources/eInvoicingConnections/client/Client";
 import { Entities } from "./api/resources/entities/client/Client";
@@ -23,7 +24,7 @@ import { MailTemplates } from "./api/resources/mailTemplates/client/Client";
 import { MailboxDomains } from "./api/resources/mailboxDomains/client/Client";
 import { Mailboxes } from "./api/resources/mailboxes/client/Client";
 import { MeasureUnits } from "./api/resources/measureUnits/client/Client";
-import { OnboardingLinks } from "./api/resources/onboardingLinks/client/Client";
+import { Ocr } from "./api/resources/ocr/client/Client";
 import { OverdueReminders } from "./api/resources/overdueReminders/client/Client";
 import { CreditNotes } from "./api/resources/creditNotes/client/Client";
 import { PurchaseOrders } from "./api/resources/purchaseOrders/client/Client";
@@ -47,8 +48,10 @@ import { WebhookSubscriptions } from "./api/resources/webhookSubscriptions/clien
 import { Accounting } from "./api/resources/accounting/client/Client";
 
 export declare namespace MoniteClient {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -57,7 +60,7 @@ export declare namespace MoniteClient {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -74,249 +77,214 @@ export declare namespace MoniteClient {
 }
 
 export class MoniteClient {
-    constructor(protected readonly _options: MoniteClient.Options) {}
-
     protected _analytics: Analytics | undefined;
+    protected _approvalPolicies: ApprovalPolicies | undefined;
+    protected _approvalRequests: ApprovalRequests | undefined;
+    protected _accessTokens: AccessTokens | undefined;
+    protected _comments: Comments | undefined;
+    protected _counterparts: Counterparts | undefined;
+    protected _counterpartEInvoicingCredentials: CounterpartEInvoicingCredentials | undefined;
+    protected _dataExports: DataExports | undefined;
+    protected _deliveryNotes: DeliveryNotes | undefined;
+    protected _pdfTemplates: PdfTemplates | undefined;
+    protected _eInvoicingConnections: EInvoicingConnections | undefined;
+    protected _entities: Entities | undefined;
+    protected _entityUsers: EntityUsers | undefined;
+    protected _events: Events | undefined;
+    protected _files: Files | undefined;
+    protected _financing: Financing | undefined;
+    protected _mailTemplates: MailTemplates | undefined;
+    protected _mailboxDomains: MailboxDomains | undefined;
+    protected _mailboxes: Mailboxes | undefined;
+    protected _measureUnits: MeasureUnits | undefined;
+    protected _ocr: Ocr | undefined;
+    protected _overdueReminders: OverdueReminders | undefined;
+    protected _creditNotes: CreditNotes | undefined;
+    protected _purchaseOrders: PurchaseOrders | undefined;
+    protected _payables: Payables | undefined;
+    protected _paymentIntents: PaymentIntents | undefined;
+    protected _paymentLinks: PaymentLinks | undefined;
+    protected _paymentRecords: PaymentRecords | undefined;
+    protected _paymentReminders: PaymentReminders | undefined;
+    protected _paymentTerms: PaymentTerms | undefined;
+    protected _products: Products | undefined;
+    protected _projects: Projects | undefined;
+    protected _receivables: Receivables | undefined;
+    protected _recurrences: Recurrences | undefined;
+    protected _roles: Roles | undefined;
+    protected _partnerSettings: PartnerSettings | undefined;
+    protected _tags: Tags | undefined;
+    protected _textTemplates: TextTemplates | undefined;
+    protected _vatRates: VatRates | undefined;
+    protected _webhookDeliveries: WebhookDeliveries | undefined;
+    protected _webhookSubscriptions: WebhookSubscriptions | undefined;
+    protected _accounting: Accounting | undefined;
+
+    constructor(protected readonly _options: MoniteClient.Options) {}
 
     public get analytics(): Analytics {
         return (this._analytics ??= new Analytics(this._options));
     }
 
-    protected _approvalPolicies: ApprovalPolicies | undefined;
-
     public get approvalPolicies(): ApprovalPolicies {
         return (this._approvalPolicies ??= new ApprovalPolicies(this._options));
     }
-
-    protected _approvalRequests: ApprovalRequests | undefined;
 
     public get approvalRequests(): ApprovalRequests {
         return (this._approvalRequests ??= new ApprovalRequests(this._options));
     }
 
-    protected _accessTokens: AccessTokens | undefined;
-
     public get accessTokens(): AccessTokens {
         return (this._accessTokens ??= new AccessTokens(this._options));
     }
-
-    protected _batchPayments: BatchPayments | undefined;
-
-    public get batchPayments(): BatchPayments {
-        return (this._batchPayments ??= new BatchPayments(this._options));
-    }
-
-    protected _comments: Comments | undefined;
 
     public get comments(): Comments {
         return (this._comments ??= new Comments(this._options));
     }
 
-    protected _counterparts: Counterparts | undefined;
-
     public get counterparts(): Counterparts {
         return (this._counterparts ??= new Counterparts(this._options));
     }
 
-    protected _dataExports: DataExports | undefined;
+    public get counterpartEInvoicingCredentials(): CounterpartEInvoicingCredentials {
+        return (this._counterpartEInvoicingCredentials ??= new CounterpartEInvoicingCredentials(this._options));
+    }
 
     public get dataExports(): DataExports {
         return (this._dataExports ??= new DataExports(this._options));
     }
 
-    protected _pdfTemplates: PdfTemplates | undefined;
+    public get deliveryNotes(): DeliveryNotes {
+        return (this._deliveryNotes ??= new DeliveryNotes(this._options));
+    }
 
     public get pdfTemplates(): PdfTemplates {
         return (this._pdfTemplates ??= new PdfTemplates(this._options));
     }
 
-    protected _eInvoicingConnections: EInvoicingConnections | undefined;
-
     public get eInvoicingConnections(): EInvoicingConnections {
         return (this._eInvoicingConnections ??= new EInvoicingConnections(this._options));
     }
-
-    protected _entities: Entities | undefined;
 
     public get entities(): Entities {
         return (this._entities ??= new Entities(this._options));
     }
 
-    protected _entityUsers: EntityUsers | undefined;
-
     public get entityUsers(): EntityUsers {
         return (this._entityUsers ??= new EntityUsers(this._options));
     }
-
-    protected _events: Events | undefined;
 
     public get events(): Events {
         return (this._events ??= new Events(this._options));
     }
 
-    protected _files: Files | undefined;
-
     public get files(): Files {
         return (this._files ??= new Files(this._options));
     }
-
-    protected _financing: Financing | undefined;
 
     public get financing(): Financing {
         return (this._financing ??= new Financing(this._options));
     }
 
-    protected _mailTemplates: MailTemplates | undefined;
-
     public get mailTemplates(): MailTemplates {
         return (this._mailTemplates ??= new MailTemplates(this._options));
     }
-
-    protected _mailboxDomains: MailboxDomains | undefined;
 
     public get mailboxDomains(): MailboxDomains {
         return (this._mailboxDomains ??= new MailboxDomains(this._options));
     }
 
-    protected _mailboxes: Mailboxes | undefined;
-
     public get mailboxes(): Mailboxes {
         return (this._mailboxes ??= new Mailboxes(this._options));
     }
-
-    protected _measureUnits: MeasureUnits | undefined;
 
     public get measureUnits(): MeasureUnits {
         return (this._measureUnits ??= new MeasureUnits(this._options));
     }
 
-    protected _onboardingLinks: OnboardingLinks | undefined;
-
-    public get onboardingLinks(): OnboardingLinks {
-        return (this._onboardingLinks ??= new OnboardingLinks(this._options));
+    public get ocr(): Ocr {
+        return (this._ocr ??= new Ocr(this._options));
     }
-
-    protected _overdueReminders: OverdueReminders | undefined;
 
     public get overdueReminders(): OverdueReminders {
         return (this._overdueReminders ??= new OverdueReminders(this._options));
     }
 
-    protected _creditNotes: CreditNotes | undefined;
-
     public get creditNotes(): CreditNotes {
         return (this._creditNotes ??= new CreditNotes(this._options));
     }
-
-    protected _purchaseOrders: PurchaseOrders | undefined;
 
     public get purchaseOrders(): PurchaseOrders {
         return (this._purchaseOrders ??= new PurchaseOrders(this._options));
     }
 
-    protected _payables: Payables | undefined;
-
     public get payables(): Payables {
         return (this._payables ??= new Payables(this._options));
     }
-
-    protected _paymentIntents: PaymentIntents | undefined;
 
     public get paymentIntents(): PaymentIntents {
         return (this._paymentIntents ??= new PaymentIntents(this._options));
     }
 
-    protected _paymentLinks: PaymentLinks | undefined;
-
     public get paymentLinks(): PaymentLinks {
         return (this._paymentLinks ??= new PaymentLinks(this._options));
     }
-
-    protected _paymentRecords: PaymentRecords | undefined;
 
     public get paymentRecords(): PaymentRecords {
         return (this._paymentRecords ??= new PaymentRecords(this._options));
     }
 
-    protected _paymentReminders: PaymentReminders | undefined;
-
     public get paymentReminders(): PaymentReminders {
         return (this._paymentReminders ??= new PaymentReminders(this._options));
     }
-
-    protected _paymentTerms: PaymentTerms | undefined;
 
     public get paymentTerms(): PaymentTerms {
         return (this._paymentTerms ??= new PaymentTerms(this._options));
     }
 
-    protected _products: Products | undefined;
-
     public get products(): Products {
         return (this._products ??= new Products(this._options));
     }
-
-    protected _projects: Projects | undefined;
 
     public get projects(): Projects {
         return (this._projects ??= new Projects(this._options));
     }
 
-    protected _receivables: Receivables | undefined;
-
     public get receivables(): Receivables {
         return (this._receivables ??= new Receivables(this._options));
     }
-
-    protected _recurrences: Recurrences | undefined;
 
     public get recurrences(): Recurrences {
         return (this._recurrences ??= new Recurrences(this._options));
     }
 
-    protected _roles: Roles | undefined;
-
     public get roles(): Roles {
         return (this._roles ??= new Roles(this._options));
     }
-
-    protected _partnerSettings: PartnerSettings | undefined;
 
     public get partnerSettings(): PartnerSettings {
         return (this._partnerSettings ??= new PartnerSettings(this._options));
     }
 
-    protected _tags: Tags | undefined;
-
     public get tags(): Tags {
         return (this._tags ??= new Tags(this._options));
     }
-
-    protected _textTemplates: TextTemplates | undefined;
 
     public get textTemplates(): TextTemplates {
         return (this._textTemplates ??= new TextTemplates(this._options));
     }
 
-    protected _vatRates: VatRates | undefined;
-
     public get vatRates(): VatRates {
         return (this._vatRates ??= new VatRates(this._options));
     }
-
-    protected _webhookDeliveries: WebhookDeliveries | undefined;
 
     public get webhookDeliveries(): WebhookDeliveries {
         return (this._webhookDeliveries ??= new WebhookDeliveries(this._options));
     }
 
-    protected _webhookSubscriptions: WebhookSubscriptions | undefined;
-
     public get webhookSubscriptions(): WebhookSubscriptions {
         return (this._webhookSubscriptions ??= new WebhookSubscriptions(this._options));
     }
-
-    protected _accounting: Accounting | undefined;
 
     public get accounting(): Accounting {
         return (this._accounting ??= new Accounting(this._options));

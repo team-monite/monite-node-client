@@ -3,7 +3,6 @@
  */
 
 export type FinancingInvoiceCursorFields = "id" | "created_at";
-
 export const FinancingInvoiceCursorFields = {
     Id: "id",
     CreatedAt: "created_at",

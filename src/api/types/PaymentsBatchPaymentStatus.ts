@@ -3,7 +3,6 @@
  */
 
 export type PaymentsBatchPaymentStatus = "created" | "processing" | "partially_successful" | "succeeded" | "failed";
-
 export const PaymentsBatchPaymentStatus = {
     Created: "created",
     Processing: "processing",

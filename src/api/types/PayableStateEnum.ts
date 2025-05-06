@@ -11,7 +11,6 @@ export type PayableStateEnum =
     | "paid"
     | "canceled"
     | "rejected";
-
 export const PayableStateEnum = {
     Draft: "draft",
     New: "new",

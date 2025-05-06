@@ -17,7 +17,6 @@ export type MoniteAllPaymentMethods =
     | "SOFORT"
     | "Apple Pay"
     | "Google Pay";
-
 export const MoniteAllPaymentMethods = {
     SepaPayments: "SEPA Payments",
     UsAchPayments: "US ACH Payments",

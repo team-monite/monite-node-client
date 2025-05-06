@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace Connections {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace Connections {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -49,11 +51,19 @@ export class Connections {
      * @example
      *     await client.accounting.connections.get()
      */
-    public async get(requestOptions?: Connections.RequestOptions): Promise<Monite.AccountingConnectionList> {
+    public get(requestOptions?: Connections.RequestOptions): core.HttpResponsePromise<Monite.AccountingConnectionList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(requestOptions));
+    }
+
+    private async __get(
+        requestOptions?: Connections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingConnectionList>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "accounting_connections"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "accounting_connections",
             ),
             method: "GET",
             headers: {
@@ -78,19 +88,20 @@ export class Connections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingConnectionList;
+            return { data: _response.body as Monite.AccountingConnectionList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -100,12 +111,14 @@ export class Connections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /accounting_connections.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -121,11 +134,21 @@ export class Connections {
      * @example
      *     await client.accounting.connections.create()
      */
-    public async create(requestOptions?: Connections.RequestOptions): Promise<Monite.AccountingConnectionResponse> {
+    public create(
+        requestOptions?: Connections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AccountingConnectionResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(requestOptions));
+    }
+
+    private async __create(
+        requestOptions?: Connections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingConnectionResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "accounting_connections"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "accounting_connections",
             ),
             method: "POST",
             headers: {
@@ -150,19 +173,20 @@ export class Connections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingConnectionResponse;
+            return { data: _response.body as Monite.AccountingConnectionResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -172,12 +196,14 @@ export class Connections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /accounting_connections.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -194,14 +220,23 @@ export class Connections {
      * @example
      *     await client.accounting.connections.getById("connection_id")
      */
-    public async getById(
+    public getById(
         connectionId: string,
-        requestOptions?: Connections.RequestOptions
-    ): Promise<Monite.AccountingConnectionResponse> {
+        requestOptions?: Connections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AccountingConnectionResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(connectionId, requestOptions));
+    }
+
+    private async __getById(
+        connectionId: string,
+        requestOptions?: Connections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingConnectionResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `accounting_connections/${encodeURIComponent(connectionId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `accounting_connections/${encodeURIComponent(connectionId)}`,
             ),
             method: "GET",
             headers: {
@@ -226,19 +261,20 @@ export class Connections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingConnectionResponse;
+            return { data: _response.body as Monite.AccountingConnectionResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -248,14 +284,16 @@ export class Connections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /accounting_connections/{connection_id}."
+                    "Timeout exceeded when calling GET /accounting_connections/{connection_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -272,14 +310,23 @@ export class Connections {
      * @example
      *     await client.accounting.connections.disconnectById("connection_id")
      */
-    public async disconnectById(
+    public disconnectById(
         connectionId: string,
-        requestOptions?: Connections.RequestOptions
-    ): Promise<Monite.AccountingConnectionResponse> {
+        requestOptions?: Connections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AccountingConnectionResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__disconnectById(connectionId, requestOptions));
+    }
+
+    private async __disconnectById(
+        connectionId: string,
+        requestOptions?: Connections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingConnectionResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `accounting_connections/${encodeURIComponent(connectionId)}/disconnect`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `accounting_connections/${encodeURIComponent(connectionId)}/disconnect`,
             ),
             method: "POST",
             headers: {
@@ -304,19 +351,20 @@ export class Connections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingConnectionResponse;
+            return { data: _response.body as Monite.AccountingConnectionResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -326,14 +374,16 @@ export class Connections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /accounting_connections/{connection_id}/disconnect."
+                    "Timeout exceeded when calling POST /accounting_connections/{connection_id}/disconnect.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -348,14 +398,23 @@ export class Connections {
      * @example
      *     await client.accounting.connections.syncById("connection_id")
      */
-    public async syncById(
+    public syncById(
         connectionId: string,
-        requestOptions?: Connections.RequestOptions
-    ): Promise<Monite.AccountingMessageResponse> {
+        requestOptions?: Connections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AccountingMessageResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__syncById(connectionId, requestOptions));
+    }
+
+    private async __syncById(
+        connectionId: string,
+        requestOptions?: Connections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingMessageResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `accounting_connections/${encodeURIComponent(connectionId)}/sync`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `accounting_connections/${encodeURIComponent(connectionId)}/sync`,
             ),
             method: "POST",
             headers: {
@@ -380,19 +439,20 @@ export class Connections {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingMessageResponse;
+            return { data: _response.body as Monite.AccountingMessageResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -402,14 +462,16 @@ export class Connections {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /accounting_connections/{connection_id}/sync."
+                    "Timeout exceeded when calling POST /accounting_connections/{connection_id}/sync.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

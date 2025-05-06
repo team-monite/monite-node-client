@@ -255,7 +255,6 @@ export type AllowedCountries =
     | "CW"
     | "MF"
     | "SX";
-
 export const AllowedCountries = {
     Af: "AF",
     Ax: "AX",

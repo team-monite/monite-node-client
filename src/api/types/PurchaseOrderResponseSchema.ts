@@ -40,6 +40,8 @@ export interface PurchaseOrderResponseSchema {
     items: Monite.PurchaseOrderItem[];
     /** Msg which will be send to counterpart for who the purchase order is issued. */
     message: string;
+    /** Project ID of a purchase order */
+    project_id?: string;
     /** Purchase order can be in 'draft' state before sending it to counterpart. After that state is 'issued' */
     status: string;
     /** Number of days for which purchase order is valid */

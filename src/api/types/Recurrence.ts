@@ -10,6 +10,17 @@ export interface Recurrence {
     created_at: string;
     /** Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard. */
     updated_at: string;
+    /**
+     * Controls how invoices are processed when generated:
+     * - "draft": Creates invoices in draft status, requiring manual review, issuing, and sending
+     * - "issue": Automatically issues invoices but requires manual sending
+     * - "issue_and_send": Fully automates the process (creates, issues, and sends invoices)
+     *
+     * Default: "issue" (or "issue_and_send" if subject_text and body_text are provided)
+     *
+     * Note: When using "issue_and_send", both subject_text and body_text must be provided.
+     */
+    automation_level: Monite.AutomationLevel;
     body_text?: string;
     current_iteration: number;
     day_of_month: Monite.DayOfMonth;

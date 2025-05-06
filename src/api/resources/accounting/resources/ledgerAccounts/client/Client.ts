@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace LedgerAccounts {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace LedgerAccounts {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,12 +52,19 @@ export class LedgerAccounts {
      * @example
      *     await client.accounting.ledgerAccounts.get()
      */
-    public async get(
+    public get(
         request: Monite.accounting.LedgerAccountsGetRequest = {},
-        requestOptions?: LedgerAccounts.RequestOptions
-    ): Promise<Monite.LedgerAccountListResponse> {
+        requestOptions?: LedgerAccounts.RequestOptions,
+    ): core.HttpResponsePromise<Monite.LedgerAccountListResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.accounting.LedgerAccountsGetRequest = {},
+        requestOptions?: LedgerAccounts.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.LedgerAccountListResponse>> {
         const { order, limit, pagination_token: paginationToken, sort } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -74,8 +83,10 @@ export class LedgerAccounts {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "ledger_accounts"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "ledger_accounts",
             ),
             method: "GET",
             headers: {
@@ -101,19 +112,20 @@ export class LedgerAccounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.LedgerAccountListResponse;
+            return { data: _response.body as Monite.LedgerAccountListResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -123,12 +135,14 @@ export class LedgerAccounts {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /ledger_accounts.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -145,14 +159,23 @@ export class LedgerAccounts {
      * @example
      *     await client.accounting.ledgerAccounts.getById("ledger_account_id")
      */
-    public async getById(
+    public getById(
         ledgerAccountId: string,
-        requestOptions?: LedgerAccounts.RequestOptions
-    ): Promise<Monite.LedgerAccountResponse> {
+        requestOptions?: LedgerAccounts.RequestOptions,
+    ): core.HttpResponsePromise<Monite.LedgerAccountResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(ledgerAccountId, requestOptions));
+    }
+
+    private async __getById(
+        ledgerAccountId: string,
+        requestOptions?: LedgerAccounts.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.LedgerAccountResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `ledger_accounts/${encodeURIComponent(ledgerAccountId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `ledger_accounts/${encodeURIComponent(ledgerAccountId)}`,
             ),
             method: "GET",
             headers: {
@@ -177,19 +200,20 @@ export class LedgerAccounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.LedgerAccountResponse;
+            return { data: _response.body as Monite.LedgerAccountResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -199,14 +223,16 @@ export class LedgerAccounts {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /ledger_accounts/{ledger_account_id}."
+                    "Timeout exceeded when calling GET /ledger_accounts/{ledger_account_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

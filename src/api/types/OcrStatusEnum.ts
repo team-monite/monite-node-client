@@ -3,7 +3,6 @@
  */
 
 export type OcrStatusEnum = "processing" | "error" | "success" | "canceled";
-
 export const OcrStatusEnum = {
     Processing: "processing",
     Error: "error",

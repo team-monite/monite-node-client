@@ -3,7 +3,6 @@
  */
 
 export type StatusEnum = "active" | "deleted";
-
 export const StatusEnum = {
     Active: "active",
     Deleted: "deleted",

@@ -17,6 +17,7 @@ export type ObjectType =
     | "counterpart_partner_metadata"
     | "counterpart_tax_id"
     | "counterpart_vat_id"
+    | "delivery_note"
     | "einvoicing"
     | "entity"
     | "entity_bank_account"
@@ -28,6 +29,7 @@ export type ObjectType =
     | "export"
     | "mailbox"
     | "monitescript_process"
+    | "ocr_task"
     | "onboarding"
     | "overdue_reminder"
     | "partner"
@@ -57,7 +59,6 @@ export type ObjectType =
     | "webhook"
     | "workflow"
     | "workflow_pipeline";
-
 export const ObjectType = {
     Account: "account",
     Approval: "approval",
@@ -73,6 +74,7 @@ export const ObjectType = {
     CounterpartPartnerMetadata: "counterpart_partner_metadata",
     CounterpartTaxId: "counterpart_tax_id",
     CounterpartVatId: "counterpart_vat_id",
+    DeliveryNote: "delivery_note",
     Einvoicing: "einvoicing",
     Entity: "entity",
     EntityBankAccount: "entity_bank_account",
@@ -84,6 +86,7 @@ export const ObjectType = {
     Export: "export",
     Mailbox: "mailbox",
     MonitescriptProcess: "monitescript_process",
+    OcrTask: "ocr_task",
     Onboarding: "onboarding",
     OverdueReminder: "overdue_reminder",
     Partner: "partner",

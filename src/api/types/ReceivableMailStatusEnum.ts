@@ -3,7 +3,6 @@
  */
 
 export type ReceivableMailStatusEnum = "pending" | "processing" | "sent" | "partially_sent" | "failed";
-
 export const ReceivableMailStatusEnum = {
     Pending: "pending",
     Processing: "processing",

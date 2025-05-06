@@ -3,7 +3,6 @@
  */
 
 export type GrantType = "client_credentials" | "entity_user";
-
 export const GrantType = {
     ClientCredentials: "client_credentials",
     EntityUser: "entity_user",
