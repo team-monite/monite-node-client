@@ -18,9 +18,13 @@ export interface EntityIndividualResponse {
     /** A set of metadata describing an individual */
     individual: Monite.IndividualResponseSchema;
     /** A logo image of the entity */
-    logo?: Monite.FileSchema3;
+    logo?: Monite.FileSchema2;
     /** A phone number of the entity */
     phone?: string;
+    /** (Germany only) The name of the local district court (_Amtsgericht_) where the entity is registered. Required if `registration_number` is provided. */
+    registration_authority?: string;
+    /** (Germany only) The entity's commercial register number (_Handelsregisternummer_) in the German Commercial Register, if available. */
+    registration_number?: string;
     /** record status, 'active' by default */
     status: Monite.EntityStatusEnum;
     /** The entity's taxpayer identification number or tax ID. This field is required for entities that are non-VAT registered. */

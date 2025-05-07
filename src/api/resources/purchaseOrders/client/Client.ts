@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace PurchaseOrders {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace PurchaseOrders {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,10 +52,17 @@ export class PurchaseOrders {
      * @example
      *     await client.purchaseOrders.get()
      */
-    public async get(
+    public get(
         request: Monite.PurchaseOrdersGetRequest = {},
-        requestOptions?: PurchaseOrders.RequestOptions
-    ): Promise<Monite.PurchaseOrderPaginationResponse> {
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PurchaseOrderPaginationResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.PurchaseOrdersGetRequest = {},
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PurchaseOrderPaginationResponse>> {
         const {
             order,
             limit,
@@ -80,8 +89,9 @@ export class PurchaseOrders {
             "counterpart.name": counterpartName,
             currency,
             currency__in: currencyIn,
+            project_id: projectId,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -194,10 +204,16 @@ export class PurchaseOrders {
             }
         }
 
+        if (projectId != null) {
+            _queryParams["project_id"] = projectId;
+        }
+
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payable_purchase_orders"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payable_purchase_orders",
             ),
             method: "GET",
             headers: {
@@ -223,23 +239,27 @@ export class PurchaseOrders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PurchaseOrderPaginationResponse;
+            return {
+                data: _response.body as Monite.PurchaseOrderPaginationResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -249,12 +269,14 @@ export class PurchaseOrders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payable_purchase_orders.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -284,14 +306,23 @@ export class PurchaseOrders {
      *         valid_for_days: 1
      *     })
      */
-    public async create(
+    public create(
         request: Monite.PurchaseOrderPayloadSchema,
-        requestOptions?: PurchaseOrders.RequestOptions
-    ): Promise<Monite.PurchaseOrderResponseSchema> {
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PurchaseOrderResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.PurchaseOrderPayloadSchema,
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PurchaseOrderResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payable_purchase_orders"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payable_purchase_orders",
             ),
             method: "POST",
             headers: {
@@ -317,23 +348,24 @@ export class PurchaseOrders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PurchaseOrderResponseSchema;
+            return { data: _response.body as Monite.PurchaseOrderResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -343,12 +375,14 @@ export class PurchaseOrders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payable_purchase_orders.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -365,11 +399,21 @@ export class PurchaseOrders {
      * @example
      *     await client.purchaseOrders.getVariables()
      */
-    public async getVariables(requestOptions?: PurchaseOrders.RequestOptions): Promise<Monite.VariablesObjectList> {
+    public getVariables(
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.VariablesObjectList> {
+        return core.HttpResponsePromise.fromPromise(this.__getVariables(requestOptions));
+    }
+
+    private async __getVariables(
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.VariablesObjectList>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payable_purchase_orders/variables"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payable_purchase_orders/variables",
             ),
             method: "GET",
             headers: {
@@ -394,21 +438,22 @@ export class PurchaseOrders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.VariablesObjectList;
+            return { data: _response.body as Monite.VariablesObjectList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -418,14 +463,16 @@ export class PurchaseOrders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /payable_purchase_orders/variables."
+                    "Timeout exceeded when calling GET /payable_purchase_orders/variables.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -442,14 +489,23 @@ export class PurchaseOrders {
      * @example
      *     await client.purchaseOrders.getById("purchase_order_id")
      */
-    public async getById(
+    public getById(
         purchaseOrderId: string,
-        requestOptions?: PurchaseOrders.RequestOptions
-    ): Promise<Monite.PurchaseOrderResponseSchema> {
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PurchaseOrderResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(purchaseOrderId, requestOptions));
+    }
+
+    private async __getById(
+        purchaseOrderId: string,
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PurchaseOrderResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}`,
             ),
             method: "GET",
             headers: {
@@ -474,23 +530,24 @@ export class PurchaseOrders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PurchaseOrderResponseSchema;
+            return { data: _response.body as Monite.PurchaseOrderResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -500,14 +557,16 @@ export class PurchaseOrders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /payable_purchase_orders/{purchase_order_id}."
+                    "Timeout exceeded when calling GET /payable_purchase_orders/{purchase_order_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -524,11 +583,23 @@ export class PurchaseOrders {
      * @example
      *     await client.purchaseOrders.deleteById("purchase_order_id")
      */
-    public async deleteById(purchaseOrderId: string, requestOptions?: PurchaseOrders.RequestOptions): Promise<void> {
+    public deleteById(
+        purchaseOrderId: string,
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(purchaseOrderId, requestOptions));
+    }
+
+    private async __deleteById(
+        purchaseOrderId: string,
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -553,23 +624,24 @@ export class PurchaseOrders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -579,14 +651,16 @@ export class PurchaseOrders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /payable_purchase_orders/{purchase_order_id}."
+                    "Timeout exceeded when calling DELETE /payable_purchase_orders/{purchase_order_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -604,15 +678,25 @@ export class PurchaseOrders {
      * @example
      *     await client.purchaseOrders.updateById("purchase_order_id")
      */
-    public async updateById(
+    public updateById(
         purchaseOrderId: string,
         request: Monite.UpdatePurchaseOrderPayloadSchema = {},
-        requestOptions?: PurchaseOrders.RequestOptions
-    ): Promise<Monite.PurchaseOrderResponseSchema> {
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PurchaseOrderResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(purchaseOrderId, request, requestOptions));
+    }
+
+    private async __updateById(
+        purchaseOrderId: string,
+        request: Monite.UpdatePurchaseOrderPayloadSchema = {},
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PurchaseOrderResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -638,23 +722,24 @@ export class PurchaseOrders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PurchaseOrderResponseSchema;
+            return { data: _response.body as Monite.PurchaseOrderResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -664,14 +749,16 @@ export class PurchaseOrders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /payable_purchase_orders/{purchase_order_id}."
+                    "Timeout exceeded when calling PATCH /payable_purchase_orders/{purchase_order_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -694,15 +781,25 @@ export class PurchaseOrders {
      *         subject_text: "subject_text"
      *     })
      */
-    public async previewById(
+    public previewById(
         purchaseOrderId: string,
         request: Monite.PurchaseOrderEmailPreviewRequest,
-        requestOptions?: PurchaseOrders.RequestOptions
-    ): Promise<Monite.PurchaseOrderEmailPreviewResponse> {
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PurchaseOrderEmailPreviewResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__previewById(purchaseOrderId, request, requestOptions));
+    }
+
+    private async __previewById(
+        purchaseOrderId: string,
+        request: Monite.PurchaseOrderEmailPreviewRequest,
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PurchaseOrderEmailPreviewResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}/preview`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}/preview`,
             ),
             method: "POST",
             headers: {
@@ -728,27 +825,31 @@ export class PurchaseOrders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PurchaseOrderEmailPreviewResponse;
+            return {
+                data: _response.body as Monite.PurchaseOrderEmailPreviewResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -758,14 +859,16 @@ export class PurchaseOrders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payable_purchase_orders/{purchase_order_id}/preview."
+                    "Timeout exceeded when calling POST /payable_purchase_orders/{purchase_order_id}/preview.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -789,15 +892,25 @@ export class PurchaseOrders {
      *         subject_text: "subject_text"
      *     })
      */
-    public async sendById(
+    public sendById(
         purchaseOrderId: string,
         request: Monite.SendPurchaseOrderViaEmailRequest,
-        requestOptions?: PurchaseOrders.RequestOptions
-    ): Promise<Monite.PurchaseOrderEmailSentResponse> {
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PurchaseOrderEmailSentResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__sendById(purchaseOrderId, request, requestOptions));
+    }
+
+    private async __sendById(
+        purchaseOrderId: string,
+        request: Monite.SendPurchaseOrderViaEmailRequest,
+        requestOptions?: PurchaseOrders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PurchaseOrderEmailSentResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}/send`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payable_purchase_orders/${encodeURIComponent(purchaseOrderId)}/send`,
             ),
             method: "POST",
             headers: {
@@ -823,29 +936,33 @@ export class PurchaseOrders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PurchaseOrderEmailSentResponse;
+            return {
+                data: _response.body as Monite.PurchaseOrderEmailSentResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -855,14 +972,16 @@ export class PurchaseOrders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /payable_purchase_orders/{purchase_order_id}/send."
+                    "Timeout exceeded when calling POST /payable_purchase_orders/{purchase_order_id}/send.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

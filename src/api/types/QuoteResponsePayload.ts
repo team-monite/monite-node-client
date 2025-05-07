@@ -24,6 +24,8 @@ export interface QuoteResponsePayload {
     counterpart_business_type?: string;
     /** Additional information about counterpart contacts. */
     counterpart_contact?: Monite.ReceivableCounterpartContact;
+    /** The external reference of the counterpart. */
+    counterpart_external_reference?: string;
     /** Unique ID of the counterpart. */
     counterpart_id: string;
     /** A legal name of a counterpart it is an organization or first and last name if it is an individual */
@@ -49,6 +51,8 @@ export interface QuoteResponsePayload {
     document_id?: string;
     /** Optional field representing date until which invoice should be paid */
     due_date?: string;
+    /** E-invoice XML file that was sent to the counterpart via an e-invoicing network. Available only if `is_einvoice` is `true`. */
+    einvoice_file_url?: string;
     entity: Monite.QuoteResponsePayloadEntity;
     entity_address: Monite.ReceivableEntityAddressSchema;
     entity_bank_account?: Monite.ReceivablesRepresentationOfEntityBankAccount;
@@ -61,6 +65,8 @@ export interface QuoteResponsePayload {
     file_language: Monite.LanguageCodeEnum;
     /** The receivable's PDF URL in the counterpart's default language. */
     file_url?: string;
+    /** Optional text displayed below the line items table in the PDF. */
+    footer?: string;
     /** Optional field for the issue of the entry. */
     issue_date?: string;
     line_items: Monite.ResponseItem[];
@@ -82,6 +88,8 @@ export interface QuoteResponsePayload {
     status: Monite.QuoteStateEnum;
     /** The subtotal (excluding VAT), in [minor units](https://docs.monite.com/references/currencies#minor-units). */
     subtotal?: number;
+    /** The subtotal including VAT but without invoice discount, in [minor units](https://docs.monite.com/references/currencies#minor-units). */
+    subtotal_after_vat?: number;
     /** The list of tags for this receivable. */
     tags?: Monite.TagReadSchema[];
     /** Total price of the receivable in [minor units](https://docs.monite.com/references/currencies#minor-units). Calculated as a subtotal + total_vat_amount. */
@@ -98,6 +106,8 @@ export interface QuoteResponsePayload {
     vat_exempt?: boolean;
     /** The reason for the VAT exemption, if applicable. */
     vat_exemption_rationale?: string;
+    /** Indicates whether the discount is applied to the VAT-inclusive or VAT-exclusive amount. */
+    vat_inclusive_discount_mode?: Monite.VatModeEnum;
     /** Defines whether the prices of products in receivable will already include VAT or not. */
     vat_mode?: Monite.VatModeEnum;
     /** The amount of tax withheld in percent minor units */

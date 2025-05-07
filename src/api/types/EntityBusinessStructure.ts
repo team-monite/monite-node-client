@@ -13,7 +13,6 @@ export type EntityBusinessStructure =
     | "private_partnership"
     | "unincorporated_association"
     | "public_partnership";
-
 export const EntityBusinessStructure = {
     IncorporatedPartnership: "incorporated_partnership",
     UnincorporatedPartnership: "unincorporated_partnership",

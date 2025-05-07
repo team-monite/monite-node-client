@@ -6,7 +6,6 @@
  * The current status of the approval policy.
  */
 export type ApprovalPolicyResourceStatus = "active" | "pending";
-
 export const ApprovalPolicyResourceStatus = {
     Active: "active",
     Pending: "pending",

@@ -3,7 +3,6 @@
  */
 
 export type PayableOriginEnum = "upload" | "email" | "einvoicing";
-
 export const PayableOriginEnum = {
     Upload: "upload",
     Email: "email",

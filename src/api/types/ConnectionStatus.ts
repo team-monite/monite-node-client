@@ -3,7 +3,6 @@
  */
 
 export type ConnectionStatus = "connected" | "disconnected" | "deauthorized" | "pending_auth";
-
 export const ConnectionStatus = {
     Connected: "connected",
     Disconnected: "disconnected",

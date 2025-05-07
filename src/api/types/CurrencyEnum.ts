@@ -19,10 +19,12 @@ export type CurrencyEnum =
     | "BGN"
     | "BHD"
     | "BIF"
+    | "BMD"
     | "BND"
     | "BOB"
     | "BRL"
     | "BSD"
+    | "BTN"
     | "BWP"
     | "BYN"
     | "BZD"
@@ -43,8 +45,10 @@ export type CurrencyEnum =
     | "ETB"
     | "EUR"
     | "FJD"
+    | "FKP"
     | "GBP"
     | "GEL"
+    | "GHS"
     | "GIP"
     | "GMD"
     | "GNF"
@@ -52,12 +56,12 @@ export type CurrencyEnum =
     | "GYD"
     | "HKD"
     | "HNL"
-    | "HRK"
     | "HTG"
     | "HUF"
     | "IDR"
     | "ILS"
     | "INR"
+    | "IQD"
     | "ISK"
     | "JMD"
     | "JOD"
@@ -75,6 +79,7 @@ export type CurrencyEnum =
     | "LKR"
     | "LRD"
     | "LSL"
+    | "LYD"
     | "MAD"
     | "MDL"
     | "MGA"
@@ -112,12 +117,16 @@ export type CurrencyEnum =
     | "SCR"
     | "SEK"
     | "SGD"
-    | "SLL"
+    | "SHP"
+    | "SLE"
     | "SOS"
     | "SRD"
+    | "SSP"
+    | "SVC"
     | "SZL"
     | "THB"
     | "TJS"
+    | "TMT"
     | "TND"
     | "TOP"
     | "TRY"
@@ -139,7 +148,6 @@ export type CurrencyEnum =
     | "YER"
     | "ZAR"
     | "ZMW";
-
 export const CurrencyEnum = {
     Aed: "AED",
     Afn: "AFN",
@@ -157,10 +165,12 @@ export const CurrencyEnum = {
     Bgn: "BGN",
     Bhd: "BHD",
     Bif: "BIF",
+    Bmd: "BMD",
     Bnd: "BND",
     Bob: "BOB",
     Brl: "BRL",
     Bsd: "BSD",
+    Btn: "BTN",
     Bwp: "BWP",
     Byn: "BYN",
     Bzd: "BZD",
@@ -181,8 +191,10 @@ export const CurrencyEnum = {
     Etb: "ETB",
     Eur: "EUR",
     Fjd: "FJD",
+    Fkp: "FKP",
     Gbp: "GBP",
     Gel: "GEL",
+    Ghs: "GHS",
     Gip: "GIP",
     Gmd: "GMD",
     Gnf: "GNF",
@@ -190,12 +202,12 @@ export const CurrencyEnum = {
     Gyd: "GYD",
     Hkd: "HKD",
     Hnl: "HNL",
-    Hrk: "HRK",
     Htg: "HTG",
     Huf: "HUF",
     Idr: "IDR",
     Ils: "ILS",
     Inr: "INR",
+    Iqd: "IQD",
     Isk: "ISK",
     Jmd: "JMD",
     Jod: "JOD",
@@ -213,6 +225,7 @@ export const CurrencyEnum = {
     Lkr: "LKR",
     Lrd: "LRD",
     Lsl: "LSL",
+    Lyd: "LYD",
     Mad: "MAD",
     Mdl: "MDL",
     Mga: "MGA",
@@ -250,12 +263,16 @@ export const CurrencyEnum = {
     Scr: "SCR",
     Sek: "SEK",
     Sgd: "SGD",
-    Sll: "SLL",
+    Shp: "SHP",
+    Sle: "SLE",
     Sos: "SOS",
     Srd: "SRD",
+    Ssp: "SSP",
+    Svc: "SVC",
     Szl: "SZL",
     Thb: "THB",
     Tjs: "TJS",
+    Tmt: "TMT",
     Tnd: "TND",
     Top: "TOP",
     Try: "TRY",

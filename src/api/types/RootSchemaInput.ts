@@ -10,12 +10,14 @@ export type RootSchemaInput =
     | Monite.RootSchemaInput.Comment
     | Monite.RootSchemaInput.Counterpart
     | Monite.RootSchemaInput.CounterpartVatId
+    | Monite.RootSchemaInput.DeliveryNote
     | Monite.RootSchemaInput.Entity
     | Monite.RootSchemaInput.EntityBankAccount
     | Monite.RootSchemaInput.EntityUser
     | Monite.RootSchemaInput.EntityVatIds
     | Monite.RootSchemaInput.Export
     | Monite.RootSchemaInput.Mailbox
+    | Monite.RootSchemaInput.OcrTask
     | Monite.RootSchemaInput.Onboarding
     | Monite.RootSchemaInput.OverdueReminder
     | Monite.RootSchemaInput.Payable
@@ -34,116 +36,124 @@ export type RootSchemaInput =
     | Monite.RootSchemaInput.Transaction
     | Monite.RootSchemaInput.Workflow;
 
-export declare namespace RootSchemaInput {
-    interface ApprovalPolicy extends Monite.CommonSchemaInput {
+export namespace RootSchemaInput {
+    export interface ApprovalPolicy extends Monite.CommonSchemaInput {
         object_type: "approval_policy";
     }
 
-    interface ApprovalRequest extends Monite.CommonSchemaInput {
+    export interface ApprovalRequest extends Monite.CommonSchemaInput {
         object_type: "approval_request";
     }
 
-    interface Comment extends Monite.CommonSchemaInput {
+    export interface Comment extends Monite.CommonSchemaInput {
         object_type: "comment";
     }
 
-    interface Counterpart extends Monite.CommonSchemaInput {
+    export interface Counterpart extends Monite.CommonSchemaInput {
         object_type: "counterpart";
     }
 
-    interface CounterpartVatId extends Monite.CommonSchemaInput {
+    export interface CounterpartVatId extends Monite.CommonSchemaInput {
         object_type: "counterpart_vat_id";
     }
 
-    interface Entity extends Monite.CommonSchemaInput {
+    export interface DeliveryNote extends Monite.CommonSchemaInput {
+        object_type: "delivery_note";
+    }
+
+    export interface Entity extends Monite.CommonSchemaInput {
         object_type: "entity";
     }
 
-    interface EntityBankAccount extends Monite.CommonSchemaInput {
+    export interface EntityBankAccount extends Monite.CommonSchemaInput {
         object_type: "entity_bank_account";
     }
 
-    interface EntityUser extends Monite.CommonSchemaInput {
+    export interface EntityUser extends Monite.CommonSchemaInput {
         object_type: "entity_user";
     }
 
-    interface EntityVatIds extends Monite.CommonSchemaInput {
+    export interface EntityVatIds extends Monite.CommonSchemaInput {
         object_type: "entity_vat_ids";
     }
 
-    interface Export extends Monite.CommonSchemaInput {
+    export interface Export extends Monite.CommonSchemaInput {
         object_type: "export";
     }
 
-    interface Mailbox extends Monite.CommonSchemaInput {
+    export interface Mailbox extends Monite.CommonSchemaInput {
         object_type: "mailbox";
     }
 
-    interface Onboarding extends Monite.CommonSchemaInput {
+    export interface OcrTask extends Monite.CommonSchemaInput {
+        object_type: "ocr_task";
+    }
+
+    export interface Onboarding extends Monite.CommonSchemaInput {
         object_type: "onboarding";
     }
 
-    interface OverdueReminder extends Monite.CommonSchemaInput {
+    export interface OverdueReminder extends Monite.CommonSchemaInput {
         object_type: "overdue_reminder";
     }
 
-    interface Payable extends Monite.PayableSchemaInput {
+    export interface Payable extends Monite.PayableSchemaInput {
         object_type: "payable";
     }
 
-    interface PayablesPurchaseOrder extends Monite.CommonSchemaInput {
+    export interface PayablesPurchaseOrder extends Monite.CommonSchemaInput {
         object_type: "payables_purchase_order";
     }
 
-    interface PaymentRecord extends Monite.CommonSchemaInput {
+    export interface PaymentRecord extends Monite.CommonSchemaInput {
         object_type: "payment_record";
     }
 
-    interface PaymentReminder extends Monite.CommonSchemaInput {
+    export interface PaymentReminder extends Monite.CommonSchemaInput {
         object_type: "payment_reminder";
     }
 
-    interface Person extends Monite.CommonSchemaInput {
+    export interface Person extends Monite.CommonSchemaInput {
         object_type: "person";
     }
 
-    interface Product extends Monite.CommonSchemaInput {
+    export interface Product extends Monite.CommonSchemaInput {
         object_type: "product";
     }
 
-    interface Project extends Monite.CommonSchemaInput {
+    export interface Project extends Monite.CommonSchemaInput {
         object_type: "project";
     }
 
-    interface Receivable extends Monite.CommonSchemaInput {
+    export interface Receivable extends Monite.CommonSchemaInput {
         object_type: "receivable";
     }
 
-    interface Reconciliation extends Monite.CommonSchemaInput {
+    export interface Reconciliation extends Monite.CommonSchemaInput {
         object_type: "reconciliation";
     }
 
-    interface Role extends Monite.CommonSchemaInput {
+    export interface Role extends Monite.CommonSchemaInput {
         object_type: "role";
     }
 
-    interface Tag extends Monite.CommonSchemaInput {
+    export interface Tag extends Monite.CommonSchemaInput {
         object_type: "tag";
     }
 
-    interface TodoTask extends Monite.CommonSchemaInput {
+    export interface TodoTask extends Monite.CommonSchemaInput {
         object_type: "todo_task";
     }
 
-    interface TodoTaskMute extends Monite.CommonSchemaInput {
+    export interface TodoTaskMute extends Monite.CommonSchemaInput {
         object_type: "todo_task_mute";
     }
 
-    interface Transaction extends Monite.CommonSchemaInput {
+    export interface Transaction extends Monite.CommonSchemaInput {
         object_type: "transaction";
     }
 
-    interface Workflow extends Monite.CommonSchemaInput {
+    export interface Workflow extends Monite.CommonSchemaInput {
         object_type: "workflow";
     }
 }

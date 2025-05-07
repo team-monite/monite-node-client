@@ -3,7 +3,6 @@
  */
 
 export type CreditNoteLineItemCursorFields = "id" | "created_at" | "name" | "total" | "quantity" | "unit_price";
-
 export const CreditNoteLineItemCursorFields = {
     Id: "id",
     CreatedAt: "created_at",

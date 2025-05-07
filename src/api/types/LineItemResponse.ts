@@ -12,6 +12,8 @@ export interface LineItemResponse {
     ledger_account_id?: string;
     /** Name of the product. */
     name?: string;
+    /** Indicates whether the item's `unit_price` and `quantity` were adjusted by OCR. */
+    ocr_set_quantity_to_one?: boolean;
     payable_id: string;
     /** The quantity of each of the goods, materials, or services listed in the payable. */
     quantity?: number;

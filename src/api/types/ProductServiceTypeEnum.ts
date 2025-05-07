@@ -3,7 +3,6 @@
  */
 
 export type ProductServiceTypeEnum = "product" | "service";
-
 export const ProductServiceTypeEnum = {
     Product: "product",
     Service: "service",

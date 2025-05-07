@@ -3,7 +3,6 @@
  */
 
 export type FinancingInvoiceType = "payable" | "receivable";
-
 export const FinancingInvoiceType = {
     Payable: "payable",
     Receivable: "receivable",

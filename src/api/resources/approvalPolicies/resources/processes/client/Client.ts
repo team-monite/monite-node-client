@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace Processes {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace Processes {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -53,14 +55,23 @@ export class Processes {
      * @example
      *     await client.approvalPolicies.processes.get("approval_policy_id")
      */
-    public async get(
+    public get(
         approvalPolicyId: string,
-        requestOptions?: Processes.RequestOptions
-    ): Promise<Monite.ApprovalProcessResourceList> {
+        requestOptions?: Processes.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ApprovalProcessResourceList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(approvalPolicyId, requestOptions));
+    }
+
+    private async __get(
+        approvalPolicyId: string,
+        requestOptions?: Processes.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ApprovalProcessResourceList>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `approval_policies/${encodeURIComponent(approvalPolicyId)}/processes`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `approval_policies/${encodeURIComponent(approvalPolicyId)}/processes`,
             ),
             method: "GET",
             headers: {
@@ -85,25 +96,26 @@ export class Processes {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ApprovalProcessResourceList;
+            return { data: _response.body as Monite.ApprovalProcessResourceList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -113,14 +125,16 @@ export class Processes {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /approval_policies/{approval_policy_id}/processes."
+                    "Timeout exceeded when calling GET /approval_policies/{approval_policy_id}/processes.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -141,15 +155,25 @@ export class Processes {
      * @example
      *     await client.approvalPolicies.processes.getById("approval_policy_id", "process_id")
      */
-    public async getById(
+    public getById(
         approvalPolicyId: string,
         processId: string,
-        requestOptions?: Processes.RequestOptions
-    ): Promise<Monite.ProcessResource> {
+        requestOptions?: Processes.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ProcessResource> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(approvalPolicyId, processId, requestOptions));
+    }
+
+    private async __getById(
+        approvalPolicyId: string,
+        processId: string,
+        requestOptions?: Processes.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ProcessResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `approval_policies/${encodeURIComponent(approvalPolicyId)}/processes/${encodeURIComponent(processId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `approval_policies/${encodeURIComponent(approvalPolicyId)}/processes/${encodeURIComponent(processId)}`,
             ),
             method: "GET",
             headers: {
@@ -174,25 +198,26 @@ export class Processes {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ProcessResource;
+            return { data: _response.body as Monite.ProcessResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -202,14 +227,16 @@ export class Processes {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /approval_policies/{approval_policy_id}/processes/{process_id}."
+                    "Timeout exceeded when calling GET /approval_policies/{approval_policy_id}/processes/{process_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -230,17 +257,25 @@ export class Processes {
      * @example
      *     await client.approvalPolicies.processes.cancelById("approval_policy_id", "process_id")
      */
-    public async cancelById(
+    public cancelById(
         approvalPolicyId: string,
         processId: string,
-        requestOptions?: Processes.RequestOptions
-    ): Promise<Monite.ProcessResource> {
+        requestOptions?: Processes.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ProcessResource> {
+        return core.HttpResponsePromise.fromPromise(this.__cancelById(approvalPolicyId, processId, requestOptions));
+    }
+
+    private async __cancelById(
+        approvalPolicyId: string,
+        processId: string,
+        requestOptions?: Processes.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ProcessResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `approval_policies/${encodeURIComponent(approvalPolicyId)}/processes/${encodeURIComponent(
-                    processId
-                )}/cancel`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `approval_policies/${encodeURIComponent(approvalPolicyId)}/processes/${encodeURIComponent(processId)}/cancel`,
             ),
             method: "POST",
             headers: {
@@ -265,25 +300,26 @@ export class Processes {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ProcessResource;
+            return { data: _response.body as Monite.ProcessResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -293,14 +329,16 @@ export class Processes {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /approval_policies/{approval_policy_id}/processes/{process_id}/cancel."
+                    "Timeout exceeded when calling POST /approval_policies/{approval_policy_id}/processes/{process_id}/cancel.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -321,17 +359,25 @@ export class Processes {
      * @example
      *     await client.approvalPolicies.processes.getSteps("approval_policy_id", "process_id")
      */
-    public async getSteps(
+    public getSteps(
         approvalPolicyId: string,
         processId: string,
-        requestOptions?: Processes.RequestOptions
-    ): Promise<Monite.ApprovalProcessStepResourceList> {
+        requestOptions?: Processes.RequestOptions,
+    ): core.HttpResponsePromise<Monite.ApprovalProcessStepResourceList> {
+        return core.HttpResponsePromise.fromPromise(this.__getSteps(approvalPolicyId, processId, requestOptions));
+    }
+
+    private async __getSteps(
+        approvalPolicyId: string,
+        processId: string,
+        requestOptions?: Processes.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.ApprovalProcessStepResourceList>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `approval_policies/${encodeURIComponent(approvalPolicyId)}/processes/${encodeURIComponent(
-                    processId
-                )}/steps`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `approval_policies/${encodeURIComponent(approvalPolicyId)}/processes/${encodeURIComponent(processId)}/steps`,
             ),
             method: "GET",
             headers: {
@@ -356,25 +402,29 @@ export class Processes {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.ApprovalProcessStepResourceList;
+            return {
+                data: _response.body as Monite.ApprovalProcessStepResourceList,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -384,14 +434,16 @@ export class Processes {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /approval_policies/{approval_policy_id}/processes/{process_id}/steps."
+                    "Timeout exceeded when calling GET /approval_policies/{approval_policy_id}/processes/{process_id}/steps.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

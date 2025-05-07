@@ -8,12 +8,12 @@ export type InvoiceResponsePayloadEntity =
     | Monite.InvoiceResponsePayloadEntity.Organization
     | Monite.InvoiceResponsePayloadEntity.Individual;
 
-export declare namespace InvoiceResponsePayloadEntity {
-    interface Organization extends Monite.ReceivableEntityOrganization {
+export namespace InvoiceResponsePayloadEntity {
+    export interface Organization extends Monite.ReceivableEntityOrganization {
         type: "organization";
     }
 
-    interface Individual extends Monite.ReceivableEntityIndividual {
+    export interface Individual extends Monite.ReceivableEntityIndividual {
         type: "individual";
     }
 }

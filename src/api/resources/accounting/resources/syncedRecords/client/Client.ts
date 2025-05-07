@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace SyncedRecords {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace SyncedRecords {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -52,10 +54,17 @@ export class SyncedRecords {
      *         object_type: "product"
      *     })
      */
-    public async get(
+    public get(
         request: Monite.accounting.SyncedRecordsGetRequest,
-        requestOptions?: SyncedRecords.RequestOptions
-    ): Promise<Monite.SyncRecordResourceList> {
+        requestOptions?: SyncedRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.SyncRecordResourceList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.accounting.SyncedRecordsGetRequest,
+        requestOptions?: SyncedRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.SyncRecordResourceList>> {
         const {
             object_type: objectType,
             order,
@@ -73,7 +82,7 @@ export class SyncedRecords {
             updated_at__gte: updatedAtGte,
             updated_at__lte: updatedAtLte,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["object_type"] = objectType;
         if (order != null) {
             _queryParams["order"] = order;
@@ -137,8 +146,10 @@ export class SyncedRecords {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "accounting_synced_records"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "accounting_synced_records",
             ),
             method: "GET",
             headers: {
@@ -164,19 +175,20 @@ export class SyncedRecords {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.SyncRecordResourceList;
+            return { data: _response.body as Monite.SyncRecordResourceList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -186,12 +198,14 @@ export class SyncedRecords {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /accounting_synced_records.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -208,14 +222,23 @@ export class SyncedRecords {
      * @example
      *     await client.accounting.syncedRecords.getById("synced_record_id")
      */
-    public async getById(
+    public getById(
         syncedRecordId: string,
-        requestOptions?: SyncedRecords.RequestOptions
-    ): Promise<Monite.SyncRecordResource> {
+        requestOptions?: SyncedRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.SyncRecordResource> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(syncedRecordId, requestOptions));
+    }
+
+    private async __getById(
+        syncedRecordId: string,
+        requestOptions?: SyncedRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.SyncRecordResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `accounting_synced_records/${encodeURIComponent(syncedRecordId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `accounting_synced_records/${encodeURIComponent(syncedRecordId)}`,
             ),
             method: "GET",
             headers: {
@@ -240,19 +263,20 @@ export class SyncedRecords {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.SyncRecordResource;
+            return { data: _response.body as Monite.SyncRecordResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -262,14 +286,16 @@ export class SyncedRecords {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /accounting_synced_records/{synced_record_id}."
+                    "Timeout exceeded when calling GET /accounting_synced_records/{synced_record_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -286,14 +312,23 @@ export class SyncedRecords {
      * @example
      *     await client.accounting.syncedRecords.pushById("synced_record_id")
      */
-    public async pushById(
+    public pushById(
         syncedRecordId: string,
-        requestOptions?: SyncedRecords.RequestOptions
-    ): Promise<Monite.SyncRecordResource> {
+        requestOptions?: SyncedRecords.RequestOptions,
+    ): core.HttpResponsePromise<Monite.SyncRecordResource> {
+        return core.HttpResponsePromise.fromPromise(this.__pushById(syncedRecordId, requestOptions));
+    }
+
+    private async __pushById(
+        syncedRecordId: string,
+        requestOptions?: SyncedRecords.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.SyncRecordResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `accounting_synced_records/${encodeURIComponent(syncedRecordId)}/push`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `accounting_synced_records/${encodeURIComponent(syncedRecordId)}/push`,
             ),
             method: "POST",
             headers: {
@@ -318,19 +353,20 @@ export class SyncedRecords {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.SyncRecordResource;
+            return { data: _response.body as Monite.SyncRecordResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -340,14 +376,16 @@ export class SyncedRecords {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /accounting_synced_records/{synced_record_id}/push."
+                    "Timeout exceeded when calling POST /accounting_synced_records/{synced_record_id}/push.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

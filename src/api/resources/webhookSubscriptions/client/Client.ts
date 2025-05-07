@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace WebhookSubscriptions {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace WebhookSubscriptions {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -48,10 +50,17 @@ export class WebhookSubscriptions {
      * @example
      *     await client.webhookSubscriptions.get()
      */
-    public async get(
+    public get(
         request: Monite.WebhookSubscriptionsGetRequest = {},
-        requestOptions?: WebhookSubscriptions.RequestOptions
-    ): Promise<Monite.WebhookSubscriptionPaginationResource> {
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): core.HttpResponsePromise<Monite.WebhookSubscriptionPaginationResource> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.WebhookSubscriptionsGetRequest = {},
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.WebhookSubscriptionPaginationResource>> {
         const {
             order,
             limit,
@@ -63,7 +72,7 @@ export class WebhookSubscriptions {
             created_at__gte: createdAtGte,
             created_at__lte: createdAtLte,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -102,8 +111,10 @@ export class WebhookSubscriptions {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "webhook_subscriptions"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "webhook_subscriptions",
             ),
             method: "GET",
             headers: {
@@ -129,19 +140,23 @@ export class WebhookSubscriptions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.WebhookSubscriptionPaginationResource;
+            return {
+                data: _response.body as Monite.WebhookSubscriptionPaginationResource,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -151,12 +166,14 @@ export class WebhookSubscriptions {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /webhook_subscriptions.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -174,14 +191,23 @@ export class WebhookSubscriptions {
      *         url: "url"
      *     })
      */
-    public async create(
+    public create(
         request: Monite.CreateWebhookSubscriptionRequest,
-        requestOptions?: WebhookSubscriptions.RequestOptions
-    ): Promise<Monite.WebhookSubscriptionResourceWithSecret> {
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): core.HttpResponsePromise<Monite.WebhookSubscriptionResourceWithSecret> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.CreateWebhookSubscriptionRequest,
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.WebhookSubscriptionResourceWithSecret>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "webhook_subscriptions"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "webhook_subscriptions",
             ),
             method: "POST",
             headers: {
@@ -207,19 +233,23 @@ export class WebhookSubscriptions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.WebhookSubscriptionResourceWithSecret;
+            return {
+                data: _response.body as Monite.WebhookSubscriptionResourceWithSecret,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -229,12 +259,14 @@ export class WebhookSubscriptions {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /webhook_subscriptions.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -249,14 +281,23 @@ export class WebhookSubscriptions {
      * @example
      *     await client.webhookSubscriptions.getById("webhook_subscription_id")
      */
-    public async getById(
+    public getById(
         webhookSubscriptionId: string,
-        requestOptions?: WebhookSubscriptions.RequestOptions
-    ): Promise<Monite.WebhookSubscriptionResource> {
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): core.HttpResponsePromise<Monite.WebhookSubscriptionResource> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(webhookSubscriptionId, requestOptions));
+    }
+
+    private async __getById(
+        webhookSubscriptionId: string,
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.WebhookSubscriptionResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}`,
             ),
             method: "GET",
             headers: {
@@ -281,19 +322,20 @@ export class WebhookSubscriptions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.WebhookSubscriptionResource;
+            return { data: _response.body as Monite.WebhookSubscriptionResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -303,14 +345,16 @@ export class WebhookSubscriptions {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /webhook_subscriptions/{webhook_subscription_id}."
+                    "Timeout exceeded when calling GET /webhook_subscriptions/{webhook_subscription_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -325,14 +369,23 @@ export class WebhookSubscriptions {
      * @example
      *     await client.webhookSubscriptions.deleteById("webhook_subscription_id")
      */
-    public async deleteById(
+    public deleteById(
         webhookSubscriptionId: string,
-        requestOptions?: WebhookSubscriptions.RequestOptions
-    ): Promise<void> {
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(webhookSubscriptionId, requestOptions));
+    }
+
+    private async __deleteById(
+        webhookSubscriptionId: string,
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -357,19 +410,20 @@ export class WebhookSubscriptions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -379,14 +433,16 @@ export class WebhookSubscriptions {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /webhook_subscriptions/{webhook_subscription_id}."
+                    "Timeout exceeded when calling DELETE /webhook_subscriptions/{webhook_subscription_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -402,15 +458,25 @@ export class WebhookSubscriptions {
      * @example
      *     await client.webhookSubscriptions.updateById("webhook_subscription_id")
      */
-    public async updateById(
+    public updateById(
         webhookSubscriptionId: string,
         request: Monite.UpdateWebhookSubscriptionRequest = {},
-        requestOptions?: WebhookSubscriptions.RequestOptions
-    ): Promise<Monite.WebhookSubscriptionResource> {
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): core.HttpResponsePromise<Monite.WebhookSubscriptionResource> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(webhookSubscriptionId, request, requestOptions));
+    }
+
+    private async __updateById(
+        webhookSubscriptionId: string,
+        request: Monite.UpdateWebhookSubscriptionRequest = {},
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.WebhookSubscriptionResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -436,19 +502,20 @@ export class WebhookSubscriptions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.WebhookSubscriptionResource;
+            return { data: _response.body as Monite.WebhookSubscriptionResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -458,14 +525,16 @@ export class WebhookSubscriptions {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /webhook_subscriptions/{webhook_subscription_id}."
+                    "Timeout exceeded when calling PATCH /webhook_subscriptions/{webhook_subscription_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -480,14 +549,23 @@ export class WebhookSubscriptions {
      * @example
      *     await client.webhookSubscriptions.disableById("webhook_subscription_id")
      */
-    public async disableById(
+    public disableById(
         webhookSubscriptionId: string,
-        requestOptions?: WebhookSubscriptions.RequestOptions
-    ): Promise<Monite.WebhookSubscriptionResource> {
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): core.HttpResponsePromise<Monite.WebhookSubscriptionResource> {
+        return core.HttpResponsePromise.fromPromise(this.__disableById(webhookSubscriptionId, requestOptions));
+    }
+
+    private async __disableById(
+        webhookSubscriptionId: string,
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.WebhookSubscriptionResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}/disable`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}/disable`,
             ),
             method: "POST",
             headers: {
@@ -512,19 +590,20 @@ export class WebhookSubscriptions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.WebhookSubscriptionResource;
+            return { data: _response.body as Monite.WebhookSubscriptionResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -534,14 +613,16 @@ export class WebhookSubscriptions {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /webhook_subscriptions/{webhook_subscription_id}/disable."
+                    "Timeout exceeded when calling POST /webhook_subscriptions/{webhook_subscription_id}/disable.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -556,14 +637,23 @@ export class WebhookSubscriptions {
      * @example
      *     await client.webhookSubscriptions.enableById("webhook_subscription_id")
      */
-    public async enableById(
+    public enableById(
         webhookSubscriptionId: string,
-        requestOptions?: WebhookSubscriptions.RequestOptions
-    ): Promise<Monite.WebhookSubscriptionResource> {
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): core.HttpResponsePromise<Monite.WebhookSubscriptionResource> {
+        return core.HttpResponsePromise.fromPromise(this.__enableById(webhookSubscriptionId, requestOptions));
+    }
+
+    private async __enableById(
+        webhookSubscriptionId: string,
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.WebhookSubscriptionResource>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}/enable`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}/enable`,
             ),
             method: "POST",
             headers: {
@@ -588,19 +678,20 @@ export class WebhookSubscriptions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.WebhookSubscriptionResource;
+            return { data: _response.body as Monite.WebhookSubscriptionResource, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -610,14 +701,16 @@ export class WebhookSubscriptions {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /webhook_subscriptions/{webhook_subscription_id}/enable."
+                    "Timeout exceeded when calling POST /webhook_subscriptions/{webhook_subscription_id}/enable.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -632,14 +725,23 @@ export class WebhookSubscriptions {
      * @example
      *     await client.webhookSubscriptions.regenerateSecretById("webhook_subscription_id")
      */
-    public async regenerateSecretById(
+    public regenerateSecretById(
         webhookSubscriptionId: string,
-        requestOptions?: WebhookSubscriptions.RequestOptions
-    ): Promise<Monite.WebhookSubscriptionResourceWithSecret> {
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): core.HttpResponsePromise<Monite.WebhookSubscriptionResourceWithSecret> {
+        return core.HttpResponsePromise.fromPromise(this.__regenerateSecretById(webhookSubscriptionId, requestOptions));
+    }
+
+    private async __regenerateSecretById(
+        webhookSubscriptionId: string,
+        requestOptions?: WebhookSubscriptions.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.WebhookSubscriptionResourceWithSecret>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}/regenerate_secret`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `webhook_subscriptions/${encodeURIComponent(webhookSubscriptionId)}/regenerate_secret`,
             ),
             method: "POST",
             headers: {
@@ -664,19 +766,23 @@ export class WebhookSubscriptions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.WebhookSubscriptionResourceWithSecret;
+            return {
+                data: _response.body as Monite.WebhookSubscriptionResourceWithSecret,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -686,14 +792,16 @@ export class WebhookSubscriptions {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /webhook_subscriptions/{webhook_subscription_id}/regenerate_secret."
+                    "Timeout exceeded when calling POST /webhook_subscriptions/{webhook_subscription_id}/regenerate_secret.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

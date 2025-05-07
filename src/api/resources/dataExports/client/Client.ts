@@ -10,8 +10,10 @@ import * as errors from "../../../../errors/index";
 import { ExtraData } from "../resources/extraData/client/Client";
 
 export declare namespace DataExports {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -20,7 +22,7 @@ export declare namespace DataExports {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -37,7 +39,13 @@ export declare namespace DataExports {
 }
 
 export class DataExports {
+    protected _extraData: ExtraData | undefined;
+
     constructor(protected readonly _options: DataExports.Options) {}
+
+    public get extraData(): ExtraData {
+        return (this._extraData ??= new ExtraData(this._options));
+    }
 
     /**
      * @param {Monite.DataExportsGetRequest} request
@@ -53,10 +61,17 @@ export class DataExports {
      * @example
      *     await client.dataExports.get()
      */
-    public async get(
+    public get(
         request: Monite.DataExportsGetRequest = {},
-        requestOptions?: DataExports.RequestOptions
-    ): Promise<Monite.AllDocumentExportResponseSchema> {
+        requestOptions?: DataExports.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AllDocumentExportResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.DataExportsGetRequest = {},
+        requestOptions?: DataExports.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AllDocumentExportResponseSchema>> {
         const {
             order,
             limit,
@@ -68,7 +83,7 @@ export class DataExports {
             created_at__lte: createdAtLte,
             created_by_entity_user_id: createdByEntityUserId,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -107,8 +122,10 @@ export class DataExports {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "data_exports"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "data_exports",
             ),
             method: "GET",
             headers: {
@@ -134,27 +151,31 @@ export class DataExports {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AllDocumentExportResponseSchema;
+            return {
+                data: _response.body as Monite.AllDocumentExportResponseSchema,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 406:
-                    throw new Monite.NotAcceptableError(_response.error.body as unknown);
+                    throw new Monite.NotAcceptableError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -164,12 +185,14 @@ export class DataExports {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /data_exports.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -194,19 +217,28 @@ export class DataExports {
      *         date_to: "date_to",
      *         format: "csv",
      *         objects: [{
-     *                 name: "receivable",
+     *                 name: "payable",
      *                 statuses: ["draft"]
      *             }]
      *     })
      */
-    public async create(
+    public create(
         request: Monite.ExportPayloadSchema,
-        requestOptions?: DataExports.RequestOptions
-    ): Promise<Monite.CreateExportTaskResponseSchema> {
+        requestOptions?: DataExports.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CreateExportTaskResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.ExportPayloadSchema,
+        requestOptions?: DataExports.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CreateExportTaskResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "data_exports"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "data_exports",
             ),
             method: "POST",
             headers: {
@@ -232,29 +264,33 @@ export class DataExports {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CreateExportTaskResponseSchema;
+            return {
+                data: _response.body as Monite.CreateExportTaskResponseSchema,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 409:
-                    throw new Monite.ConflictError(_response.error.body as unknown);
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -264,12 +300,14 @@ export class DataExports {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /data_exports.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -283,13 +321,21 @@ export class DataExports {
      * @example
      *     await client.dataExports.getSupportedFormats()
      */
-    public async getSupportedFormats(
-        requestOptions?: DataExports.RequestOptions
-    ): Promise<Monite.SupportedFormatSchema[]> {
+    public getSupportedFormats(
+        requestOptions?: DataExports.RequestOptions,
+    ): core.HttpResponsePromise<Monite.SupportedFormatSchema[]> {
+        return core.HttpResponsePromise.fromPromise(this.__getSupportedFormats(requestOptions));
+    }
+
+    private async __getSupportedFormats(
+        requestOptions?: DataExports.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.SupportedFormatSchema[]>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "data_exports/supported_formats"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "data_exports/supported_formats",
             ),
             method: "GET",
             headers: {
@@ -314,19 +360,20 @@ export class DataExports {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.SupportedFormatSchema[];
+            return { data: _response.body as Monite.SupportedFormatSchema[], rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -336,14 +383,16 @@ export class DataExports {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /data_exports/supported_formats."
+                    "Timeout exceeded when calling GET /data_exports/supported_formats.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -362,14 +411,23 @@ export class DataExports {
      * @example
      *     await client.dataExports.getById("document_export_id")
      */
-    public async getById(
+    public getById(
         documentExportId: string,
-        requestOptions?: DataExports.RequestOptions
-    ): Promise<Monite.DocumentExportResponseSchema> {
+        requestOptions?: DataExports.RequestOptions,
+    ): core.HttpResponsePromise<Monite.DocumentExportResponseSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(documentExportId, requestOptions));
+    }
+
+    private async __getById(
+        documentExportId: string,
+        requestOptions?: DataExports.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.DocumentExportResponseSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `data_exports/${encodeURIComponent(documentExportId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `data_exports/${encodeURIComponent(documentExportId)}`,
             ),
             method: "GET",
             headers: {
@@ -394,27 +452,28 @@ export class DataExports {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.DocumentExportResponseSchema;
+            return { data: _response.body as Monite.DocumentExportResponseSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -424,22 +483,18 @@ export class DataExports {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /data_exports/{document_export_id}."
+                    "Timeout exceeded when calling GET /data_exports/{document_export_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
-    }
-
-    protected _extraData: ExtraData | undefined;
-
-    public get extraData(): ExtraData {
-        return (this._extraData ??= new ExtraData(this._options));
     }
 
     protected async _getAuthorizationHeader(): Promise<string | undefined> {

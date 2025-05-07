@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace MailTemplates {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace MailTemplates {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,10 +52,17 @@ export class MailTemplates {
      * @example
      *     await client.mailTemplates.get()
      */
-    public async get(
+    public get(
         request: Monite.MailTemplatesGetRequest = {},
-        requestOptions?: MailTemplates.RequestOptions
-    ): Promise<Monite.CustomTemplatesPaginationResponse> {
+        requestOptions?: MailTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CustomTemplatesPaginationResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.MailTemplatesGetRequest = {},
+        requestOptions?: MailTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CustomTemplatesPaginationResponse>> {
         const {
             order,
             limit,
@@ -68,7 +77,7 @@ export class MailTemplates {
             name__contains: nameContains,
             name__icontains: nameIcontains,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -127,8 +136,10 @@ export class MailTemplates {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "mail_templates"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "mail_templates",
             ),
             method: "GET",
             headers: {
@@ -154,19 +165,23 @@ export class MailTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CustomTemplatesPaginationResponse;
+            return {
+                data: _response.body as Monite.CustomTemplatesPaginationResponse,
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -176,12 +191,14 @@ export class MailTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /mail_templates.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -203,14 +220,23 @@ export class MailTemplates {
      *         type: "receivables_quote"
      *     })
      */
-    public async create(
+    public create(
         request: Monite.AddCustomTemplateSchema,
-        requestOptions?: MailTemplates.RequestOptions
-    ): Promise<Monite.CustomTemplateDataSchema> {
+        requestOptions?: MailTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CustomTemplateDataSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.AddCustomTemplateSchema,
+        requestOptions?: MailTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CustomTemplateDataSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "mail_templates"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "mail_templates",
             ),
             method: "POST",
             headers: {
@@ -236,19 +262,20 @@ export class MailTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CustomTemplateDataSchema;
+            return { data: _response.body as Monite.CustomTemplateDataSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -258,12 +285,14 @@ export class MailTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /mail_templates.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -285,14 +314,23 @@ export class MailTemplates {
      *         subject: "subject"
      *     })
      */
-    public async preview(
+    public preview(
         request: Monite.PreviewTemplateRequest,
-        requestOptions?: MailTemplates.RequestOptions
-    ): Promise<Monite.PreviewTemplateResponse> {
+        requestOptions?: MailTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PreviewTemplateResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__preview(request, requestOptions));
+    }
+
+    private async __preview(
+        request: Monite.PreviewTemplateRequest,
+        requestOptions?: MailTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PreviewTemplateResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "mail_templates/preview"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "mail_templates/preview",
             ),
             method: "POST",
             headers: {
@@ -318,19 +356,20 @@ export class MailTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PreviewTemplateResponse;
+            return { data: _response.body as Monite.PreviewTemplateResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -340,12 +379,14 @@ export class MailTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /mail_templates/preview.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -361,11 +402,19 @@ export class MailTemplates {
      * @example
      *     await client.mailTemplates.getSystem()
      */
-    public async getSystem(requestOptions?: MailTemplates.RequestOptions): Promise<Monite.SystemTemplates> {
+    public getSystem(requestOptions?: MailTemplates.RequestOptions): core.HttpResponsePromise<Monite.SystemTemplates> {
+        return core.HttpResponsePromise.fromPromise(this.__getSystem(requestOptions));
+    }
+
+    private async __getSystem(
+        requestOptions?: MailTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.SystemTemplates>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "mail_templates/system"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "mail_templates/system",
             ),
             method: "GET",
             headers: {
@@ -390,19 +439,20 @@ export class MailTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.SystemTemplates;
+            return { data: _response.body as Monite.SystemTemplates, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -412,12 +462,14 @@ export class MailTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /mail_templates/system.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -434,14 +486,23 @@ export class MailTemplates {
      * @example
      *     await client.mailTemplates.getById("template_id")
      */
-    public async getById(
+    public getById(
         templateId: string,
-        requestOptions?: MailTemplates.RequestOptions
-    ): Promise<Monite.CustomTemplateDataSchema> {
+        requestOptions?: MailTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CustomTemplateDataSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(templateId, requestOptions));
+    }
+
+    private async __getById(
+        templateId: string,
+        requestOptions?: MailTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CustomTemplateDataSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `mail_templates/${encodeURIComponent(templateId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `mail_templates/${encodeURIComponent(templateId)}`,
             ),
             method: "GET",
             headers: {
@@ -466,19 +527,20 @@ export class MailTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CustomTemplateDataSchema;
+            return { data: _response.body as Monite.CustomTemplateDataSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -488,12 +550,14 @@ export class MailTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /mail_templates/{template_id}.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -510,11 +574,23 @@ export class MailTemplates {
      * @example
      *     await client.mailTemplates.deleteById("template_id")
      */
-    public async deleteById(templateId: string, requestOptions?: MailTemplates.RequestOptions): Promise<void> {
+    public deleteById(
+        templateId: string,
+        requestOptions?: MailTemplates.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(templateId, requestOptions));
+    }
+
+    private async __deleteById(
+        templateId: string,
+        requestOptions?: MailTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `mail_templates/${encodeURIComponent(templateId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `mail_templates/${encodeURIComponent(templateId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -539,19 +615,20 @@ export class MailTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -561,14 +638,16 @@ export class MailTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /mail_templates/{template_id}."
+                    "Timeout exceeded when calling DELETE /mail_templates/{template_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -586,15 +665,25 @@ export class MailTemplates {
      * @example
      *     await client.mailTemplates.updateById("template_id")
      */
-    public async updateById(
+    public updateById(
         templateId: string,
         request: Monite.UpdateCustomTemplateSchemaRequest = {},
-        requestOptions?: MailTemplates.RequestOptions
-    ): Promise<Monite.CustomTemplateDataSchema> {
+        requestOptions?: MailTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CustomTemplateDataSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(templateId, request, requestOptions));
+    }
+
+    private async __updateById(
+        templateId: string,
+        request: Monite.UpdateCustomTemplateSchemaRequest = {},
+        requestOptions?: MailTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CustomTemplateDataSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `mail_templates/${encodeURIComponent(templateId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `mail_templates/${encodeURIComponent(templateId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -620,19 +709,20 @@ export class MailTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CustomTemplateDataSchema;
+            return { data: _response.body as Monite.CustomTemplateDataSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -642,14 +732,16 @@ export class MailTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /mail_templates/{template_id}."
+                    "Timeout exceeded when calling PATCH /mail_templates/{template_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -666,14 +758,23 @@ export class MailTemplates {
      * @example
      *     await client.mailTemplates.makeDefaultById("template_id")
      */
-    public async makeDefaultById(
+    public makeDefaultById(
         templateId: string,
-        requestOptions?: MailTemplates.RequestOptions
-    ): Promise<Monite.CustomTemplateDataSchema> {
+        requestOptions?: MailTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.CustomTemplateDataSchema> {
+        return core.HttpResponsePromise.fromPromise(this.__makeDefaultById(templateId, requestOptions));
+    }
+
+    private async __makeDefaultById(
+        templateId: string,
+        requestOptions?: MailTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.CustomTemplateDataSchema>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `mail_templates/${encodeURIComponent(templateId)}/make_default`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `mail_templates/${encodeURIComponent(templateId)}/make_default`,
             ),
             method: "POST",
             headers: {
@@ -698,19 +799,20 @@ export class MailTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.CustomTemplateDataSchema;
+            return { data: _response.body as Monite.CustomTemplateDataSchema, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -720,14 +822,16 @@ export class MailTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /mail_templates/{template_id}/make_default."
+                    "Timeout exceeded when calling POST /mail_templates/{template_id}/make_default.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

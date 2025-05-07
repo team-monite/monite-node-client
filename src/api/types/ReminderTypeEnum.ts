@@ -3,7 +3,6 @@
  */
 
 export type ReminderTypeEnum = "term_1" | "term_2" | "term_final" | "overdue";
-
 export const ReminderTypeEnum = {
     Term1: "term_1",
     Term2: "term_2",

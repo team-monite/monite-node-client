@@ -3,7 +3,6 @@
  */
 
 export type PaymentObjectType = "payable" | "receivable";
-
 export const PaymentObjectType = {
     Payable: "payable",
     Receivable: "receivable",

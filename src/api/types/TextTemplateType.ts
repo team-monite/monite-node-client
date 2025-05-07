@@ -3,7 +3,6 @@
  */
 
 export type TextTemplateType = "email_header" | "email_body" | "memo";
-
 export const TextTemplateType = {
     EmailHeader: "email_header",
     EmailBody: "email_body",

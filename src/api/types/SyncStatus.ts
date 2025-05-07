@@ -3,7 +3,6 @@
  */
 
 export type SyncStatus = "pending" | "error" | "done";
-
 export const SyncStatus = {
     Pending: "pending",
     Error: "error",

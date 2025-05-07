@@ -13,7 +13,7 @@ export interface TemplateReceivableResponse {
     is_default: boolean;
     language: string;
     name: string;
-    preview?: Monite.FileSchema;
+    preview?: Monite.FileResponse;
     template: string;
     template_type?: Monite.TemplateTypeEnum;
 }

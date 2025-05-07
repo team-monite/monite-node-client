@@ -3,7 +3,6 @@
  */
 
 export type ExportFormat = "csv" | "pdf" | "csv_xero";
-
 export const ExportFormat = {
     Csv: "csv",
     Pdf: "pdf",

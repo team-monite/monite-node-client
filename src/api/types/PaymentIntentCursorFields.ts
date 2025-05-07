@@ -3,7 +3,6 @@
  */
 
 export type PaymentIntentCursorFields = "id" | "created_at";
-
 export const PaymentIntentCursorFields = {
     Id: "id",
     CreatedAt: "created_at",

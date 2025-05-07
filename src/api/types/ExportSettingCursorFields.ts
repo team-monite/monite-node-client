@@ -3,7 +3,6 @@
  */
 
 export type ExportSettingCursorFields = "id" | "created_at";
-
 export const ExportSettingCursorFields = {
     Id: "id",
     CreatedAt: "created_at",

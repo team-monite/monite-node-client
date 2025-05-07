@@ -3,7 +3,6 @@
  */
 
 export type IterationStatus = "pending" | "completed" | "canceled" | "issue_failed" | "send_failed";
-
 export const IterationStatus = {
     Pending: "pending",
     Completed: "completed",

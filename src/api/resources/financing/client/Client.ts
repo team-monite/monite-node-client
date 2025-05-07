@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace Financing {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace Financing {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,10 +52,17 @@ export class Financing {
      * @example
      *     await client.financing.getFinancingInvoices()
      */
-    public async getFinancingInvoices(
+    public getFinancingInvoices(
         request: Monite.GetFinancingInvoicesRequest = {},
-        requestOptions?: Financing.RequestOptions
-    ): Promise<Monite.FinancingInvoiceListResponse> {
+        requestOptions?: Financing.RequestOptions,
+    ): core.HttpResponsePromise<Monite.FinancingInvoiceListResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getFinancingInvoices(request, requestOptions));
+    }
+
+    private async __getFinancingInvoices(
+        request: Monite.GetFinancingInvoicesRequest = {},
+        requestOptions?: Financing.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.FinancingInvoiceListResponse>> {
         const {
             order,
             limit,
@@ -85,7 +94,7 @@ export class Financing {
             total_amount__gte: totalAmountGte,
             total_amount__lte: totalAmountLte,
         } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (order != null) {
             _queryParams["order"] = order;
         }
@@ -220,8 +229,10 @@ export class Financing {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "financing_invoices"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "financing_invoices",
             ),
             method: "GET",
             headers: {
@@ -247,19 +258,20 @@ export class Financing {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.FinancingInvoiceListResponse;
+            return { data: _response.body as Monite.FinancingInvoiceListResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -269,12 +281,14 @@ export class Financing {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /financing_invoices.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -296,14 +310,23 @@ export class Financing {
      *             }]
      *     })
      */
-    public async postFinancingInvoices(
+    public postFinancingInvoices(
         request: Monite.FinancingPushInvoicesRequest,
-        requestOptions?: Financing.RequestOptions
-    ): Promise<Monite.FinancingPushInvoicesResponse> {
+        requestOptions?: Financing.RequestOptions,
+    ): core.HttpResponsePromise<Monite.FinancingPushInvoicesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__postFinancingInvoices(request, requestOptions));
+    }
+
+    private async __postFinancingInvoices(
+        request: Monite.FinancingPushInvoicesRequest,
+        requestOptions?: Financing.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.FinancingPushInvoicesResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "financing_invoices"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "financing_invoices",
             ),
             method: "POST",
             headers: {
@@ -329,19 +352,20 @@ export class Financing {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.FinancingPushInvoicesResponse;
+            return { data: _response.body as Monite.FinancingPushInvoicesResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -351,12 +375,14 @@ export class Financing {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /financing_invoices.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -372,13 +398,21 @@ export class Financing {
      * @example
      *     await client.financing.getFinancingOffers()
      */
-    public async getFinancingOffers(
-        requestOptions?: Financing.RequestOptions
-    ): Promise<Monite.FinancingOffersResponse> {
+    public getFinancingOffers(
+        requestOptions?: Financing.RequestOptions,
+    ): core.HttpResponsePromise<Monite.FinancingOffersResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getFinancingOffers(requestOptions));
+    }
+
+    private async __getFinancingOffers(
+        requestOptions?: Financing.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.FinancingOffersResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "financing_offers"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "financing_offers",
             ),
             method: "GET",
             headers: {
@@ -403,19 +437,20 @@ export class Financing {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.FinancingOffersResponse;
+            return { data: _response.body as Monite.FinancingOffersResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -425,12 +460,14 @@ export class Financing {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /financing_offers.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -446,13 +483,21 @@ export class Financing {
      * @example
      *     await client.financing.postFinancingTokens()
      */
-    public async postFinancingTokens(
-        requestOptions?: Financing.RequestOptions
-    ): Promise<Monite.FinancingTokenResponse> {
+    public postFinancingTokens(
+        requestOptions?: Financing.RequestOptions,
+    ): core.HttpResponsePromise<Monite.FinancingTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__postFinancingTokens(requestOptions));
+    }
+
+    private async __postFinancingTokens(
+        requestOptions?: Financing.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.FinancingTokenResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "financing_tokens"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "financing_tokens",
             ),
             method: "POST",
             headers: {
@@ -477,19 +522,20 @@ export class Financing {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.FinancingTokenResponse;
+            return { data: _response.body as Monite.FinancingTokenResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -499,12 +545,14 @@ export class Financing {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /financing_tokens.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

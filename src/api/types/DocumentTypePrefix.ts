@@ -4,6 +4,7 @@
 
 export interface DocumentTypePrefix {
     credit_note?: string;
+    delivery_note?: string;
     invoice?: string;
     purchase_order?: string;
     quote?: string;

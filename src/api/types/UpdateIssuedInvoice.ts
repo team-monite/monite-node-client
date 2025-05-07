@@ -11,12 +11,24 @@ export interface UpdateIssuedInvoice {
     counterpart_id?: string;
     /** Counterpart VAT ID id */
     counterpart_vat_id_id?: string;
+    /** The date by which the invoice must be paid. */
+    due_date?: string;
     entity?: Monite.UpdateIssuedInvoiceEntity;
     entity_address?: Monite.ReceivableEntityAddressSchema;
     /** Entity VAT ID id */
     entity_vat_id_id?: string;
-    /** The date when the goods are shipped or the service is provided. Can be a current, past, or future date. */
+    /** Optional text displayed below the line items table in the PDF. */
+    footer?: string;
+    /**
+     * The date when the goods are shipped or the service is provided. Can be a current, past, or future date.
+     *
+     * Some countries require the fulfillment date in invoices for regulatory compliance. In this case, if the fulfillment date was not provided by the user, it is automatically set to the invoice issue date once the invoice gets issued.
+     *
+     * In countries where the fulfillment date is optional, Monite does not auto-assign it if it was omitted by the user.
+     */
     fulfillment_date?: string;
+    /** The datetime when the invoice was issued */
+    issue_date?: string;
     /** A note with additional information for a receivable */
     memo?: string;
     overdue_reminder_id?: string;

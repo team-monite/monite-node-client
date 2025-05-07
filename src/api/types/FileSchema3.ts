@@ -21,9 +21,9 @@ export interface FileSchema3 {
     /** The original file name (if available). */
     name: string;
     /** If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array. */
-    pages?: Monite.PageSchema[];
+    pages?: Monite.PageSchema3[];
     /** Preview images generated for this file. There can be multiple images with different sizes. */
-    previews?: Monite.PreviewSchema[];
+    previews?: Monite.PreviewSchema3[];
     /** Geographical region of the data center where the file is stored. */
     region: string;
     /** The file size in bytes. */

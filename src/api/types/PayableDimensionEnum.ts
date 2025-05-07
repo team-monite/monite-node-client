@@ -10,7 +10,6 @@ export type PayableDimensionEnum =
     | "issued_at"
     | "due_date"
     | "project_id";
-
 export const PayableDimensionEnum = {
     CreatedAt: "created_at",
     Status: "status",

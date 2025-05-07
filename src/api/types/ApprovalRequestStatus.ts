@@ -3,7 +3,6 @@
  */
 
 export type ApprovalRequestStatus = "waiting" | "approved" | "rejected" | "canceled";
-
 export const ApprovalRequestStatus = {
     Waiting: "waiting",
     Approved: "approved",

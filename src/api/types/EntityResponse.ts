@@ -9,12 +9,12 @@ import * as Monite from "../index";
  */
 export type EntityResponse = Monite.EntityResponse.Individual | Monite.EntityResponse.Organization;
 
-export declare namespace EntityResponse {
-    interface Individual extends Monite.EntityIndividualResponse {
+export namespace EntityResponse {
+    export interface Individual extends Monite.EntityIndividualResponse {
         type: "individual";
     }
 
-    interface Organization extends Monite.EntityOrganizationResponse {
+    export interface Organization extends Monite.EntityOrganizationResponse {
         type: "organization";
     }
 }

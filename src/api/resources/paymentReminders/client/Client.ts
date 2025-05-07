@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace PaymentReminders {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace PaymentReminders {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -49,11 +51,21 @@ export class PaymentReminders {
      * @example
      *     await client.paymentReminders.get()
      */
-    public async get(requestOptions?: PaymentReminders.RequestOptions): Promise<Monite.GetAllPaymentReminders> {
+    public get(
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.GetAllPaymentReminders> {
+        return core.HttpResponsePromise.fromPromise(this.__get(requestOptions));
+    }
+
+    private async __get(
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.GetAllPaymentReminders>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payment_reminders"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payment_reminders",
             ),
             method: "GET",
             headers: {
@@ -78,23 +90,24 @@ export class PaymentReminders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.GetAllPaymentReminders;
+            return { data: _response.body as Monite.GetAllPaymentReminders, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -104,12 +117,14 @@ export class PaymentReminders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /payment_reminders.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -129,14 +144,23 @@ export class PaymentReminders {
      *         name: "name"
      *     })
      */
-    public async create(
+    public create(
         request: Monite.PaymentReminder,
-        requestOptions?: PaymentReminders.RequestOptions
-    ): Promise<Monite.PaymentReminderResponse> {
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentReminderResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.PaymentReminder,
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentReminderResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "payment_reminders"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "payment_reminders",
             ),
             method: "POST",
             headers: {
@@ -162,25 +186,26 @@ export class PaymentReminders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PaymentReminderResponse;
+            return { data: _response.body as Monite.PaymentReminderResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -190,12 +215,14 @@ export class PaymentReminders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /payment_reminders.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -213,14 +240,23 @@ export class PaymentReminders {
      * @example
      *     await client.paymentReminders.getById("payment_reminder_id")
      */
-    public async getById(
+    public getById(
         paymentReminderId: string,
-        requestOptions?: PaymentReminders.RequestOptions
-    ): Promise<Monite.PaymentReminderResponse> {
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentReminderResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(paymentReminderId, requestOptions));
+    }
+
+    private async __getById(
+        paymentReminderId: string,
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentReminderResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payment_reminders/${encodeURIComponent(paymentReminderId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_reminders/${encodeURIComponent(paymentReminderId)}`,
             ),
             method: "GET",
             headers: {
@@ -245,25 +281,26 @@ export class PaymentReminders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PaymentReminderResponse;
+            return { data: _response.body as Monite.PaymentReminderResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -273,14 +310,16 @@ export class PaymentReminders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /payment_reminders/{payment_reminder_id}."
+                    "Timeout exceeded when calling GET /payment_reminders/{payment_reminder_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -299,14 +338,23 @@ export class PaymentReminders {
      * @example
      *     await client.paymentReminders.deleteById("payment_reminder_id")
      */
-    public async deleteById(
+    public deleteById(
         paymentReminderId: string,
-        requestOptions?: PaymentReminders.RequestOptions
-    ): Promise<void> {
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(paymentReminderId, requestOptions));
+    }
+
+    private async __deleteById(
+        paymentReminderId: string,
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payment_reminders/${encodeURIComponent(paymentReminderId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_reminders/${encodeURIComponent(paymentReminderId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -331,27 +379,28 @@ export class PaymentReminders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -361,14 +410,16 @@ export class PaymentReminders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling DELETE /payment_reminders/{payment_reminder_id}."
+                    "Timeout exceeded when calling DELETE /payment_reminders/{payment_reminder_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -388,15 +439,25 @@ export class PaymentReminders {
      * @example
      *     await client.paymentReminders.updateById("payment_reminder_id")
      */
-    public async updateById(
+    public updateById(
         paymentReminderId: string,
         request: Monite.PaymentReminderUpdateRequest = {},
-        requestOptions?: PaymentReminders.RequestOptions
-    ): Promise<Monite.PaymentReminderResponse> {
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): core.HttpResponsePromise<Monite.PaymentReminderResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(paymentReminderId, request, requestOptions));
+    }
+
+    private async __updateById(
+        paymentReminderId: string,
+        request: Monite.PaymentReminderUpdateRequest = {},
+        requestOptions?: PaymentReminders.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.PaymentReminderResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `payment_reminders/${encodeURIComponent(paymentReminderId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `payment_reminders/${encodeURIComponent(paymentReminderId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -422,27 +483,28 @@ export class PaymentReminders {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.PaymentReminderResponse;
+            return { data: _response.body as Monite.PaymentReminderResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -452,14 +514,16 @@ export class PaymentReminders {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling PATCH /payment_reminders/{payment_reminder_id}."
+                    "Timeout exceeded when calling PATCH /payment_reminders/{payment_reminder_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

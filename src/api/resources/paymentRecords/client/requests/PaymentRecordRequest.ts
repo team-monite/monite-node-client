@@ -13,15 +13,28 @@ import * as Monite from "../../../../index";
  *             id: "id",
  *             type: "receivable"
  *         },
- *         paid_at: "2024-01-15T09:30:00Z",
  *         payment_intent_id: "payment_intent_id"
  *     }
  */
 export interface PaymentRecordRequest {
+    /** Positive amount in case of successful payment, negative amount in case of payment failure or refund, represented in minor currency units (e.g., cents). */
     amount: number;
+    /** Currency code (ISO 4217) indicating the currency in which the payment was made. */
     currency: Monite.CurrencyEnum;
+    /** ID of the user associated with the payment, if applicable. */
     entity_user_id?: string;
+    /** Reference object linked to this payment record, indicating the type (receivable or payable) and its identifier. */
     object: Monite.PaymentRecordObjectRequest;
-    paid_at: string;
+    /** Timestamp marking when the payment was executed. Null if payment hasn't occurred yet. */
+    paid_at?: string;
+    /** Identifier for an payment intent. */
     payment_intent_id: string;
+    /** Raw status string of the external payment intent. */
+    payment_intent_status?: string;
+    /** Payment method used or planned for the transaction. */
+    payment_method?: string;
+    /** Scheduled date for future payments, required when the payment is planned but not yet executed. */
+    planned_payment_date?: string;
+    /** Status of the payment record indicating its current stage (e.g., created, processing, succeeded). */
+    status?: Monite.PaymentRecordRequestStatus;
 }

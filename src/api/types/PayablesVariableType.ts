@@ -3,7 +3,6 @@
  */
 
 export type PayablesVariableType = "payables_purchase_order" | "payables_notify_approver";
-
 export const PayablesVariableType = {
     PayablesPurchaseOrder: "payables_purchase_order",
     PayablesNotifyApprover: "payables_notify_approver",

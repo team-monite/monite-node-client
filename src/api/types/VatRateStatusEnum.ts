@@ -3,7 +3,6 @@
  */
 
 export type VatRateStatusEnum = "active" | "inactive";
-
 export const VatRateStatusEnum = {
     Active: "active",
     Inactive: "inactive",

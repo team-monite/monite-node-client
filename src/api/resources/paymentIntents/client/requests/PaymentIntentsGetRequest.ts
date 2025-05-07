@@ -29,4 +29,8 @@ export interface PaymentIntentsGetRequest {
      * ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice.
      */
     object_id?: string;
+    /**
+     * A list of payable IDs and/or receivable IDs. If provided, returns only payment intents associated with the specified payable and receivable invoices. Valid but nonexistent IDs do not raise errors but produce no results.
+     */
+    object_id__in?: string | string[];
 }

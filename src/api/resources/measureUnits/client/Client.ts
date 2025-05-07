@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
 
 export declare namespace MeasureUnits {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace MeasureUnits {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,11 +52,19 @@ export class MeasureUnits {
      * @example
      *     await client.measureUnits.get()
      */
-    public async get(requestOptions?: MeasureUnits.RequestOptions): Promise<Monite.UnitListResponse> {
+    public get(requestOptions?: MeasureUnits.RequestOptions): core.HttpResponsePromise<Monite.UnitListResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(requestOptions));
+    }
+
+    private async __get(
+        requestOptions?: MeasureUnits.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.UnitListResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "measure_units"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "measure_units",
             ),
             method: "GET",
             headers: {
@@ -79,25 +89,26 @@ export class MeasureUnits {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.UnitListResponse;
+            return { data: _response.body as Monite.UnitListResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -107,12 +118,14 @@ export class MeasureUnits {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /measure_units.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -132,14 +145,23 @@ export class MeasureUnits {
      *         name: "name"
      *     })
      */
-    public async create(
+    public create(
         request: Monite.UnitRequest,
-        requestOptions?: MeasureUnits.RequestOptions
-    ): Promise<Monite.UnitResponse> {
+        requestOptions?: MeasureUnits.RequestOptions,
+    ): core.HttpResponsePromise<Monite.UnitResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Monite.UnitRequest,
+        requestOptions?: MeasureUnits.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.UnitResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "measure_units"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "measure_units",
             ),
             method: "POST",
             headers: {
@@ -165,25 +187,26 @@ export class MeasureUnits {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.UnitResponse;
+            return { data: _response.body as Monite.UnitResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -193,12 +216,14 @@ export class MeasureUnits {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling POST /measure_units.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -217,11 +242,23 @@ export class MeasureUnits {
      * @example
      *     await client.measureUnits.getById("unit_id")
      */
-    public async getById(unitId: string, requestOptions?: MeasureUnits.RequestOptions): Promise<Monite.UnitResponse> {
+    public getById(
+        unitId: string,
+        requestOptions?: MeasureUnits.RequestOptions,
+    ): core.HttpResponsePromise<Monite.UnitResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(unitId, requestOptions));
+    }
+
+    private async __getById(
+        unitId: string,
+        requestOptions?: MeasureUnits.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.UnitResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `measure_units/${encodeURIComponent(unitId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `measure_units/${encodeURIComponent(unitId)}`,
             ),
             method: "GET",
             headers: {
@@ -246,27 +283,28 @@ export class MeasureUnits {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.UnitResponse;
+            return { data: _response.body as Monite.UnitResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -276,12 +314,14 @@ export class MeasureUnits {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /measure_units/{unit_id}.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -300,11 +340,20 @@ export class MeasureUnits {
      * @example
      *     await client.measureUnits.deleteById("unit_id")
      */
-    public async deleteById(unitId: string, requestOptions?: MeasureUnits.RequestOptions): Promise<void> {
+    public deleteById(unitId: string, requestOptions?: MeasureUnits.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteById(unitId, requestOptions));
+    }
+
+    private async __deleteById(
+        unitId: string,
+        requestOptions?: MeasureUnits.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `measure_units/${encodeURIComponent(unitId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `measure_units/${encodeURIComponent(unitId)}`,
             ),
             method: "DELETE",
             headers: {
@@ -329,27 +378,28 @@ export class MeasureUnits {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return;
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -359,12 +409,14 @@ export class MeasureUnits {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling DELETE /measure_units/{unit_id}.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -384,15 +436,25 @@ export class MeasureUnits {
      * @example
      *     await client.measureUnits.updateById("unit_id")
      */
-    public async updateById(
+    public updateById(
         unitId: string,
         request: Monite.UnitUpdate = {},
-        requestOptions?: MeasureUnits.RequestOptions
-    ): Promise<Monite.UnitResponse> {
+        requestOptions?: MeasureUnits.RequestOptions,
+    ): core.HttpResponsePromise<Monite.UnitResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__updateById(unitId, request, requestOptions));
+    }
+
+    private async __updateById(
+        unitId: string,
+        request: Monite.UnitUpdate = {},
+        requestOptions?: MeasureUnits.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.UnitResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `measure_units/${encodeURIComponent(unitId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `measure_units/${encodeURIComponent(unitId)}`,
             ),
             method: "PATCH",
             headers: {
@@ -418,27 +480,28 @@ export class MeasureUnits {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.UnitResponse;
+            return { data: _response.body as Monite.UnitResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 400:
-                    throw new Monite.BadRequestError(_response.error.body as unknown);
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 401:
-                    throw new Monite.UnauthorizedError(_response.error.body as unknown);
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
                 case 403:
-                    throw new Monite.ForbiddenError(_response.error.body as unknown);
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
-                    throw new Monite.NotFoundError(_response.error.body as unknown);
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -448,12 +511,14 @@ export class MeasureUnits {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling PATCH /measure_units/{unit_id}.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

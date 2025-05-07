@@ -10,7 +10,6 @@ export type CounterpartTagCategory =
     | "vendor_type"
     | "payment_method"
     | "approval_status";
-
 export const CounterpartTagCategory = {
     DocumentType: "document_type",
     Department: "department",

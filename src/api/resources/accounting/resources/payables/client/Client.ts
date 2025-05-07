@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace Payables {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace Payables {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -54,12 +56,19 @@ export class Payables {
      * @example
      *     await client.accounting.payables.get()
      */
-    public async get(
+    public get(
         request: Monite.accounting.PayablesGetRequest = {},
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.AccountingPayableList> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AccountingPayableList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.accounting.PayablesGetRequest = {},
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingPayableList>> {
         const { limit, offset } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (limit != null) {
             _queryParams["limit"] = limit.toString();
         }
@@ -70,8 +79,10 @@ export class Payables {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "accounting/payables"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "accounting/payables",
             ),
             method: "GET",
             headers: {
@@ -97,19 +108,20 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingPayableList;
+            return { data: _response.body as Monite.AccountingPayableList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -119,12 +131,14 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /accounting/payables.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -141,14 +155,23 @@ export class Payables {
      * @example
      *     await client.accounting.payables.getById("payable_id")
      */
-    public async getById(
+    public getById(
         payableId: string,
-        requestOptions?: Payables.RequestOptions
-    ): Promise<Monite.AccountingPayable> {
+        requestOptions?: Payables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AccountingPayable> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(payableId, requestOptions));
+    }
+
+    private async __getById(
+        payableId: string,
+        requestOptions?: Payables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingPayable>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `accounting/payables/${encodeURIComponent(payableId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `accounting/payables/${encodeURIComponent(payableId)}`,
             ),
             method: "GET",
             headers: {
@@ -173,19 +196,20 @@ export class Payables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingPayable;
+            return { data: _response.body as Monite.AccountingPayable, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -195,14 +219,16 @@ export class Payables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /accounting/payables/{payable_id}."
+                    "Timeout exceeded when calling GET /accounting/payables/{payable_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

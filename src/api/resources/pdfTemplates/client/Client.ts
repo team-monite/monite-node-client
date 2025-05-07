@@ -10,8 +10,10 @@ import * as errors from "../../../../errors/index";
 import * as stream from "stream";
 
 export declare namespace PdfTemplates {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -20,7 +22,7 @@ export declare namespace PdfTemplates {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -50,11 +52,19 @@ export class PdfTemplates {
      * @example
      *     await client.pdfTemplates.get()
      */
-    public async get(requestOptions?: PdfTemplates.RequestOptions): Promise<Monite.TemplateListResponse> {
+    public get(requestOptions?: PdfTemplates.RequestOptions): core.HttpResponsePromise<Monite.TemplateListResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(requestOptions));
+    }
+
+    private async __get(
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TemplateListResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "document_templates"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "document_templates",
             ),
             method: "GET",
             headers: {
@@ -79,19 +89,20 @@ export class PdfTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TemplateListResponse;
+            return { data: _response.body as Monite.TemplateListResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -101,12 +112,14 @@ export class PdfTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /document_templates.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -122,11 +135,21 @@ export class PdfTemplates {
      * @example
      *     await client.pdfTemplates.getSystem()
      */
-    public async getSystem(requestOptions?: PdfTemplates.RequestOptions): Promise<Monite.TemplateListResponse> {
+    public getSystem(
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.TemplateListResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getSystem(requestOptions));
+    }
+
+    private async __getSystem(
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TemplateListResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "document_templates/system"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "document_templates/system",
             ),
             method: "GET",
             headers: {
@@ -151,19 +174,20 @@ export class PdfTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TemplateListResponse;
+            return { data: _response.body as Monite.TemplateListResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -173,12 +197,14 @@ export class PdfTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /document_templates/system.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -193,14 +219,23 @@ export class PdfTemplates {
      * @example
      *     await client.pdfTemplates.getById("document_template_id")
      */
-    public async getById(
+    public getById(
         documentTemplateId: string,
-        requestOptions?: PdfTemplates.RequestOptions
-    ): Promise<Monite.TemplateReceivableResponse> {
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.TemplateReceivableResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(documentTemplateId, requestOptions));
+    }
+
+    private async __getById(
+        documentTemplateId: string,
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TemplateReceivableResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `document_templates/${encodeURIComponent(documentTemplateId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `document_templates/${encodeURIComponent(documentTemplateId)}`,
             ),
             method: "GET",
             headers: {
@@ -225,19 +260,20 @@ export class PdfTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TemplateReceivableResponse;
+            return { data: _response.body as Monite.TemplateReceivableResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -247,14 +283,16 @@ export class PdfTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /document_templates/{document_template_id}."
+                    "Timeout exceeded when calling GET /document_templates/{document_template_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -269,14 +307,23 @@ export class PdfTemplates {
      * @example
      *     await client.pdfTemplates.makeDefaultById("document_template_id")
      */
-    public async makeDefaultById(
+    public makeDefaultById(
         documentTemplateId: string,
-        requestOptions?: PdfTemplates.RequestOptions
-    ): Promise<Monite.TemplateReceivableResponse> {
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): core.HttpResponsePromise<Monite.TemplateReceivableResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__makeDefaultById(documentTemplateId, requestOptions));
+    }
+
+    private async __makeDefaultById(
+        documentTemplateId: string,
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.TemplateReceivableResponse>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `document_templates/${encodeURIComponent(documentTemplateId)}/make_default`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `document_templates/${encodeURIComponent(documentTemplateId)}/make_default`,
             ),
             method: "POST",
             headers: {
@@ -301,19 +348,20 @@ export class PdfTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.TemplateReceivableResponse;
+            return { data: _response.body as Monite.TemplateReceivableResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -323,14 +371,16 @@ export class PdfTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling POST /document_templates/{document_template_id}/make_default."
+                    "Timeout exceeded when calling POST /document_templates/{document_template_id}/make_default.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -340,14 +390,23 @@ export class PdfTemplates {
      * @throws {@link Monite.UnprocessableEntityError}
      * @throws {@link Monite.InternalServerError}
      */
-    public async previewById(
+    public previewById(
         documentTemplateId: string,
-        requestOptions?: PdfTemplates.RequestOptions
-    ): Promise<stream.Readable> {
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): core.HttpResponsePromise<stream.Readable> {
+        return core.HttpResponsePromise.fromPromise(this.__previewById(documentTemplateId, requestOptions));
+    }
+
+    private async __previewById(
+        documentTemplateId: string,
+        requestOptions?: PdfTemplates.RequestOptions,
+    ): Promise<core.WithRawResponse<stream.Readable>> {
         const _response = await (this._options.fetcher ?? core.fetcher)<stream.Readable>({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `document_templates/${encodeURIComponent(documentTemplateId)}/preview`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `document_templates/${encodeURIComponent(documentTemplateId)}/preview`,
             ),
             method: "GET",
             headers: {
@@ -373,19 +432,20 @@ export class PdfTemplates {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body;
+            return { data: _response.body, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -395,14 +455,16 @@ export class PdfTemplates {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /document_templates/{document_template_id}/preview."
+                    "Timeout exceeded when calling GET /document_templates/{document_template_id}/preview.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }

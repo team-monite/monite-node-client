@@ -37,4 +37,5 @@ export interface EntitiesGetRequest {
     email?: string;
     email__in?: string | string[];
     email__not_in?: string | string[];
+    status?: Monite.EntityStatusEnum;
 }

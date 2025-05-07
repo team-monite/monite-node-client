@@ -3,7 +3,6 @@
  */
 
 export type DnsRecordPurpose = "DKIM" | "SPF";
-
 export const DnsRecordPurpose = {
     Dkim: "DKIM",
     Spf: "SPF",

@@ -3,7 +3,6 @@
  */
 
 export type LineItemCursorFields = "created_at" | "updated_at";
-
 export const LineItemCursorFields = {
     CreatedAt: "created_at",
     UpdatedAt: "updated_at",

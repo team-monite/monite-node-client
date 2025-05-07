@@ -10,7 +10,6 @@ export type ApprovalProcessStepStatus =
     | "failed"
     | "not_started"
     | "skipped";
-
 export const ApprovalProcessStepStatus = {
     Waiting: "waiting",
     Approved: "approved",

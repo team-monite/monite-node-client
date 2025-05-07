@@ -16,6 +16,10 @@ export interface GetAnalyticsCreditNotesRequest {
     metric: Monite.CreditNoteMetricEnum;
     aggregation_function: Monite.AggregationFunctionEnum;
     date_dimension_breakdown?: Monite.DateDimensionBreakdownEnum;
+    /**
+     * The number of items (0 .. 400) to return in a single page of the response. The response may contain fewer items if it is the last or only page.
+     */
+    limit?: number;
     created_at__gt?: string;
     created_at__lt?: string;
     created_at__gte?: string;
@@ -29,6 +33,7 @@ export interface GetAnalyticsCreditNotesRequest {
     document_id__iexact?: string;
     document_id__contains?: string;
     document_id__icontains?: string;
+    has_file?: boolean;
     total_amount__gt?: number;
     total_amount__lt?: number;
     total_amount__gte?: number;
@@ -40,8 +45,11 @@ export interface GetAnalyticsCreditNotesRequest {
     based_on?: string;
     counterpart_id?: string;
     created_by_entity_user_id?: string;
-    status?: Monite.CreditNoteStateEnum;
-    status__in?: Monite.CreditNoteStateEnum | Monite.CreditNoteStateEnum[];
-    status__not_in?: Monite.CreditNoteStateEnum | Monite.CreditNoteStateEnum[];
+    status?: Monite.PayableCreditNoteStateEnum;
+    status__in?: Monite.PayableCreditNoteStateEnum | Monite.PayableCreditNoteStateEnum[];
+    status__not_in?: Monite.PayableCreditNoteStateEnum | Monite.PayableCreditNoteStateEnum[];
+    origin?: Monite.OriginEnum;
     currency?: Monite.CurrencyEnum;
+    project_id?: string;
+    project_id__in?: string | string[];
 }

@@ -10,13 +10,21 @@ import * as Monite from "../index";
 export interface EntityBankAccountResponse {
     /** Unique ID of the bank account. */
     id: string;
-    /** The name of the person or business that owns this bank account. Required if the account currency is GBP or USD. */
+    /**
+     * The name of the person or business that owns this bank account. Required in the following cases:
+     * * the account currency is GBP or USD,
+     * * the account currency is EUR and the entity wishes to receive SEPA Credit transfers to this account.
+     */
     account_holder_name?: string;
     /** The bank account number. Required if the account currency is GBP or USD. UK account numbers typically contain 8 digits. US bank account numbers contain 9 to 12 digits. */
     account_number?: string;
     /** The bank name. */
     bank_name?: string;
-    /** The SWIFT/BIC code of the bank. */
+    /**
+     * The SWIFT/BIC code of the bank. Can be either 8 or 11 characters long. Monite verifies the BIC length, country code, and whether the structure conforms to ISO 9362.
+     *
+     * If `bic` is specified, `iban` must also be specified.
+     */
     bic?: string;
     /** The country in which the bank account is registered, repsesented as a two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). */
     country?: Monite.AllowedCountries;
@@ -24,7 +32,7 @@ export interface EntityBankAccountResponse {
     currency?: Monite.CurrencyEnum;
     /** User-defined name of this bank account, such as 'Primary account' or 'Savings account'. */
     display_name?: string;
-    /** The IBAN of the bank account. Required if the account currency is EUR. */
+    /** The IBAN of the bank account, up to 34 characters. Required if the account currency is EUR. Monite verifies the IBAN length, checksum digits, and country-specific format according to ISO 13616. */
     iban?: string;
     /** Indicates whether this bank account is the default one for its currency. */
     is_default_for_currency?: boolean;

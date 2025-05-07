@@ -3,7 +3,6 @@
  */
 
 export type ProcessStatusEnum = "succeeded" | "waiting" | "failed" | "running" | "canceled" | "timed_out";
-
 export const ProcessStatusEnum = {
     Succeeded: "succeeded",
     Waiting: "waiting",

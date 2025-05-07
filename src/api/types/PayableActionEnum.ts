@@ -13,7 +13,6 @@ export type PayableActionEnum =
     | "submit"
     | "create_from_mail"
     | "reopen";
-
 export const PayableActionEnum = {
     Create: "create",
     Read: "read",

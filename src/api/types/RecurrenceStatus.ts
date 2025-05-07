@@ -3,7 +3,6 @@
  */
 
 export type RecurrenceStatus = "active" | "canceled" | "completed";
-
 export const RecurrenceStatus = {
     Active: "active",
     Canceled: "canceled",

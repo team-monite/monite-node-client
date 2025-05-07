@@ -3,7 +3,6 @@
  */
 
 export type PaymentAccountType = "entity" | "counterpart";
-
 export const PaymentAccountType = {
     Entity: "entity",
     Counterpart: "counterpart",

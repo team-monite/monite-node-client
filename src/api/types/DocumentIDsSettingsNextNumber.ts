@@ -4,6 +4,7 @@
 
 export interface DocumentIDsSettingsNextNumber {
     credit_note?: number;
+    delivery_note?: number;
     invoice?: number;
     purchase_order?: number;
     quote?: number;

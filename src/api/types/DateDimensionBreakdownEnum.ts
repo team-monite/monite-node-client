@@ -3,7 +3,6 @@
  */
 
 export type DateDimensionBreakdownEnum = "daily" | "weekly" | "monthly" | "quarterly" | "yearly";
-
 export const DateDimensionBreakdownEnum = {
     Daily: "daily",
     Weekly: "weekly",

@@ -3,7 +3,6 @@
  */
 
 export type PaymentMethodStatus = "active" | "inactive";
-
 export const PaymentMethodStatus = {
     Active: "active",
     Inactive: "inactive",

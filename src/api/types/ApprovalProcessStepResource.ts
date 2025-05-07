@@ -5,11 +5,11 @@
 import * as Monite from "../index";
 
 export interface ApprovalProcessStepResource {
+    approved_by: string[];
     object_id: string;
+    rejected_by?: string;
     required_approval_count: number;
+    role_ids: string[];
     status: Monite.ApprovalProcessStepStatus;
     user_ids: string[];
-    role_ids: string[];
-    approved_by: string[];
-    rejected_by?: string;
 }

@@ -3,7 +3,6 @@
  */
 
 export type BasedOnTransitionType = "invoice" | "credit_note";
-
 export const BasedOnTransitionType = {
     Invoice: "invoice",
     CreditNote: "credit_note",

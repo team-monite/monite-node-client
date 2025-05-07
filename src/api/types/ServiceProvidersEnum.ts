@@ -3,7 +3,6 @@
  */
 
 export type ServiceProvidersEnum = "codat" | "railz";
-
 export const ServiceProvidersEnum = {
     Codat: "codat",
     Railz: "railz",

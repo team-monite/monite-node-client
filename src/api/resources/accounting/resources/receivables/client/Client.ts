@@ -9,8 +9,10 @@ import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace Receivables {
-    interface Options {
+    export interface Options {
         environment?: core.Supplier<environments.MoniteEnvironment | string>;
+        /** Specify a custom URL to connect the client to. */
+        baseUrl?: core.Supplier<string>;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-monite-version header */
         moniteVersion: core.Supplier<string>;
@@ -19,7 +21,7 @@ export declare namespace Receivables {
         fetcher?: core.FetchFunction;
     }
 
-    interface RequestOptions {
+    export interface RequestOptions {
         /** The maximum time to wait for a response in seconds. */
         timeoutInSeconds?: number;
         /** The number of times to retry the request. Defaults to 2. */
@@ -54,12 +56,19 @@ export class Receivables {
      * @example
      *     await client.accounting.receivables.get()
      */
-    public async get(
+    public get(
         request: Monite.accounting.ReceivablesGetRequest = {},
-        requestOptions?: Receivables.RequestOptions
-    ): Promise<Monite.AccountingReceivableList> {
+        requestOptions?: Receivables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AccountingReceivableList> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Monite.accounting.ReceivablesGetRequest = {},
+        requestOptions?: Receivables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingReceivableList>> {
         const { limit, offset } = request;
-        const _queryParams: Record<string, string | string[] | object | object[]> = {};
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (limit != null) {
             _queryParams["limit"] = limit.toString();
         }
@@ -70,8 +79,10 @@ export class Receivables {
 
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                "accounting/receivables"
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                "accounting/receivables",
             ),
             method: "GET",
             headers: {
@@ -97,19 +108,20 @@ export class Receivables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingReceivableList;
+            return { data: _response.body as Monite.AccountingReceivableList, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -119,12 +131,14 @@ export class Receivables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError("Timeout exceeded when calling GET /accounting/receivables.");
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
@@ -141,14 +155,23 @@ export class Receivables {
      * @example
      *     await client.accounting.receivables.getById("invoice_id")
      */
-    public async getById(
+    public getById(
         invoiceId: string,
-        requestOptions?: Receivables.RequestOptions
-    ): Promise<Monite.AccountingReceivable> {
+        requestOptions?: Receivables.RequestOptions,
+    ): core.HttpResponsePromise<Monite.AccountingReceivable> {
+        return core.HttpResponsePromise.fromPromise(this.__getById(invoiceId, requestOptions));
+    }
+
+    private async __getById(
+        invoiceId: string,
+        requestOptions?: Receivables.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.AccountingReceivable>> {
         const _response = await (this._options.fetcher ?? core.fetcher)({
             url: urlJoin(
-                (await core.Supplier.get(this._options.environment)) ?? environments.MoniteEnvironment.Sandbox,
-                `accounting/receivables/${encodeURIComponent(invoiceId)}`
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `accounting/receivables/${encodeURIComponent(invoiceId)}`,
             ),
             method: "GET",
             headers: {
@@ -173,19 +196,20 @@ export class Receivables {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return _response.body as Monite.AccountingReceivable;
+            return { data: _response.body as Monite.AccountingReceivable, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
                 case 422:
-                    throw new Monite.UnprocessableEntityError(_response.error.body as Monite.HttpValidationError);
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
-                    throw new Monite.InternalServerError(_response.error.body as unknown);
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
                 default:
                     throw new errors.MoniteError({
                         statusCode: _response.error.statusCode,
                         body: _response.error.body,
+                        rawResponse: _response.rawResponse,
                     });
             }
         }
@@ -195,14 +219,16 @@ export class Receivables {
                 throw new errors.MoniteError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
                 });
             case "timeout":
                 throw new errors.MoniteTimeoutError(
-                    "Timeout exceeded when calling GET /accounting/receivables/{invoice_id}."
+                    "Timeout exceeded when calling GET /accounting/receivables/{invoice_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
                     message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
                 });
         }
     }
