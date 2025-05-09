@@ -16,6 +16,10 @@ export interface EinvoicingConnectionResponse {
     credentials: Monite.EinvoicingNetworkCredentialsResponse[];
     /** ID of the entity */
     entity_id: string;
+    /** Set to `true` if the entity needs to receive e-invoices. */
+    is_receiver?: boolean;
+    /** Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`. */
+    is_sender?: boolean;
     /** Legal name of the Entity */
     legal_name: string;
     /** ID assigned by integration partner */

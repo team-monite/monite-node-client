@@ -6,20 +6,11 @@ import * as Monite from "../../../../index";
 
 /**
  * @example
- *     {
- *         address: {
- *             address_line1: "address_line1",
- *             city: "city",
- *             country: "DE",
- *             postal_code: "postal_code"
- *         }
- *     }
+ *     {}
  */
-export interface EinvoicingConnectionCreateRequest {
+export interface EinvoicingConnectionUpdateRequest {
     /** Integration Address */
-    address: Monite.EinvoicingAddress;
-    /** Entity VAT ID identifier for the integration */
-    entity_vat_id_id?: string;
+    address?: Monite.UpdateEinvoicingAddress;
     /** Set to `true` if the entity needs to receive e-invoices. */
     is_receiver?: boolean;
     /** Set to `true` if the entity needs to send e-invoices. Either `is_sender` or `is_receiver` or both must be `true`. */
