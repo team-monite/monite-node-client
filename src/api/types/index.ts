@@ -567,6 +567,7 @@ export * from "./UnitRequest";
 export * from "./UnitResponse";
 export * from "./UpdateCreditNote";
 export * from "./UpdateCreditNotePayload";
+export * from "./UpdateEinvoicingAddress";
 export * from "./UpdateEntityAddressSchema";
 export * from "./UpdateEntityRequest";
 export * from "./UpdateInvoice";
