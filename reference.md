@@ -2956,6 +2956,62 @@ await client.eInvoicingConnections.deleteEinvoicingConnectionsId("einvoicing_con
 </dl>
 </details>
 
+<details><summary><code>client.eInvoicingConnections.<a href="/src/api/resources/eInvoicingConnections/client/Client.ts">patchEinvoicingConnectionsId</a>(einvoicingConnectionId, { ...params }) -> Monite.EinvoicingConnectionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.eInvoicingConnections.patchEinvoicingConnectionsId("einvoicing_connection_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**einvoicingConnectionId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.EinvoicingConnectionUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `EInvoicingConnections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.eInvoicingConnections.<a href="/src/api/resources/eInvoicingConnections/client/Client.ts">postEinvoicingConnectionsIdNetworkCredentials</a>(einvoicingConnectionId, { ...params }) -> Monite.EinvoicingNetworkCredentialsResponse</code></summary>
 <dl>
 <dd>

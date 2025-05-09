@@ -78,8 +78,8 @@ export class EInvoicingConnections {
                         : undefined,
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.3.3",
-                "User-Agent": "@monite/node-client/0.3.3",
+                "X-Fern-SDK-Version": "0.3.4",
+                "User-Agent": "@monite/node-client/0.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -181,8 +181,8 @@ export class EInvoicingConnections {
                         : undefined,
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.3.3",
-                "User-Agent": "@monite/node-client/0.3.3",
+                "X-Fern-SDK-Version": "0.3.4",
+                "User-Agent": "@monite/node-client/0.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -282,8 +282,8 @@ export class EInvoicingConnections {
                         : undefined,
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.3.3",
-                "User-Agent": "@monite/node-client/0.3.3",
+                "X-Fern-SDK-Version": "0.3.4",
+                "User-Agent": "@monite/node-client/0.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -384,8 +384,8 @@ export class EInvoicingConnections {
                         : undefined,
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.3.3",
-                "User-Agent": "@monite/node-client/0.3.3",
+                "X-Fern-SDK-Version": "0.3.4",
+                "User-Agent": "@monite/node-client/0.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
@@ -433,6 +433,115 @@ export class EInvoicingConnections {
             case "timeout":
                 throw new errors.MoniteTimeoutError(
                     "Timeout exceeded when calling DELETE /einvoicing_connections/{einvoicing_connection_id}.",
+                );
+            case "unknown":
+                throw new errors.MoniteError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * @param {string} einvoicingConnectionId
+     * @param {Monite.EinvoicingConnectionUpdateRequest} request
+     * @param {EInvoicingConnections.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Monite.BadRequestError}
+     * @throws {@link Monite.UnauthorizedError}
+     * @throws {@link Monite.ForbiddenError}
+     * @throws {@link Monite.NotFoundError}
+     * @throws {@link Monite.ConflictError}
+     * @throws {@link Monite.UnprocessableEntityError}
+     * @throws {@link Monite.InternalServerError}
+     *
+     * @example
+     *     await client.eInvoicingConnections.patchEinvoicingConnectionsId("einvoicing_connection_id")
+     */
+    public patchEinvoicingConnectionsId(
+        einvoicingConnectionId: string,
+        request: Monite.EinvoicingConnectionUpdateRequest = {},
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): core.HttpResponsePromise<Monite.EinvoicingConnectionResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__patchEinvoicingConnectionsId(einvoicingConnectionId, request, requestOptions),
+        );
+    }
+
+    private async __patchEinvoicingConnectionsId(
+        einvoicingConnectionId: string,
+        request: Monite.EinvoicingConnectionUpdateRequest = {},
+        requestOptions?: EInvoicingConnections.RequestOptions,
+    ): Promise<core.WithRawResponse<Monite.EinvoicingConnectionResponse>> {
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MoniteEnvironment.Sandbox,
+                `einvoicing_connections/${encodeURIComponent(einvoicingConnectionId)}`,
+            ),
+            method: "PATCH",
+            headers: {
+                Authorization: await this._getAuthorizationHeader(),
+                "x-monite-version": await core.Supplier.get(this._options.moniteVersion),
+                "x-monite-entity-id":
+                    (await core.Supplier.get(this._options.moniteEntityId)) != null
+                        ? await core.Supplier.get(this._options.moniteEntityId)
+                        : undefined,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@monite/node-client",
+                "X-Fern-SDK-Version": "0.3.4",
+                "User-Agent": "@monite/node-client/0.3.4",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: request,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Monite.EinvoicingConnectionResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Monite.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Monite.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Monite.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Monite.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 409:
+                    throw new Monite.ConflictError(_response.error.body as unknown, _response.rawResponse);
+                case 422:
+                    throw new Monite.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Monite.InternalServerError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MoniteError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MoniteError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.MoniteTimeoutError(
+                    "Timeout exceeded when calling PATCH /einvoicing_connections/{einvoicing_connection_id}.",
                 );
             case "unknown":
                 throw new errors.MoniteError({
@@ -493,8 +602,8 @@ export class EInvoicingConnections {
                         : undefined,
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@monite/node-client",
-                "X-Fern-SDK-Version": "0.3.3",
-                "User-Agent": "@monite/node-client/0.3.3",
+                "X-Fern-SDK-Version": "0.3.4",
+                "User-Agent": "@monite/node-client/0.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...requestOptions?.headers,
