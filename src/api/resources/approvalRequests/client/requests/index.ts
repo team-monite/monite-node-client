@@ -1,1 +1,1 @@
-export { type ApprovalRequestsGetRequest } from "./ApprovalRequestsGetRequest";
+export { type ApprovalRequestsGetRequest } from "./ApprovalRequestsGetRequest.js";

@@ -1,2 +1,2 @@
-export { type CreateRecurrencePayload } from "./CreateRecurrencePayload";
-export { type UpdateRecurrencePayload } from "./UpdateRecurrencePayload";
+export { type CreateRecurrencePayload } from "./CreateRecurrencePayload.js";
+export { type UpdateRecurrencePayload } from "./UpdateRecurrencePayload.js";

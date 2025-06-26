@@ -1,3 +1,3 @@
-export { type GetOcrTasksRequest } from "./GetOcrTasksRequest";
-export { type CreateOcrRequestPayload } from "./CreateOcrRequestPayload";
-export { type OcrFileUpload } from "./OcrFileUpload";
+export { type GetOcrTasksRequest } from "./GetOcrTasksRequest.js";
+export { type CreateOcrRequestPayload } from "./CreateOcrRequestPayload.js";
+export { type OcrFileUpload } from "./OcrFileUpload.js";

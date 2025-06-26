@@ -1,3 +1,3 @@
-export { type RolesGetRequest } from "./RolesGetRequest";
-export { type CreateRoleRequest } from "./CreateRoleRequest";
-export { type UpdateRoleRequest } from "./UpdateRoleRequest";
+export { type RolesGetRequest } from "./RolesGetRequest.js";
+export { type CreateRoleRequest } from "./CreateRoleRequest.js";
+export { type UpdateRoleRequest } from "./UpdateRoleRequest.js";

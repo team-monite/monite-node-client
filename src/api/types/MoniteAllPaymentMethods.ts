@@ -16,7 +16,9 @@ export type MoniteAllPaymentMethods =
     | "SEPA Direct Debit"
     | "SOFORT"
     | "Apple Pay"
-    | "Google Pay";
+    | "Google Pay"
+    | "Affirm"
+    | "Klarna";
 export const MoniteAllPaymentMethods = {
     SepaPayments: "SEPA Payments",
     UsAchPayments: "US ACH Payments",
@@ -32,4 +34,6 @@ export const MoniteAllPaymentMethods = {
     Sofort: "SOFORT",
     ApplePay: "Apple Pay",
     GooglePay: "Google Pay",
+    Affirm: "Affirm",
+    Klarna: "Klarna",
 } as const;

@@ -1,2 +1,2 @@
-export { type RevokeTokenPayload } from "./RevokeTokenPayload";
-export { type ObtainTokenPayload } from "./ObtainTokenPayload";
+export { type RevokeTokenPayload } from "./RevokeTokenPayload.js";
+export { type ObtainTokenPayload } from "./ObtainTokenPayload.js";

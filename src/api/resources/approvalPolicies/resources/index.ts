@@ -1,1 +1,1 @@
-export * as processes from "./processes";
+export * as processes from "./processes/index.js";

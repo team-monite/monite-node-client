@@ -1,1 +1,1 @@
-export { type DomainRequest } from "./DomainRequest";
+export { type DomainRequest } from "./DomainRequest.js";

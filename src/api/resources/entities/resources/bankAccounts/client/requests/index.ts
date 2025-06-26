@@ -1,2 +1,2 @@
-export { type CreateEntityBankAccountRequest } from "./CreateEntityBankAccountRequest";
-export { type UpdateEntityBankAccountRequest } from "./UpdateEntityBankAccountRequest";
+export { type CreateEntityBankAccountRequest } from "./CreateEntityBankAccountRequest.js";
+export { type UpdateEntityBankAccountRequest } from "./UpdateEntityBankAccountRequest.js";

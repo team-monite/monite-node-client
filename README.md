@@ -17,7 +17,7 @@ npm i -s @monite/node-client
 
 ## Reference
 
-A full reference for this library is available [here](./reference.md).
+A full reference for this library is available [here](https://github.com/team-monite/monite-node-client/blob/HEAD/./reference.md).
 
 ## Usage
 

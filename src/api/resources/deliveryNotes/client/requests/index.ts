@@ -1,2 +1,2 @@
-export { type GetDeliveryNotesRequest } from "./GetDeliveryNotesRequest";
-export { type DeliveryNoteUpdateRequest } from "./DeliveryNoteUpdateRequest";
+export { type GetDeliveryNotesRequest } from "./GetDeliveryNotesRequest.js";
+export { type DeliveryNoteUpdateRequest } from "./DeliveryNoteUpdateRequest.js";

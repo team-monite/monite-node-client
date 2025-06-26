@@ -6,8 +6,7 @@
  * @example
  *     {
  *         mailbox_domain_id: "mailbox_domain_id",
- *         mailbox_name: "mailbox_name",
- *         related_object_type: "payable"
+ *         mailbox_name: "mailbox_name"
  *     }
  */
 export interface MailboxDomainRequest {

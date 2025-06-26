@@ -1,1 +1,1 @@
-export { type TaxRatesGetRequest } from "./TaxRatesGetRequest";
+export { type TaxRatesGetRequest } from "./TaxRatesGetRequest.js";

@@ -1,1 +1,1 @@
-export { type PartnerProjectSettingsPayloadInput } from "./PartnerProjectSettingsPayloadInput";
+export { type PartnerProjectSettingsPayloadInput } from "./PartnerProjectSettingsPayloadInput.js";

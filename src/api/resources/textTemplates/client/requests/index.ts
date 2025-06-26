@@ -1,3 +1,3 @@
-export { type TextTemplatesGetRequest } from "./TextTemplatesGetRequest";
-export { type CreateTextTemplatePayload } from "./CreateTextTemplatePayload";
-export { type UpdateTextTemplatePayload } from "./UpdateTextTemplatePayload";
+export { type TextTemplatesGetRequest } from "./TextTemplatesGetRequest.js";
+export { type CreateTextTemplatePayload } from "./CreateTextTemplatePayload.js";
+export { type UpdateTextTemplatePayload } from "./UpdateTextTemplatePayload.js";

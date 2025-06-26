@@ -1,4 +1,4 @@
-export { type PaymentRecordsGetRequest } from "./PaymentRecordsGetRequest";
-export { type PaymentRecordRequest } from "./PaymentRecordRequest";
-export { type PaymentRecordUpdateRequest } from "./PaymentRecordUpdateRequest";
-export { type PaymentRecordMarkAsSucceededRequest } from "./PaymentRecordMarkAsSucceededRequest";
+export { type PaymentRecordsGetRequest } from "./PaymentRecordsGetRequest.js";
+export { type PaymentRecordRequest } from "./PaymentRecordRequest.js";
+export { type PaymentRecordUpdateRequest } from "./PaymentRecordUpdateRequest.js";
+export { type PaymentRecordMarkAsSucceededRequest } from "./PaymentRecordMarkAsSucceededRequest.js";

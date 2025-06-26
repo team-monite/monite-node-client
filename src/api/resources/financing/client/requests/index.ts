@@ -1,2 +1,2 @@
-export { type GetFinancingInvoicesRequest } from "./GetFinancingInvoicesRequest";
-export { type FinancingPushInvoicesRequest } from "./FinancingPushInvoicesRequest";
+export { type GetFinancingInvoicesRequest } from "./GetFinancingInvoicesRequest.js";
+export { type FinancingPushInvoicesRequest } from "./FinancingPushInvoicesRequest.js";
