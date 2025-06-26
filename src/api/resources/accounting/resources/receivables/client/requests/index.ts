@@ -1,1 +1,1 @@
-export { type ReceivablesGetRequest } from "./ReceivablesGetRequest";
+export { type ReceivablesGetRequest } from "./ReceivablesGetRequest.js";

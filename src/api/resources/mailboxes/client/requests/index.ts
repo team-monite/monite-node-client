@@ -1,2 +1,2 @@
-export { type MailboxDomainRequest } from "./MailboxDomainRequest";
-export { type MailboxMultipleEntitiesRequest } from "./MailboxMultipleEntitiesRequest";
+export { type MailboxDomainRequest } from "./MailboxDomainRequest.js";
+export { type MailboxMultipleEntitiesRequest } from "./MailboxMultipleEntitiesRequest.js";

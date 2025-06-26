@@ -1,4 +1,4 @@
-export { type EntityUsersGetRequest } from "./EntityUsersGetRequest";
-export { type CreateEntityUserRequest } from "./CreateEntityUserRequest";
-export { type UpdateMeEntityUserRequest } from "./UpdateMeEntityUserRequest";
-export { type UpdateEntityUserRequest } from "./UpdateEntityUserRequest";
+export { type EntityUsersGetRequest } from "./EntityUsersGetRequest.js";
+export { type CreateEntityUserRequest } from "./CreateEntityUserRequest.js";
+export { type UpdateMeEntityUserRequest } from "./UpdateMeEntityUserRequest.js";
+export { type UpdateEntityUserRequest } from "./UpdateEntityUserRequest.js";

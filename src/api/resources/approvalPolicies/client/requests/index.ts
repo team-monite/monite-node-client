@@ -1,3 +1,3 @@
-export { type ApprovalPoliciesGetRequest } from "./ApprovalPoliciesGetRequest";
-export { type ApprovalPolicyCreate } from "./ApprovalPolicyCreate";
-export { type ApprovalPolicyUpdate } from "./ApprovalPolicyUpdate";
+export { type ApprovalPoliciesGetRequest } from "./ApprovalPoliciesGetRequest.js";
+export { type ApprovalPolicyCreate } from "./ApprovalPolicyCreate.js";
+export { type ApprovalPolicyUpdate } from "./ApprovalPolicyUpdate.js";

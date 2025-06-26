@@ -1,1 +1,1 @@
-export { type CounterpartUpdateAddress } from "./CounterpartUpdateAddress";
+export { type CounterpartUpdateAddress } from "./CounterpartUpdateAddress.js";

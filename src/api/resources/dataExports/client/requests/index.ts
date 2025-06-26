@@ -1,2 +1,2 @@
-export { type DataExportsGetRequest } from "./DataExportsGetRequest";
-export { type ExportPayloadSchema } from "./ExportPayloadSchema";
+export { type DataExportsGetRequest } from "./DataExportsGetRequest.js";
+export { type ExportPayloadSchema } from "./ExportPayloadSchema.js";

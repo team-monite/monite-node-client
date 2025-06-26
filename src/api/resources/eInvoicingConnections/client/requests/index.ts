@@ -1,2 +1,3 @@
-export { type EinvoicingConnectionCreateRequest } from "./EinvoicingConnectionCreateRequest";
-export { type EinvoicingNetworkCredentialsCreateRequest } from "./EinvoicingNetworkCredentialsCreateRequest";
+export { type EinvoicingConnectionCreateRequest } from "./EinvoicingConnectionCreateRequest.js";
+export { type EinvoicingConnectionUpdateRequest } from "./EinvoicingConnectionUpdateRequest.js";
+export { type EinvoicingNetworkCredentialsCreateRequest } from "./EinvoicingNetworkCredentialsCreateRequest.js";

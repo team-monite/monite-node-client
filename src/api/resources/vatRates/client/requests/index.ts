@@ -1,1 +1,1 @@
-export { type VatRatesGetRequest } from "./VatRatesGetRequest";
+export { type VatRatesGetRequest } from "./VatRatesGetRequest.js";

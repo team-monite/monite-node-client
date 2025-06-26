@@ -1,1 +1,1 @@
-export { type EntityOnboardingDataRequest } from "./EntityOnboardingDataRequest";
+export { type EntityOnboardingDataRequest } from "./EntityOnboardingDataRequest.js";

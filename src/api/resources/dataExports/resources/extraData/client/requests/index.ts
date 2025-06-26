@@ -1,3 +1,3 @@
-export { type ExtraDataGetRequest } from "./ExtraDataGetRequest";
-export { type ExtraDataCreateRequest } from "./ExtraDataCreateRequest";
-export { type ExtraDataUpdateRequest } from "./ExtraDataUpdateRequest";
+export { type ExtraDataGetRequest } from "./ExtraDataGetRequest.js";
+export { type ExtraDataCreateRequest } from "./ExtraDataCreateRequest.js";
+export { type ExtraDataUpdateRequest } from "./ExtraDataUpdateRequest.js";

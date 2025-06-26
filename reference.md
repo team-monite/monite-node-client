@@ -1959,6 +1959,256 @@ await client.counterpartEInvoicingCredentials.patchCounterpartsIdEinvoicingCrede
 </dl>
 </details>
 
+## Custom VAT rates
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">getCustomVatRates</a>() -> Monite.CustomVatRateResponseList</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.getCustomVatRates();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">postCustomVatRates</a>({ ...params }) -> Monite.CustomVatRateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.postCustomVatRates({
+    components: [
+        {
+            name: "name",
+            value: 1.1,
+        },
+    ],
+    name: "name",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.CustomVatRateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">getCustomVatRatesId</a>(customVatRateId) -> Monite.CustomVatRateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.getCustomVatRatesId("custom_vat_rate_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customVatRateId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">deleteCustomVatRatesId</a>(customVatRateId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.deleteCustomVatRatesId("custom_vat_rate_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customVatRateId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">patchCustomVatRatesId</a>(customVatRateId, { ...params }) -> Monite.CustomVatRateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.patchCustomVatRatesId("custom_vat_rate_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customVatRateId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.CustomVatRateUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 ## DataExports
 
 <details><summary><code>client.dataExports.<a href="/src/api/resources/dataExports/client/Client.ts">get</a>({ ...params }) -> Monite.AllDocumentExportResponseSchema</code></summary>
@@ -2956,6 +3206,62 @@ await client.eInvoicingConnections.deleteEinvoicingConnectionsId("einvoicing_con
 </dl>
 </details>
 
+<details><summary><code>client.eInvoicingConnections.<a href="/src/api/resources/eInvoicingConnections/client/Client.ts">patchEinvoicingConnectionsId</a>(einvoicingConnectionId, { ...params }) -> Monite.EinvoicingConnectionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.eInvoicingConnections.patchEinvoicingConnectionsId("einvoicing_connection_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**einvoicingConnectionId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.EinvoicingConnectionUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `EInvoicingConnections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.eInvoicingConnections.<a href="/src/api/resources/eInvoicingConnections/client/Client.ts">postEinvoicingConnectionsIdNetworkCredentials</a>(einvoicingConnectionId, { ...params }) -> Monite.EinvoicingNetworkCredentialsResponse</code></summary>
 <dl>
 <dd>
@@ -3530,7 +3836,7 @@ await client.entities.postEntitiesIdDeactivate("ea837e28-509b-4b6a-a600-d54b6aa0
 </dl>
 </details>
 
-<details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">uploadLogoById</a>(file, entityId) -> Monite.FileSchema2</code></summary>
+<details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">uploadLogoById</a>(entityId, { ...params }) -> Monite.FileSchema2</code></summary>
 <dl>
 <dd>
 
@@ -3558,7 +3864,9 @@ Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for 
 <dd>
 
 ```typescript
-await client.entities.uploadLogoById(fs.createReadStream("/path/to/your/file"), "ea837e28-509b-4b6a-a600-d54b6aa0b1f5");
+await client.entities.uploadLogoById("ea837e28-509b-4b6a-a600-d54b6aa0b1f5", {
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -3574,7 +3882,7 @@ await client.entities.uploadLogoById(fs.createReadStream("/path/to/your/file"), 
 <dl>
 <dd>
 
-**file:** `File | fs.ReadStream | Blob`
+**entityId:** `string`
 
 </dd>
 </dl>
@@ -3582,7 +3890,7 @@ await client.entities.uploadLogoById(fs.createReadStream("/path/to/your/file"), 
 <dl>
 <dd>
 
-**entityId:** `string`
+**request:** `Monite.BodyPutEntitiesIdLogo`
 
 </dd>
 </dl>
@@ -4825,7 +5133,7 @@ await client.files.get();
 </dl>
 </details>
 
-<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">upload</a>(file, { ...params }) -> Monite.FileResponse</code></summary>
+<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">upload</a>({ ...params }) -> Monite.FileResponse</code></summary>
 <dl>
 <dd>
 
@@ -4838,7 +5146,8 @@ await client.files.get();
 <dd>
 
 ```typescript
-await client.files.upload(fs.createReadStream("/path/to/your/file"), {
+await client.files.upload({
+    file: fs.createReadStream("/path/to/your/file"),
     file_type: "ocr_results",
 });
 ```
@@ -4852,14 +5161,6 @@ await client.files.upload(fs.createReadStream("/path/to/your/file"), {
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**file:** `File | fs.ReadStream | Blob`
-
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -6076,7 +6377,6 @@ Create a new mailbox
 await client.mailboxes.create({
     mailbox_domain_id: "mailbox_domain_id",
     mailbox_name: "mailbox_name",
-    related_object_type: "payable",
 });
 ```
 
@@ -6584,7 +6884,7 @@ await client.ocr.postOcrTasks({
 </dl>
 </details>
 
-<details><summary><code>client.ocr.<a href="/src/api/resources/ocr/client/Client.ts">postOcrTasksUploadFromFile</a>(file, { ...params }) -> Monite.OcrTaskResponseSchema</code></summary>
+<details><summary><code>client.ocr.<a href="/src/api/resources/ocr/client/Client.ts">postOcrTasksUploadFromFile</a>({ ...params }) -> Monite.OcrTaskResponseSchema</code></summary>
 <dl>
 <dd>
 
@@ -6597,7 +6897,9 @@ await client.ocr.postOcrTasks({
 <dd>
 
 ```typescript
-await client.ocr.postOcrTasksUploadFromFile(fs.createReadStream("/path/to/your/file"), {});
+await client.ocr.postOcrTasksUploadFromFile({
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -6609,14 +6911,6 @@ await client.ocr.postOcrTasksUploadFromFile(fs.createReadStream("/path/to/your/f
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**file:** `File | fs.ReadStream | Blob`
-
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -7033,7 +7327,7 @@ await client.creditNotes.postPayableCreditNotes({
 </dl>
 </details>
 
-<details><summary><code>client.creditNotes.<a href="/src/api/resources/creditNotes/client/Client.ts">postPayableCreditNotesUploadFromFile</a>(file) -> Monite.CreditNoteResponse</code></summary>
+<details><summary><code>client.creditNotes.<a href="/src/api/resources/creditNotes/client/Client.ts">postPayableCreditNotesUploadFromFile</a>({ ...params }) -> Monite.CreditNoteResponse</code></summary>
 <dl>
 <dd>
 
@@ -7045,7 +7339,7 @@ await client.creditNotes.postPayableCreditNotes({
 <dl>
 <dd>
 
-Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+Upload an incoming credit note (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
 </dd>
 </dl>
@@ -7061,7 +7355,9 @@ Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and s
 <dd>
 
 ```typescript
-await client.creditNotes.postPayableCreditNotesUploadFromFile(fs.createReadStream("/path/to/your/file"));
+await client.creditNotes.postPayableCreditNotesUploadFromFile({
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -7077,7 +7373,7 @@ await client.creditNotes.postPayableCreditNotesUploadFromFile(fs.createReadStrea
 <dl>
 <dd>
 
-**file:** `File | fs.ReadStream | Blob`
+**request:** `Monite.CreditNoteUploadFile`
 
 </dd>
 </dl>
@@ -8797,7 +9093,7 @@ await client.payables.getAnalytics();
 </dl>
 </details>
 
-<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">uploadFromFile</a>(file) -> Monite.PayableResponseSchema</code></summary>
+<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">uploadFromFile</a>({ ...params }) -> Monite.PayableResponseSchema</code></summary>
 <dl>
 <dd>
 
@@ -8809,7 +9105,7 @@ await client.payables.getAnalytics();
 <dl>
 <dd>
 
-Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+Upload an incoming invoice (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
 </dd>
 </dl>
@@ -8825,7 +9121,9 @@ Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan 
 <dd>
 
 ```typescript
-await client.payables.uploadFromFile(fs.createReadStream("/path/to/your/file"));
+await client.payables.uploadFromFile({
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -8841,7 +9139,7 @@ await client.payables.uploadFromFile(fs.createReadStream("/path/to/your/file"));
 <dl>
 <dd>
 
-**file:** `File | fs.ReadStream | Blob`
+**request:** `Monite.PayableUploadFile`
 
 </dd>
 </dl>
@@ -9350,7 +9648,7 @@ await client.payables.approvePaymentById("payable_id");
 </dl>
 </details>
 
-<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">attachFileById</a>(file, payableId) -> Monite.PayableResponseSchema</code></summary>
+<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">attachFileById</a>(payableId, { ...params }) -> Monite.PayableResponseSchema</code></summary>
 <dl>
 <dd>
 
@@ -9378,7 +9676,9 @@ Attach file to payable without existing attachment.
 <dd>
 
 ```typescript
-await client.payables.attachFileById(fs.createReadStream("/path/to/your/file"), "payable_id");
+await client.payables.attachFileById("payable_id", {
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -9394,7 +9694,7 @@ await client.payables.attachFileById(fs.createReadStream("/path/to/your/file"), 
 <dl>
 <dd>
 
-**file:** `File | fs.ReadStream | Blob`
+**payableId:** `string`
 
 </dd>
 </dl>
@@ -9402,7 +9702,7 @@ await client.payables.attachFileById(fs.createReadStream("/path/to/your/file"), 
 <dl>
 <dd>
 
-**payableId:** `string`
+**request:** `Monite.PayableAttachFile`
 
 </dd>
 </dl>
@@ -9529,6 +9829,62 @@ await client.payables.postPayablesIdCancelOcr("payable_id");
 <dd>
 
 **payableId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Payables.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">getPayablesIdHistory</a>(payableId, { ...params }) -> Monite.PayableHistoryPaginationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.payables.getPayablesIdHistory("payable_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payableId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetPayablesIdHistoryRequest`
 
 </dd>
 </dl>
@@ -12047,6 +12403,69 @@ await client.receivables.getReceivablesRequiredFields();
 </dl>
 </details>
 
+<details><summary><code>client.receivables.<a href="/src/api/resources/receivables/client/Client.ts">postReceivablesSearch</a>({ ...params }) -> Monite.ReceivablePaginationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This is a POST version of the `GET /receivables` endpoint. Use it to send search and filter parameters in the request body instead of the URL query string in case the query is too long and exceeds the URL length limit of your HTTP client.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receivables.postReceivablesSearch();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.ReceivablesSearchRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receivables.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.receivables.<a href="/src/api/resources/receivables/client/Client.ts">getVariables</a>() -> Monite.ReceivableTemplatesVariablesObjectList</code></summary>
 <dl>
 <dd>
@@ -13304,7 +13723,7 @@ await client.receivables.verifyById("receivable_id");
 
 ## Recurrences
 
-<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">get</a>() -> Monite.GetAllRecurrences</code></summary>
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">get</a>() -> Monite.RecurrenceResponseList</code></summary>
 <dl>
 <dd>
 
@@ -13344,7 +13763,7 @@ await client.recurrences.get();
 </dl>
 </details>
 
-<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">create</a>({ ...params }) -> Monite.Recurrence</code></summary>
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">create</a>({ ...params }) -> Monite.RecurrenceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13358,12 +13777,7 @@ await client.recurrences.get();
 
 ```typescript
 await client.recurrences.create({
-    day_of_month: "first_day",
-    end_month: 1,
-    end_year: 1,
     invoice_id: "invoice_id",
-    start_month: 1,
-    start_year: 1,
 });
 ```
 
@@ -13399,7 +13813,7 @@ await client.recurrences.create({
 </dl>
 </details>
 
-<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">getById</a>(recurrenceId) -> Monite.Recurrence</code></summary>
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">getById</a>(recurrenceId) -> Monite.RecurrenceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13447,7 +13861,7 @@ await client.recurrences.getById("recurrence_id");
 </dl>
 </details>
 
-<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">updateById</a>(recurrenceId, { ...params }) -> Monite.Recurrence</code></summary>
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">updateById</a>(recurrenceId, { ...params }) -> Monite.RecurrenceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13517,6 +13931,102 @@ await client.recurrences.updateById("recurrence_id");
 
 ```typescript
 await client.recurrences.cancelById("recurrence_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**recurrenceId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Recurrences.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">postRecurrencesIdPause</a>(recurrenceId) -> unknown</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.recurrences.postRecurrencesIdPause("recurrence_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**recurrenceId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Recurrences.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">postRecurrencesIdResume</a>(recurrenceId) -> unknown</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.recurrences.postRecurrencesIdResume("recurrence_id");
 ```
 
 </dd>

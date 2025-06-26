@@ -1,1 +1,1 @@
-export { type LedgerAccountsGetRequest } from "./LedgerAccountsGetRequest";
+export { type LedgerAccountsGetRequest } from "./LedgerAccountsGetRequest.js";
