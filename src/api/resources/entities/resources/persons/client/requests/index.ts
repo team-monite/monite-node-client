@@ -1,3 +1,3 @@
-export { type PersonRequest } from "./PersonRequest";
-export { type OptionalPersonRequest } from "./OptionalPersonRequest";
-export { type PersonOnboardingDocumentsPayload } from "./PersonOnboardingDocumentsPayload";
+export { type PersonRequest } from "./PersonRequest.js";
+export { type OptionalPersonRequest } from "./OptionalPersonRequest.js";
+export { type PersonOnboardingDocumentsPayload } from "./PersonOnboardingDocumentsPayload.js";

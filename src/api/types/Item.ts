@@ -6,9 +6,9 @@
  * Contains information about a text block or line extracted from an uploaded document by OCR.
  */
 export interface Item {
-    /** The text as recognized by OCR. */
-    text: string;
     /** OCR confidence score - the estimated accuracy percentage of character recognition of the extracted text, from 0 to 100%. */
     confidence: number;
     processed_text?: unknown;
+    /** The text as recognized by OCR. */
+    text: string;
 }

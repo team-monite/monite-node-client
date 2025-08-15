@@ -10,17 +10,22 @@
  *     }
  */
 export interface CreateEntityUserRequest {
-    /** An entity user business email */
+    /** The user's business email address. */
     email?: string;
-    /** First name */
+    /** The user's first name. */
     first_name: string;
-    /** Last name */
+    /** The user's last name. */
     last_name?: string;
+    /**
+     * The username assigned to this user. Usernames must be unique within the entity.
+     *
+     * The `login` value is not used by Monite but may be used by partner applications, for example, to map the users between the partner's platform and Monite.
+     */
     login: string;
-    /** An entity user phone number in the international format */
+    /** The user's phone number. */
     phone?: string;
-    /** UUID of the role assigned to this entity user */
+    /** ID of the role to assign to this user. The role defines the user's [access permissions](https://docs.monite.com/api/concepts/authentication#permissions) within the entity. Each user has just one role. */
     role_id?: string;
-    /** Title */
+    /** The user's job title. */
     title?: string;
 }

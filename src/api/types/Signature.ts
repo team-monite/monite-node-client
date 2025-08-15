@@ -3,10 +3,10 @@
  */
 
 export interface Signature {
-    /** The email of a person who signed a quote */
+    /** The email of the person who signed the quote. */
     email: string;
-    /** The full name of a person who signed a quote */
+    /** The full name of the person who signed the quote. */
     full_name: string;
-    /** Base64 encoded PNG image of a signature */
+    /** Base64-encoded PNG image of the signature of the person who signed the quote. */
     signature_image: string;
 }

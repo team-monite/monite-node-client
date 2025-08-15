@@ -7,12 +7,8 @@
  *     {}
  */
 export interface PayablesGetRequest {
-    /**
-     * Number of results per page.
-     */
+    /** Number of results per page. */
     limit?: number;
-    /**
-     * Number of results to skip before selecting items to return.
-     */
+    /** Number of results to skip before selecting items to return. */
     offset?: number;
 }

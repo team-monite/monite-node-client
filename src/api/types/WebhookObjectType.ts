@@ -42,7 +42,8 @@ export type WebhookObjectType =
     | "workflow"
     | "workflow_pipeline"
     | "ocr_task"
-    | "delivery_note";
+    | "delivery_note"
+    | "receipt";
 export const WebhookObjectType = {
     Account: "account",
     AccountingConnection: "accounting_connection",
@@ -84,4 +85,5 @@ export const WebhookObjectType = {
     WorkflowPipeline: "workflow_pipeline",
     OcrTask: "ocr_task",
     DeliveryNote: "delivery_note",
+    Receipt: "receipt",
 } as const;

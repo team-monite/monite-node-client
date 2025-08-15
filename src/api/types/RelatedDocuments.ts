@@ -3,6 +3,8 @@
  */
 
 export interface RelatedDocuments {
+    /** IDs of credit notes created from this invoice. The list includes both draft and issued credit notes. */
     credit_note_ids?: string[];
+    /** Unused. Always returns `null`. */
     proforma_invoice_id?: string;
 }

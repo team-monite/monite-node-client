@@ -1,1 +1,1 @@
-export { type WebhookDeliveriesGetRequest } from "./WebhookDeliveriesGetRequest";
+export { type WebhookDeliveriesGetRequest } from "./WebhookDeliveriesGetRequest.js";

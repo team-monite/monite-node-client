@@ -3,6 +3,8 @@
  */
 
 export interface ReceivableSettings {
+    /** Unused. */
     create_without_personal_info: boolean;
+    /** The title for the section in PDF invoices that contains [special deductions or incentives](https://docs.monite.com/accounts-receivable/special-deductions). If `null`, the title defaults to "Incentives" (localized). Custom title is not automatically localized. */
     deduction_title?: string;
 }

@@ -1,2 +1,2 @@
-export * as lineItems from "./lineItems";
-export * from "./lineItems/client/requests";
+export * as lineItems from "./lineItems/index.js";
+export * from "./lineItems/client/requests/index.js";

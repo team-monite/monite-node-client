@@ -3,24 +3,24 @@
  */
 
 export interface OcrResponseInvoiceReceiptLineItemRaw {
-    /** OCR Id of line item */
-    line_item_ocr_id?: string;
     /** Human-readable line item description */
     description?: string;
     /** Item Quantity/Unit Price adjusted */
     item_adjusted?: boolean;
+    /** OCR Id of line item */
+    line_item_ocr_id?: string;
     /** Quantity */
     quantity?: number;
-    /** Price as parsed */
-    unit_price?: number;
-    /** Unit */
-    unit?: string;
-    /** VAT Percent as parsed. */
-    vat_percentage?: number;
-    /** VAT Amount as parsed. */
-    vat_amount?: number;
     /** Total excluded VAT as parsed. */
     total_excl_vat?: number;
     /** Total included VAT as parsed. */
     total_incl_vat?: number;
+    /** Unit */
+    unit?: string;
+    /** Price as parsed */
+    unit_price?: number;
+    /** VAT Amount as parsed. */
+    vat_amount?: number;
+    /** VAT Percent as parsed. */
+    vat_percentage?: number;
 }

@@ -1,2 +1,2 @@
-export { type PaymentTermsCreatePayload } from "./PaymentTermsCreatePayload";
-export { type PaymentTermsUpdatePayload } from "./PaymentTermsUpdatePayload";
+export { type PaymentTermsCreatePayload } from "./PaymentTermsCreatePayload.js";
+export { type PaymentTermsUpdatePayload } from "./PaymentTermsUpdatePayload.js";

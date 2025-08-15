@@ -1,3 +1,3 @@
-export { type CommentsGetRequest } from "./CommentsGetRequest";
-export { type CommentCreateRequest } from "./CommentCreateRequest";
-export { type CommentUpdateRequest } from "./CommentUpdateRequest";
+export { type CommentsGetRequest } from "./CommentsGetRequest.js";
+export { type CommentCreateRequest } from "./CommentCreateRequest.js";
+export { type CommentUpdateRequest } from "./CommentUpdateRequest.js";

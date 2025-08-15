@@ -3,16 +3,39 @@
  */
 
 export interface FileResponse {
+    /** A unique ID assigned to this file. */
     id: string;
+    /** Date and time when this file was uploaded to or created in Monite. Timestamps follow the ISO 8601 format. */
     created_at: string;
+    /** Date and time when this file was last updated in Monite. Timestamps follow the ISO 8601 format. */
     updated_at: string;
+    /**
+     * Possible values:
+     *
+     *  * `additional_identity_documents` and `identity_documents` - [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) uploaded for payments onboarding.
+     *  * `attachments` - supplementary attachments for accounts receivable invoices, quotes, and credit notes.
+     *  * `delivery_notes` - auto-generated PDF versions of delivery notes.
+     *  * `einvoices_xml` - e-invoice XML generated when sending e-invoices.
+     *  * `payables` - payables (bills) received via email or uploaded via API.
+     *  * `receivable_signatures` - images of customer signatures provided during quote acceptance.
+     *  * `receivables` - auto-generated PDF versions of invoices, quotes, and credit notes.
+     *  * `zip` - data export archives created by `POST /data_exports`.
+     */
     file_type: string;
+    /** The MD5 hash of the file. */
     md5: string;
+    /** The file's media type, for example, `application/pdf` or `image/png`. */
     mimetype: string;
+    /** The original file name (if available). */
     name: string;
+    /** Geographical region of the data center where the file is stored. */
     region: string;
+    /** Unused. */
     s3_bucket: string;
+    /** Unused. */
     s3_file_path: string;
+    /** The file size in bytes. */
     size: number;
+    /** The URL to download the file. */
     url: string;
 }

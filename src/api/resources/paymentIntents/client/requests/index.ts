@@ -1,2 +1,2 @@
-export { type PaymentIntentsGetRequest } from "./PaymentIntentsGetRequest";
-export { type UpdatePaymentIntentPayload } from "./UpdatePaymentIntentPayload";
+export { type PaymentIntentsGetRequest } from "./PaymentIntentsGetRequest.js";
+export { type UpdatePaymentIntentPayload } from "./UpdatePaymentIntentPayload.js";

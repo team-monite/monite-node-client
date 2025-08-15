@@ -1,1 +1,1 @@
-export { type SyncedRecordsGetRequest } from "./SyncedRecordsGetRequest";
+export { type SyncedRecordsGetRequest } from "./SyncedRecordsGetRequest.js";

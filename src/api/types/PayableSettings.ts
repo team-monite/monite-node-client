@@ -3,14 +3,20 @@
  */
 
 export interface PayableSettings {
+    /** When enabled, Monite will automatically detect and cancel payables  identified as duplicates during ingestion—reducing manual review overhead. */
     allow_cancel_duplicates_automatically?: boolean;
+    /** Enables creation of a new counterpart record (supplier)  when incoming payable data doesn't match any existing counterpart. */
     allow_counterpart_autocreation?: boolean;
+    /** Automatically links incoming payables to existing counterpart  records using matching logic (e.g., tax ID, IBAN, name/address). */
     allow_counterpart_autolinking?: boolean;
+    /** If true, Monite will attempt to automatically attach credit notes  to the corresponding payables when processing them. */
     allow_credit_note_autolinking?: boolean;
+    /** The URL included in approval notification emails and UI buttons, directing approvers to complete the invoice approval workflow.   Useful for linking to your custom approval portal. */
     approve_page_url: string;
-    /** A state each new payable will have upon creation */
+    /** The initial status assigned to newly created payables  (e.g., `draft`, `new`). Determines whether they require approval or review. */
     default_state?: string;
-    /** Starting from version 2024-05-25 by default is always set to True. */
+    /** Partners can set this to True or False to control line item detection in OCR flows. */
     enable_line_items?: boolean;
+    /** When set to true, payables that are already marked as paid  bypass the approval workflow entirely. */
     skip_approval_for_paid_invoice?: boolean;
 }

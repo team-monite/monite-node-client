@@ -1,2 +1,2 @@
-export { type CreateCounterpartContactPayload } from "./CreateCounterpartContactPayload";
-export { type UpdateCounterpartContactPayload } from "./UpdateCounterpartContactPayload";
+export { type CreateCounterpartContactPayload } from "./CreateCounterpartContactPayload.js";
+export { type UpdateCounterpartContactPayload } from "./UpdateCounterpartContactPayload.js";

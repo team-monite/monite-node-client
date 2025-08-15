@@ -1,1 +1,1 @@
-export { type EnabledPaymentMethods } from "./EnabledPaymentMethods";
+export { type EnabledPaymentMethods } from "./EnabledPaymentMethods.js";

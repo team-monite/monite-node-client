@@ -3,7 +3,10 @@
  */
 
 export interface AccessTokenResponse {
+    /** The access token. Send it in the `Authorization: Bearer ACCESS_TOKEN` header in subsequent API calls. */
     access_token: string;
+    /** The token expiration time, in seconds. */
     expires_in: number;
+    /** Always "Bearer". */
     token_type: string;
 }

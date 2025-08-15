@@ -11,10 +11,10 @@ export interface PageSchema2 {
     id: string;
     /** The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types) of the image. */
     mimetype: string;
-    /** Image file size, in bytes. */
-    size: number;
     /** The page number in the PDF document, from 0. */
     number: number;
+    /** Image file size, in bytes. */
+    size: number;
     /** The URL to download the image. */
     url: string;
 }
