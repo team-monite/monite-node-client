@@ -6,7 +6,7 @@
  * Contains information about a payment received for an invoice.
  */
 export interface PaymentReceivedEventData {
-    /** The remainimg amount due of the invoice, in [minor units](https://docs.monite.com/references/currencies#minor-units) of the currency. For example, $12.5 is represented as 1250. */
+    /** The remaining amount due of the invoice, in [minor units](https://docs.monite.com/references/currencies#minor-units) of the currency. For example, $12.5 is represented as 1250. */
     amount_due: number;
     /** The payment amount, in minor units of the currency. */
     amount_paid: number;

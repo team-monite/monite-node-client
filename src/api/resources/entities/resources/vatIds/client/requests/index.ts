@@ -1,2 +1,2 @@
-export { type EntityVatId } from "./EntityVatId";
-export { type EntityUpdateVatId } from "./EntityUpdateVatId";
+export { type EntityVatId } from "./EntityVatId.js";
+export { type EntityUpdateVatId } from "./EntityUpdateVatId.js";

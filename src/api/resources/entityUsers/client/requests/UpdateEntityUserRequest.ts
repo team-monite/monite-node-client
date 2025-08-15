@@ -7,18 +7,18 @@
  *     {}
  */
 export interface UpdateEntityUserRequest {
-    /** An entity user business email */
+    /** The user's business email address. */
     email?: string;
-    /** First name */
+    /** The user's first name. */
     first_name?: string;
-    /** Last name */
+    /** The user's last name. */
     last_name?: string;
-    /** Login */
+    /** The new username for this user. Must be unique within the entity. */
     login?: string;
-    /** An entity user phone number in the international format */
+    /** The user's phone number. */
     phone?: string;
-    /** UUID of the role assigned to this entity user */
+    /** ID of the new role to assign to this user. The new role takes effect immediately, existing access tokens of this user are not invalidated. */
     role_id?: string;
-    /** Title */
+    /** The user's job title. */
     title?: string;
 }

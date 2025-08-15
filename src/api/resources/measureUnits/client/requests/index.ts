@@ -1,1 +1,1 @@
-export { type UnitUpdate } from "./UnitUpdate";
+export { type UnitUpdate } from "./UnitUpdate.js";

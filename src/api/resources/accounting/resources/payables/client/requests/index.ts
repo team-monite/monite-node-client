@@ -1,1 +1,1 @@
-export { type PayablesGetRequest } from "./PayablesGetRequest";
+export { type PayablesGetRequest } from "./PayablesGetRequest.js";

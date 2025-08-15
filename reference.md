@@ -921,8 +921,8 @@ Create a new access token based on client ID and client secret.
 
 ```typescript
 await client.accessTokens.create({
-    client_id: "client_id",
-    client_secret: "client_secret",
+    client_id: "eb959578-a74d-4ac3-8b25-bf0910027857",
+    client_secret: "14c84a34-282b-4fd8-8af6-86b5b5f2c212",
     grant_type: "client_credentials",
 });
 ```
@@ -1730,7 +1730,7 @@ await client.counterpartEInvoicingCredentials.getCounterpartsIdEinvoicingCredent
 
 ```typescript
 await client.counterpartEInvoicingCredentials.postCounterpartsIdEinvoicingCredentials("counterpart_id", {
-    counterpart_vat_id_id: "counterpart_vat_id_id",
+    counterpart_vat_id_id: "14c84a34-282b-4fd8-8af6-86b5b5f2c212",
 });
 ```
 
@@ -1949,6 +1949,256 @@ await client.counterpartEInvoicingCredentials.patchCounterpartsIdEinvoicingCrede
 <dd>
 
 **requestOptions:** `CounterpartEInvoicingCredentials.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Custom VAT rates
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">getCustomVatRates</a>() -> Monite.CustomVatRateResponseList</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.getCustomVatRates();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">postCustomVatRates</a>({ ...params }) -> Monite.CustomVatRateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.postCustomVatRates({
+    components: [
+        {
+            name: "name",
+            value: 1.1,
+        },
+    ],
+    name: "name",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.CustomVatRateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">getCustomVatRatesId</a>(customVatRateId) -> Monite.CustomVatRateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.getCustomVatRatesId("custom_vat_rate_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customVatRateId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">deleteCustomVatRatesId</a>(customVatRateId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.deleteCustomVatRatesId("custom_vat_rate_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customVatRateId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.customVatRates.<a href="/src/api/resources/customVatRates/client/Client.ts">patchCustomVatRatesId</a>(customVatRateId, { ...params }) -> Monite.CustomVatRateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.customVatRates.patchCustomVatRatesId("custom_vat_rate_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customVatRateId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.CustomVatRateUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CustomVatRates.RequestOptions`
 
 </dd>
 </dl>
@@ -2249,29 +2499,23 @@ await client.deliveryNotes.getDeliveryNotes();
 
 ```typescript
 await client.deliveryNotes.postDeliveryNotes({
-    counterpart_address_id: "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-    counterpart_id: "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
-    delivery_date: "2025-01-01",
-    delivery_number: "102-2025-0987",
+    counterpart_address_id: "9a0282e1-bae7-49c9-a6f3-152dbe6fe6b8",
+    counterpart_id: "18a45457-377e-4b7c-b9a1-7b2e7f264d46",
+    delivery_date: "2025-07-01",
+    delivery_number: "INV-042",
     display_signature_placeholder: true,
     line_items: [
         {
-            product_id: "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+            product: {
+                name: "LG WH1000XM Monitor",
+            },
             quantity: 10,
         },
         {
-            product: {
-                description: "Description of product 2",
-                measure_unit: {
-                    description: "pieces",
-                    name: "pcs",
-                },
-                name: "Product 2",
-            },
-            quantity: 20,
+            product_id: "e0c21d00-6556-4536-8390-830c4d3cf4ca",
+            quantity: 5,
         },
     ],
-    memo: "This is a memo",
 });
 ```
 
@@ -2763,6 +3007,80 @@ await client.pdfTemplates.makeDefaultById("document_template_id");
 </dl>
 </details>
 
+## E-invoicing search
+
+<details><summary><code>client.eInvoicingSearch.<a href="/src/api/resources/eInvoicingSearch/client/Client.ts">getEinvoiceSearch</a>({ ...params }) -> Monite.CounterpartEinvoicingCredentialExistenceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Checks if the specified VAT number or business number is registered on the PEPPOL network as a receiver. For example, you can use this endpoint to check if an entity's counterparts are registered in PEPPOL before creating e-invoices for those counterparts.
+
+The lookup is powered by PEPPOL SMPs (Service Metadata Publishers) so it also includes registrations that are not visible in the public PEPPOL directory.
+
+Both partner tokens and entity user tokens can be used for authentication.
+
+Production and sandbox lookups are separate.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.eInvoicingSearch.getEinvoiceSearch({
+    network_identifier: "DE010101010",
+    network_schema: "DE:VAT",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetEinvoiceSearchRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `EInvoicingSearch.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 ## E-invoicing connections
 
 <details><summary><code>client.eInvoicingConnections.<a href="/src/api/resources/eInvoicingConnections/client/Client.ts">getEinvoicingConnections</a>() -> Monite.EInvoicingRetrieveListData</code></summary>
@@ -2938,6 +3256,62 @@ await client.eInvoicingConnections.deleteEinvoicingConnectionsId("einvoicing_con
 <dd>
 
 **einvoicingConnectionId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `EInvoicingConnections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.eInvoicingConnections.<a href="/src/api/resources/eInvoicingConnections/client/Client.ts">patchEinvoicingConnectionsId</a>(einvoicingConnectionId, { ...params }) -> Monite.EinvoicingConnectionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.eInvoicingConnections.patchEinvoicingConnectionsId("einvoicing_connection_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**einvoicingConnectionId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.EinvoicingConnectionUpdateRequest`
 
 </dd>
 </dl>
@@ -3282,12 +3656,19 @@ await client.entities.patchEntitiesMe({});
 <dl>
 <dd>
 
-Retrieve an entity by its ID.
+Returns entity information for the specified entity ID.
 
-</dd>
-</dl>
-</dd>
-</dl>
+This endpoint requires a partner access token and can be used to get any of the partner's entities.
+
+To get entity information by using an entity user token, use [`GET /entity_users/my_entity`](https://docs.monite.com/api/entities/get-entity-users-my-entity) instead.
+
+Related endpoints:
+
+- [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -3345,12 +3726,20 @@ await client.entities.getById("ea837e28-509b-4b6a-a600-d54b6aa0b1f5");
 <dl>
 <dd>
 
-Change the specified fields with the provided values.
+Update entity information for the specified entity ID.
 
-</dd>
-</dl>
-</dd>
-</dl>
+This endpoint requires a partner access token and can be used to update any of the partner's entities.
+
+To update an entity by using an entity user token, use [`PATCH /entity_users/my_entity`](https://docs.monite.com/api/entities/patch-entity-users-my-entity) instead.
+
+Related endpoints:
+
+- [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+- [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -3530,7 +3919,7 @@ await client.entities.postEntitiesIdDeactivate("ea837e28-509b-4b6a-a600-d54b6aa0
 </dl>
 </details>
 
-<details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">uploadLogoById</a>(file, entityId) -> Monite.FileSchema2</code></summary>
+<details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">uploadLogoById</a>(entityId, { ...params }) -> Monite.FileSchema2</code></summary>
 <dl>
 <dd>
 
@@ -3543,6 +3932,8 @@ await client.entities.postEntitiesIdDeactivate("ea837e28-509b-4b6a-a600-d54b6aa0
 <dd>
 
 Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for example, in PDF documents created by this entity.
+
+Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
 
 </dd>
 </dl>
@@ -3558,7 +3949,9 @@ Entity logo can be PNG, JPG, or GIF, up to 10 MB in size. The logo is used, for 
 <dd>
 
 ```typescript
-await client.entities.uploadLogoById(fs.createReadStream("/path/to/your/file"), "ea837e28-509b-4b6a-a600-d54b6aa0b1f5");
+await client.entities.uploadLogoById("ea837e28-509b-4b6a-a600-d54b6aa0b1f5", {
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -3574,7 +3967,7 @@ await client.entities.uploadLogoById(fs.createReadStream("/path/to/your/file"), 
 <dl>
 <dd>
 
-**file:** `File | fs.ReadStream | Blob`
+**entityId:** `string`
 
 </dd>
 </dl>
@@ -3582,7 +3975,7 @@ await client.entities.uploadLogoById(fs.createReadStream("/path/to/your/file"), 
 <dl>
 <dd>
 
-**entityId:** `string`
+**request:** `Monite.BodyPutEntitiesIdLogo`
 
 </dd>
 </dl>
@@ -3604,6 +3997,21 @@ await client.entities.uploadLogoById(fs.createReadStream("/path/to/your/file"), 
 <details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">deleteLogoById</a>(entityId) -> void</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3799,12 +4207,18 @@ await client.entities.updatePartnerMetadataById("entity_id", {
 <dl>
 <dd>
 
-Retrieve all settings for this entity.
+Entity settings include configuration options for accounts payable, accounts receivable, accounting integration, and other functionality.
 
-</dd>
-</dl>
-</dd>
-</dl>
+Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.read` permission.
+
+Related endpoints:
+
+- [Get next document numbers](https://docs.monite.com/api/entities/get-entities-id-settings-next-document-numbers)
+- [Get partner settings](https://docs.monite.com/api/partner-settings/get-settings)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -3862,12 +4276,19 @@ await client.entities.getSettingsById("ea837e28-509b-4b6a-a600-d54b6aa0b1f5");
 <dl>
 <dd>
 
-Change the specified fields with the provided values.
+Entity settings include configuration options for accounts payable, accounts receivable, accounting integration, and other functionality.
 
-</dd>
-</dl>
-</dd>
-</dl>
+Both partner tokens and entity user tokens can be used for authentication. Entity users must have a role with the `entity.update` permission.
+
+Related endpoints:
+
+- [Update an entity](https://docs.monite.com/api/entities/patch-entities-id)
+- [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
+- [Update partner settings](https://docs.monite.com/api/partner-settings/patch-settings)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -3903,6 +4324,73 @@ await client.entities.updateSettingsById("ea837e28-509b-4b6a-a600-d54b6aa0b1f5")
 <dd>
 
 **request:** `Monite.PatchSettingsPayload`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Entities.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.entities.<a href="/src/api/resources/entities/client/Client.ts">getEntitiesIdSettingsNextDocumentNumbers</a>(entityId) -> Monite.NextDocumentNumbers</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the next sequence number for various document types - invoices, quotes, credit notes, and others. For example, if the last issued invoice is `INV-00042`, the next invoice number is 43.
+
+To set the next document numbers, use `PATCH /entities/{entity_id}/settings`.
+
+For more information, see [Document number customization](https://docs.monite.com/advanced/document-number-customization).
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.entities.getEntitiesIdSettingsNextDocumentNumbers("entity_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entityId:** `string` — Unique ID of the entity
 
 </dd>
 </dl>
@@ -4182,7 +4670,7 @@ await client.entityUsers.create({
 <dl>
 <dd>
 
-Retrieve an entity user by its ID.
+The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
 </dd>
 </dl>
@@ -4237,7 +4725,7 @@ await client.entityUsers.getCurrent();
 <dl>
 <dd>
 
-Change the specified fields with provided values.
+The user ID is inferred fron the `Authorization` header, which must contain a user-level access token.
 
 </dd>
 </dl>
@@ -4300,12 +4788,17 @@ await client.entityUsers.updateCurrent();
 <dl>
 <dd>
 
-Retrieves information of an entity, which this entity user belongs to.
+Returns the entity to which the authenticated user belongs. This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.read` permission.
 
-</dd>
-</dl>
-</dd>
-</dl>
+To get an entity by using a partner access token, use [`GET /entities/{entity_id}`](https://docs.monite.com/api/entities/get-entities-id) instead.
+
+Related endpoints:
+
+- [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -4355,12 +4848,20 @@ await client.entityUsers.getCurrentEntity();
 <dl>
 <dd>
 
-Update information of an entity, which this entity user belongs to.
+Update the entity to which the authenticated user belongs.
 
-</dd>
-</dl>
-</dd>
-</dl>
+This endpoint requires an [entity user access token](https://docs.monite.com/api/concepts/authentication#entity-user-token). The user must have a role with the `entity.update` permission.
+
+This endpoint does not use the `X-Monite-Entity-Id` header. The entity ID is inferred from the access token.
+
+Related endpoints:
+
+- [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+- [Update entity logo](https://docs.monite.com/api/entities/put-entities-id-logo)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -4781,6 +5282,30 @@ await client.events.getById("event_id");
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The `/files` endpoint provides access to an entity's files hosted on Monite's servers. This includes both files uploaded by the entity and files that were automatically created by Monite (such as PDF versions of invoices).
+
+`GET /files` requires at least one query parameter, either `id__in` or `file_type`. You can use this operation to:
+
+- Bulk fetch multiple files by IDs.
+- Get all files with the given purpose (for example, invoice attachments).
+
+If no files matching the query parameters were found, the response contains an empty `data` array.
+
+Both partner tokens and entity user tokens can be used for authentication.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -4825,9 +5350,31 @@ await client.files.get();
 </dl>
 </details>
 
-<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">upload</a>(file, { ...params }) -> Monite.FileResponse</code></summary>
+<details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">upload</a>({ ...params }) -> Monite.FileResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Upload files for use as:
+
+- supplementary attachments for invoices, quotes, and credit notes,
+- [entity verification documents](https://docs.monite.com/payments/onboarding/via-api/documents) for payments onboarding.
+
+Maximum file size is 15 MB. Each uploaded file is assigned a unique `id` that you can use to reference this file elsewhere.
+
+Both partner tokens and entity user tokens can be used for authentication.
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4838,7 +5385,8 @@ await client.files.get();
 <dd>
 
 ```typescript
-await client.files.upload(fs.createReadStream("/path/to/your/file"), {
+await client.files.upload({
+    file: fs.createReadStream("/path/to/your/file"),
     file_type: "ocr_results",
 });
 ```
@@ -4852,14 +5400,6 @@ await client.files.upload(fs.createReadStream("/path/to/your/file"), {
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**file:** `File | fs.ReadStream | Blob`
-
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -4886,6 +5426,23 @@ await client.files.upload(fs.createReadStream("/path/to/your/file"), {
 <details><summary><code>client.files.<a href="/src/api/resources/files/client/Client.ts">getById</a>(fileId) -> Monite.FileResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the details of an existing file. To bulk fetch multiple files by their IDs, use `GET /files?id__in=<ID1>&id__in=<ID2>`.
+
+Both partner tokens and entity user tokens can be used for authentication.
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4935,6 +5492,29 @@ await client.files.getById("file_id");
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a file with the specified ID.
+
+**Note:** This endpoint does not check if the specified file is in use. Use with caution.
+
+Both partner tokens and entity user tokens can be used for authentication.
+
+#### Considerations for invoice attachments
+
+Deleting a file does not delete it from the `attachments` list of accounts receivable invoices, quotes, and credit notes because these documents contain an inline copy of all referenced resources. To delete a file from attachments, call `PATCH /receivables/{receivable_id}` and update the `attachments` list to exclude the deleted file.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -4960,7 +5540,7 @@ await client.files.delete("file_id");
 <dl>
 <dd>
 
-**fileId:** `string`
+**fileId:** `string` — ID of the file you want to delete.
 
 </dd>
 </dl>
@@ -6584,7 +7164,7 @@ await client.ocr.postOcrTasks({
 </dl>
 </details>
 
-<details><summary><code>client.ocr.<a href="/src/api/resources/ocr/client/Client.ts">postOcrTasksUploadFromFile</a>(file, { ...params }) -> Monite.OcrTaskResponseSchema</code></summary>
+<details><summary><code>client.ocr.<a href="/src/api/resources/ocr/client/Client.ts">postOcrTasksUploadFromFile</a>({ ...params }) -> Monite.OcrTaskResponseSchema</code></summary>
 <dl>
 <dd>
 
@@ -6597,7 +7177,9 @@ await client.ocr.postOcrTasks({
 <dd>
 
 ```typescript
-await client.ocr.postOcrTasksUploadFromFile(fs.createReadStream("/path/to/your/file"), {});
+await client.ocr.postOcrTasksUploadFromFile({
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -6609,14 +7191,6 @@ await client.ocr.postOcrTasksUploadFromFile(fs.createReadStream("/path/to/your/f
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**file:** `File | fs.ReadStream | Blob`
-
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -7033,7 +7607,7 @@ await client.creditNotes.postPayableCreditNotes({
 </dl>
 </details>
 
-<details><summary><code>client.creditNotes.<a href="/src/api/resources/creditNotes/client/Client.ts">postPayableCreditNotesUploadFromFile</a>(file) -> Monite.CreditNoteResponse</code></summary>
+<details><summary><code>client.creditNotes.<a href="/src/api/resources/creditNotes/client/Client.ts">postPayableCreditNotesUploadFromFile</a>({ ...params }) -> Monite.CreditNoteResponse</code></summary>
 <dl>
 <dd>
 
@@ -7045,7 +7619,7 @@ await client.creditNotes.postPayableCreditNotes({
 <dl>
 <dd>
 
-Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+Upload an incoming credit note (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
 </dd>
 </dl>
@@ -7061,7 +7635,9 @@ Upload an incoming credit note (payable) in PDF, PNG, JPEG, or TIFF format and s
 <dd>
 
 ```typescript
-await client.creditNotes.postPayableCreditNotesUploadFromFile(fs.createReadStream("/path/to/your/file"));
+await client.creditNotes.postPayableCreditNotesUploadFromFile({
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -7077,7 +7653,7 @@ await client.creditNotes.postPayableCreditNotesUploadFromFile(fs.createReadStrea
 <dl>
 <dd>
 
-**file:** `File | fs.ReadStream | Blob`
+**request:** `Monite.CreditNoteUploadFile`
 
 </dd>
 </dl>
@@ -8797,7 +9373,7 @@ await client.payables.getAnalytics();
 </dl>
 </details>
 
-<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">uploadFromFile</a>(file) -> Monite.PayableResponseSchema</code></summary>
+<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">uploadFromFile</a>({ ...params }) -> Monite.PayableResponseSchema</code></summary>
 <dl>
 <dd>
 
@@ -8809,7 +9385,7 @@ await client.payables.getAnalytics();
 <dl>
 <dd>
 
-Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan its contents. The maximum file size is 10MB.
+Upload an incoming invoice (payable) in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
 
 </dd>
 </dl>
@@ -8825,7 +9401,9 @@ Upload an incoming invoice (payable) in PDF, PNG, JPEG, or TIFF format and scan 
 <dd>
 
 ```typescript
-await client.payables.uploadFromFile(fs.createReadStream("/path/to/your/file"));
+await client.payables.uploadFromFile({
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -8841,7 +9419,7 @@ await client.payables.uploadFromFile(fs.createReadStream("/path/to/your/file"));
 <dl>
 <dd>
 
-**file:** `File | fs.ReadStream | Blob`
+**request:** `Monite.PayableUploadFile`
 
 </dd>
 </dl>
@@ -9047,7 +9625,7 @@ await client.payables.resetValidations();
 <dl>
 <dd>
 
-Get a list of placeholders allowed to insert into an email template for customization
+Returns a list of placeholders that can be used to personalize email templates related to payables. These include payables attributes such as `currency`, `customer_name`, `document_id`, `due_date`, `invoice_id`, `total_amount`, and `uploaded_username`.
 
 </dd>
 </dl>
@@ -9350,7 +9928,7 @@ await client.payables.approvePaymentById("payable_id");
 </dl>
 </details>
 
-<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">attachFileById</a>(file, payableId) -> Monite.PayableResponseSchema</code></summary>
+<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">attachFileById</a>(payableId, { ...params }) -> Monite.PayableResponseSchema</code></summary>
 <dl>
 <dd>
 
@@ -9378,7 +9956,9 @@ Attach file to payable without existing attachment.
 <dd>
 
 ```typescript
-await client.payables.attachFileById(fs.createReadStream("/path/to/your/file"), "payable_id");
+await client.payables.attachFileById("payable_id", {
+    file: fs.createReadStream("/path/to/your/file"),
+});
 ```
 
 </dd>
@@ -9394,7 +9974,7 @@ await client.payables.attachFileById(fs.createReadStream("/path/to/your/file"), 
 <dl>
 <dd>
 
-**file:** `File | fs.ReadStream | Blob`
+**payableId:** `string`
 
 </dd>
 </dl>
@@ -9402,7 +9982,7 @@ await client.payables.attachFileById(fs.createReadStream("/path/to/your/file"), 
 <dl>
 <dd>
 
-**payableId:** `string`
+**request:** `Monite.PayableAttachFile`
 
 </dd>
 </dl>
@@ -9529,6 +10109,77 @@ await client.payables.postPayablesIdCancelOcr("payable_id");
 <dd>
 
 **payableId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Payables.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">getPayablesIdHistory</a>(payableId, { ...params }) -> Monite.PayableHistoryPaginationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a chronological list of events related to the specified payable. This includes changes in status, updates to data, comments, and actions taken by users or automation rules.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.payables.getPayablesIdHistory("payable_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payableId:** `string` — The unique identifier of the payable whose history you want to retrieve.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetPayablesIdHistoryRequest`
 
 </dd>
 </dl>
@@ -9812,7 +10463,7 @@ await client.payables.rejectById("payable_id");
 <dl>
 <dd>
 
-Reset payable state from rejected to new.
+Moves payables in the `rejected` or `waiting_to_be_paid` statuses back to `new`, allowing further actions such as editing, approval, or payment. The
 
 </dd>
 </dl>
@@ -9844,7 +10495,7 @@ await client.payables.reopenById("payable_id");
 <dl>
 <dd>
 
-**payableId:** `string`
+**payableId:** `string` — The unique identifier of the payable you want to reopen.
 
 </dd>
 </dl>
@@ -9908,6 +10559,138 @@ await client.payables.submitForApprovalById("payable_id");
 <dd>
 
 **payableId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Payables.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">getPayablesIdSuggestions</a>(payableId) -> Monite.SuggestedResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the most likely matching counterpart for a given payable, based on an AI-powered analysis of the payable's data.
+
+When a user uploads a payable, Monite automatically compares key fields—such as `name`, `address`, `VAT ID`, and bank `account`—against existing counterparts. If a sufficiently similar match is found, this endpoint will return a suggested counterpart.
+
+If no suitable match is identified, the response will be empty.
+
+**Note:** Suggestions are automatically generated during payable upload. This endpoint simply retrieves the existing suggestion for a specific payable.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.payables.getPayablesIdSuggestions("payable_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payableId:** `string` — The unique identifier of the payable you want to find matching suggestions for.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Payables.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.payables.<a href="/src/api/resources/payables/client/Client.ts">deletePayablesIdSuggestions</a>(payableId) -> unknown</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes the automatically generated counterpart suggestion for a specific payable.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.payables.deletePayablesIdSuggestions("payable_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payableId:** `string` — The unique identifier of the payable whose suggestions you want to delete.
 
 </dd>
 </dl>
@@ -10199,6 +10982,21 @@ await client.paymentIntents.getHistoryById("payment_intent_id");
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new [payment link](https://docs.monite.com/payments/payment-links) for an accounts payble invoice (to be paid by the entity) or an accounts receivable invoice (to be sent to the counterpart).
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -10209,11 +11007,16 @@ await client.paymentIntents.getHistoryById("payment_intent_id");
 
 ```typescript
 await client.paymentLinks.create({
+    object: {
+        id: "5940eb3a-de95-4e7e-b5e7-8a4ad0ea341b",
+        type: "payable",
+    },
     payment_methods: ["sepa_credit"],
     recipient: {
-        id: "id",
-        type: "entity",
+        id: "6296af34-6feb-43c1-b567-83e3bf45050c",
+        type: "counterpart",
     },
+    return_url: "https://example.com/where-to-redirect-after-payment",
 });
 ```
 
@@ -10415,7 +11218,6 @@ await client.paymentRecords.create({
         id: "id",
         type: "receivable",
     },
-    payment_intent_id: "payment_intent_id",
 });
 ```
 
@@ -11025,9 +11827,10 @@ await client.paymentTerms.get();
 
 ```typescript
 await client.paymentTerms.create({
-    name: "name",
+    description: "Payment is due within 30 days after the invoice issue date",
+    name: "Net 30",
     term_final: {
-        number_of_days: 1,
+        number_of_days: 30,
     },
 });
 ```
@@ -11795,6 +12598,626 @@ await client.projects.updateById("project_id");
 </dl>
 </details>
 
+## Receipts
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">getReceipts</a>({ ...params }) -> Monite.ReceiptPaginationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.getReceipts();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetReceiptsRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">postReceipts</a>({ ...params }) -> Monite.ReceiptResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.postReceipts();
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.ReceiptCreateSchema`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">postReceiptsUploadFromFile</a>({ ...params }) -> Monite.ReceiptResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Upload an incoming receipt in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.postReceiptsUploadFromFile({
+    file: fs.createReadStream("/path/to/your/file"),
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.ReceiptUploadFile`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">getReceiptsId</a>(receiptId) -> Monite.ReceiptResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.getReceiptsId("receipt_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receiptId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">deleteReceiptsId</a>(receiptId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.deleteReceiptsId("receipt_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receiptId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">patchReceiptsId</a>(receiptId, { ...params }) -> Monite.ReceiptResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.patchReceiptsId("receipt_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receiptId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.ReceiptUpdateSchema`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">postReceiptsIdAttachFile</a>(receiptId, { ...params }) -> Monite.ReceiptResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Attach file to receipt without existing attachment.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.postReceiptsIdAttachFile("receipt_id", {
+    file: fs.createReadStream("/path/to/your/file"),
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receiptId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.ReceiptAttachFile`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">getReceiptsIdLineItems</a>(receiptId, { ...params }) -> Monite.ReceiptLineItemsPaginationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.getReceiptsIdLineItems("receipt_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receiptId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.GetReceiptsIdLineItemsRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">postReceiptsIdLineItems</a>(receiptId, { ...params }) -> Monite.ReceiptLineItemResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.postReceiptsIdLineItems("receipt_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receiptId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.ReceiptLineItemCreateSchema`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">deleteReceiptsIdLineItemsId</a>(receiptId, lineItemId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.deleteReceiptsIdLineItemsId("receipt_id", "line_item_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receiptId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lineItemId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.receipts.<a href="/src/api/resources/receipts/client/Client.ts">patchReceiptsIdLineItemsId</a>(receiptId, lineItemId, { ...params }) -> Monite.ReceiptLineItemResponseSchema</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receipts.patchReceiptsIdLineItemsId("receipt_id", "line_item_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**receiptId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lineItemId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Monite.ReceiptLineItemUpdateSchema`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receipts.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 ## Receivables
 
 <details><summary><code>client.receivables.<a href="/src/api/resources/receivables/client/Client.ts">get</a>({ ...params }) -> Monite.ReceivablePaginationResponse</code></summary>
@@ -11940,15 +13363,8 @@ await client.receivables.get();
 
 ```typescript
 await client.receivables.create({
-    counterpart_billing_address_id: "counterpart_billing_address_id",
-    counterpart_id: "counterpart_id",
-    currency: "AED",
-    line_items: [
-        {
-            quantity: 1.1,
-        },
-    ],
-    type: "quote",
+    based_on: "based_on",
+    type: "invoice",
 });
 ```
 
@@ -12047,6 +13463,72 @@ await client.receivables.getReceivablesRequiredFields();
 </dl>
 </details>
 
+<details><summary><code>client.receivables.<a href="/src/api/resources/receivables/client/Client.ts">postReceivablesSearch</a>({ ...params }) -> Monite.ReceivablePaginationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This is a POST version of the `GET /receivables` endpoint. Use it to send search and filter parameters in the request body instead of the URL query string in case the query is too long and exceeds the URL length limit of your HTTP client.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.receivables.postReceivablesSearch({
+    status: "draft",
+    type: "invoice",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Monite.ReceivablesSearchRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Receivables.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.receivables.<a href="/src/api/resources/receivables/client/Client.ts">getVariables</a>() -> Monite.ReceivableTemplatesVariablesObjectList</code></summary>
 <dl>
 <dd>
@@ -12106,6 +13588,25 @@ await client.receivables.getVariables();
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the details of an existing accounts receivable invoice, quote, or credit note with the specified ID.
+
+The response fields vary depending on the document type. Use the `type` field to distinguish between different document types.
+
+Entity users with the `receivable.read.allowed_for_own` permission (rather than `allowed`) can access only documents that they created themselves.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -12131,7 +13632,7 @@ await client.receivables.getById("receivable_id");
 <dl>
 <dd>
 
-**receivableId:** `string`
+**receivableId:** `string` — ID of an existing invoice, quote, or credit note that you want to retrieve.
 
 </dd>
 </dl>
@@ -12260,6 +13761,23 @@ await client.receivables.updateById("receivable_id", {
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Only quotes in the `issued` status can be accepted.
+
+When a quote is accepted, Monite automatically creates a draft invoice based on this quote. To find the newly created invoice, use `GET /receivables?based_on=QUOTE_ID`.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -12269,7 +13787,13 @@ await client.receivables.updateById("receivable_id", {
 <dd>
 
 ```typescript
-await client.receivables.acceptById("receivable_id");
+await client.receivables.acceptById("receivable_id", {
+    signature: {
+        email: "theo@example.com",
+        full_name: "Theo Quinn",
+        signature_image: "iVBORw0KGgoAAAANSUhEUg.....AAABJRU5ErkJggg==",
+    },
+});
 ```
 
 </dd>
@@ -12364,6 +13888,29 @@ await client.receivables.cancelById("receivable_id");
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a copy of an existing accounts receivable invoice or quote. The original document can be in any status. The cloned document will have the `draft` status.
+
+Cloning a document requires that all of the referenced resource IDs (counterpart ID, product IDs, and others) still exist.
+
+Most of the original document's data is copied as is, with a few exceptions:
+
+- Some fields are not copied: `attachments`, `document_id`, `issue_date`, quote `expiry_date`.
+- Counterpart details, entity bank account details, and entity VAT number are fetched anew from their corresponding IDs.
+This means, for example, that if the counterpart details have been changed since the original invoice or quote was created,
+the cloned document will use the current counterpart details rather than the old details from the original document.
+  </dd>
+  </dl>
+  </dd>
+  </dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -12389,7 +13936,7 @@ await client.receivables.cloneById("receivable_id");
 <dl>
 <dd>
 
-**receivableId:** `string`
+**receivableId:** `string` — ID of an existing invoice or quote that you want to clone.
 
 </dd>
 </dl>
@@ -12411,6 +13958,21 @@ await client.receivables.cloneById("receivable_id");
 <details><summary><code>client.receivables.<a href="/src/api/resources/receivables/client/Client.ts">declineById</a>(receivableId, { ...params }) -> Monite.SuccessResult</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Only quotes in the `issued` status can be declined.
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -13082,6 +14644,25 @@ await client.receivables.getPdfLinkById("receivable_id");
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+You can preview emails only for documents in the following statuses:
+
+- Invoices: `draft`, `issued`, `overdue`, `partially_paid`, `paid`.
+  In the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance): also `canceled`.
+- Quotes: `draft`, `issued`.
+- Credit notes: `draft`, `issued`.
+  </dd>
+  </dl>
+  </dd>
+  </dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -13140,6 +14721,30 @@ await client.receivables.previewById("receivable_id", {
 <details><summary><code>client.receivables.<a href="/src/api/resources/receivables/client/Client.ts">sendById</a>(receivableId, { ...params }) -> Monite.ReceivableSendResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Only documents in the following statuses can be sent via email:
+
+- Invoices: `draft`, `issued`, `overdue`, `partially_paid`, `paid`.
+  In the [non-compliant mode](https://docs.monite.com/accounts-receivable/regulatory-compliance/invoice-compliance): also `canceled`.
+- Quotes: `draft`, `issued`.
+- Credit notes: `draft`, `issued`.
+
+Draft documents are automatically moved to the `issued` status before sending.
+
+For more information, see [Send an invoice via email](https://docs.monite.com/accounts-receivable/invoices/create#send-via-email).
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -13304,7 +14909,7 @@ await client.receivables.verifyById("receivable_id");
 
 ## Recurrences
 
-<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">get</a>() -> Monite.GetAllRecurrences</code></summary>
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">get</a>() -> Monite.RecurrenceResponseList</code></summary>
 <dl>
 <dd>
 
@@ -13344,7 +14949,7 @@ await client.recurrences.get();
 </dl>
 </details>
 
-<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">create</a>({ ...params }) -> Monite.Recurrence</code></summary>
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">create</a>({ ...params }) -> Monite.RecurrenceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13358,12 +14963,7 @@ await client.recurrences.get();
 
 ```typescript
 await client.recurrences.create({
-    day_of_month: "first_day",
-    end_month: 1,
-    end_year: 1,
     invoice_id: "invoice_id",
-    start_month: 1,
-    start_year: 1,
 });
 ```
 
@@ -13399,7 +14999,7 @@ await client.recurrences.create({
 </dl>
 </details>
 
-<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">getById</a>(recurrenceId) -> Monite.Recurrence</code></summary>
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">getById</a>(recurrenceId) -> Monite.RecurrenceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13447,7 +15047,7 @@ await client.recurrences.getById("recurrence_id");
 </dl>
 </details>
 
-<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">updateById</a>(recurrenceId, { ...params }) -> Monite.Recurrence</code></summary>
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">updateById</a>(recurrenceId, { ...params }) -> Monite.RecurrenceResponse</code></summary>
 <dl>
 <dd>
 
@@ -13517,6 +15117,102 @@ await client.recurrences.updateById("recurrence_id");
 
 ```typescript
 await client.recurrences.cancelById("recurrence_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**recurrenceId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Recurrences.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">postRecurrencesIdPause</a>(recurrenceId) -> unknown</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.recurrences.postRecurrencesIdPause("recurrence_id");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**recurrenceId:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Recurrences.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.recurrences.<a href="/src/api/resources/recurrences/client/Client.ts">postRecurrencesIdResume</a>(recurrenceId) -> unknown</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.recurrences.postRecurrencesIdResume("recurrence_id");
 ```
 
 </dd>
@@ -13878,12 +15574,15 @@ await client.roles.updateById("role_id");
 <dl>
 <dd>
 
-Retrieve all settings for this partner.
+Partner-level settings apply to all entities of that partner.
 
-</dd>
-</dl>
-</dd>
-</dl>
+See also:
+
+- [Get entity settings](https://docs.monite.com/api/entities/get-entities-id-settings)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -13933,12 +15632,15 @@ await client.partnerSettings.get();
 <dl>
 <dd>
 
-Change the specified fields with the provided values.
+Partner-level settings apply to all entities of that partner.
 
-</dd>
-</dl>
-</dd>
-</dl>
+See also:
+
+- [Update entity settings](https://docs.monite.com/api/entities/patch-entities-id-settings)
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -14716,6 +16418,31 @@ await client.textTemplates.makeDefaultById("text_template_id");
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Monite maintains a catalog of VAT and sales tax rates for [select countries](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries).
+
+To query the applicable VAT/tax rates for an invoice or quote, use:
+
+`GET /vat_rates?counterpart_id=<...>&entity_vat_id_id=<...>`
+
+Or if the entity does not have a VAT ID:
+
+`GET /vat_rates?counterpart_id=<...>`
+
+**Note:** Entities from countries [not on the list](https://docs.monite.com/accounts-receivable/vat-rates#supported-countries) should not use this endpoint. Instead, those entities can either create custom VAT/tax rates or use the invoice field `line_items[].tax_rate_value` to specify the VAT/tax rates directly.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -14835,6 +16562,21 @@ await client.webhookDeliveries.get();
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of all [webhook](https://docs.monite.com/references/webhooks/index) subscriptions (both active and disabled).
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -14883,6 +16625,21 @@ await client.webhookSubscriptions.get();
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Related guide: [Webhooks](https://docs.monite.com/references/webhooks/index).
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -14893,8 +16650,9 @@ await client.webhookSubscriptions.get();
 
 ```typescript
 await client.webhookSubscriptions.create({
-    object_type: "account",
-    url: "url",
+    event_types: ["created", "onboarding_requirements.updated", "onboarding_requirements.status_updated"],
+    object_type: "entity",
+    url: "https://example.com/your-webhook-listener",
 });
 ```
 
@@ -14934,6 +16692,23 @@ await client.webhookSubscriptions.create({
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the details of the webhook subscription with the specified ID.
+
+The response does not include the [webhook signing secret](https://docs.monite.com/references/webhooks/signatures). If you lost the secret, you can [regenerate it](https://docs.monite.com/api/webhook-subscriptions/post-webhook-subscriptions-id-regenerate-secret).
+
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -14959,7 +16734,7 @@ await client.webhookSubscriptions.getById("webhook_subscription_id");
 <dl>
 <dd>
 
-**webhookSubscriptionId:** `string`
+**webhookSubscriptionId:** `string` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
 </dd>
 </dl>
@@ -15007,7 +16782,7 @@ await client.webhookSubscriptions.deleteById("webhook_subscription_id");
 <dl>
 <dd>
 
-**webhookSubscriptionId:** `string`
+**webhookSubscriptionId:** `string` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
 </dd>
 </dl>
@@ -15029,6 +16804,21 @@ await client.webhookSubscriptions.deleteById("webhook_subscription_id");
 <details><summary><code>client.webhookSubscriptions.<a href="/src/api/resources/webhookSubscriptions/client/Client.ts">updateById</a>(webhookSubscriptionId, { ...params }) -> Monite.WebhookSubscriptionResource</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+You can update the webhook listener URL or the event list.
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -15055,7 +16845,7 @@ await client.webhookSubscriptions.updateById("webhook_subscription_id");
 <dl>
 <dd>
 
-**webhookSubscriptionId:** `string`
+**webhookSubscriptionId:** `string` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
 </dd>
 </dl>
@@ -15111,7 +16901,7 @@ await client.webhookSubscriptions.disableById("webhook_subscription_id");
 <dl>
 <dd>
 
-**webhookSubscriptionId:** `string`
+**webhookSubscriptionId:** `string` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
 </dd>
 </dl>
@@ -15159,7 +16949,7 @@ await client.webhookSubscriptions.enableById("webhook_subscription_id");
 <dl>
 <dd>
 
-**webhookSubscriptionId:** `string`
+**webhookSubscriptionId:** `string` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
 </dd>
 </dl>
@@ -15181,6 +16971,21 @@ await client.webhookSubscriptions.enableById("webhook_subscription_id");
 <details><summary><code>client.webhookSubscriptions.<a href="/src/api/resources/webhookSubscriptions/client/Client.ts">regenerateSecretById</a>(webhookSubscriptionId) -> Monite.WebhookSubscriptionResourceWithSecret</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The webhook signing secret lets you [verify webhook signatures](https://docs.monite.com/references/webhooks/signatures). If you lost the original secret generated for any of your webhook subscriptions, you can regenerate it.
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -15207,7 +17012,7 @@ await client.webhookSubscriptions.regenerateSecretById("webhook_subscription_id"
 <dl>
 <dd>
 
-**webhookSubscriptionId:** `string`
+**webhookSubscriptionId:** `string` — ID of the webhook subscription. This is the same value as the `webhook_subscription_id` you receive in webhooks.
 
 </dd>
 </dl>
@@ -18115,8 +19920,14 @@ For other countries:
 
 ```typescript
 await client.entities.bankAccounts.create({
-    country: "AF",
-    currency: "AED",
+    account_holder_name: "Tobias Weingart",
+    bank_name: "DEUTSCHE BANK AG",
+    bic: "DEUTDEFFXXX",
+    country: "DE",
+    currency: "EUR",
+    display_name: "Primary account",
+    iban: "DE74500700100100000900",
+    is_default_for_currency: true,
 });
 ```
 
@@ -18611,7 +20422,10 @@ Set which payment methods should be enabled.
 <dd>
 
 ```typescript
-await client.entities.paymentMethods.set("entity_id");
+await client.entities.paymentMethods.set("entity_id", {
+    payment_methods_receive: ["card", "sepa_credit", "sepa_debit"],
+    payment_methods_send: ["sepa_credit"],
+});
 ```
 
 </dd>

@@ -1,2 +1,2 @@
-export * from "./ReceivablesGetRequestStatusInItem";
-export * from "./ReceivablesGetRequestStatus";
+export * from "./ReceivablesGetRequestStatusInItem.js";
+export * from "./ReceivablesGetRequestStatus.js";

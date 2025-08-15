@@ -7,14 +7,14 @@
  *     {}
  */
 export interface UpdateMeEntityUserRequest {
-    /** An entity user business email */
+    /** The user's business email address. */
     email?: string;
-    /** First name */
+    /** The user's first name. */
     first_name?: string;
-    /** Last name */
+    /** The user's last name. */
     last_name?: string;
-    /** An entity user phone number in the international format */
+    /** The user's phone number. */
     phone?: string;
-    /** Title */
+    /** The user's job title. */
     title?: string;
 }

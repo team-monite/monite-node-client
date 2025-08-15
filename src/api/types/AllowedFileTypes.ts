@@ -16,7 +16,8 @@ export type AllowedFileTypes =
     | "identity_documents"
     | "additional_identity_documents"
     | "receivable_signatures"
-    | "einvoices_xml";
+    | "einvoices_xml"
+    | "attachments";
 export const AllowedFileTypes = {
     OcrResults: "ocr_results",
     OcrFiles: "ocr_files",
@@ -32,4 +33,5 @@ export const AllowedFileTypes = {
     AdditionalIdentityDocuments: "additional_identity_documents",
     ReceivableSignatures: "receivable_signatures",
     EinvoicesXml: "einvoices_xml",
+    Attachments: "attachments",
 } as const;

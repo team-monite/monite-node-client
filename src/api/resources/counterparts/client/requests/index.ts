@@ -1,1 +1,1 @@
-export { type CounterpartsGetRequest } from "./CounterpartsGetRequest";
+export { type CounterpartsGetRequest } from "./CounterpartsGetRequest.js";

@@ -11,7 +11,10 @@
  *     }
  */
 export interface RevokeTokenPayload {
+    /** Your partner [client ID](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client IDs. */
     client_id: string;
+    /** Your partner [client secret](https://docs.monite.com/get-started/credentials#get-credentials) obtained from the "API Credentials" section of Monite Partner Portal. Note that the sandbox and production environment use different client secrets. */
     client_secret: string;
+    /** The token to revoke. */
     token: string;
 }

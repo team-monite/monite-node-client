@@ -9,21 +9,21 @@
  *     }
  */
 export interface ProjectCreateRequest {
-    /** Project code */
+    /** A user-defined identifier of this project. */
     code?: string;
-    /** Project color */
+    /** Project color as a [CSS-compatible](https://developer.mozilla.org/en-US/docs/Web/CSS/color) value. Client applications can use this to color-code the projects or project-related data. */
     color?: string;
-    /** Description of project */
+    /** A user-defined description of the project. */
     description?: string;
-    /** Project end date */
+    /** Project end date. If specified, must be later than or equal to the start date. */
     end_date?: string;
     /** The project name. */
     name: string;
-    /** Parent project ID */
+    /** Unused. Reserved for future use. */
     parent_id?: string;
-    /** Project metadata */
+    /** [Metadata](https://docs.monite.com/common/metadata) for partner needs. */
     partner_metadata?: Record<string, unknown>;
-    /** Project start date */
+    /** Project start date. */
     start_date?: string;
     /** A list of IDs of user-defined tags (labels) assigned to this project. */
     tag_ids?: string[];

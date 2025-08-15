@@ -6,10 +6,10 @@
  * Repayment schedule model
  */
 export interface RepaymentSchedule {
-    /** Repayment date in ISO 8601 format */
-    repayment_date: string;
     /** Repayment amount in minor units */
     repayment_amount: number;
+    /** Repayment date in ISO 8601 format */
+    repayment_date: string;
     /** Repayment fee amount in minor units */
     repayment_fee_amount: number;
     /** Repayment principal amount in minor units */

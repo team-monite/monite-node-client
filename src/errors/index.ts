@@ -1,2 +1,2 @@
-export { MoniteError } from "./MoniteError";
-export { MoniteTimeoutError } from "./MoniteTimeoutError";
+export { MoniteError } from "./MoniteError.js";
+export { MoniteTimeoutError } from "./MoniteTimeoutError.js";

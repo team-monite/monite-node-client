@@ -4,7 +4,10 @@
 
 export interface ButtonTheme {
     primary_color?: string;
+    /** Unused. */
     primary_hover_color?: string;
+    /** Unused. */
     secondary_color?: string;
+    /** Unused. */
     secondary_hover_color?: string;
 }

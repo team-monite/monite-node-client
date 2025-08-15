@@ -1,2 +1,2 @@
-export { type FilesGetRequest } from "./FilesGetRequest";
-export { type UploadFile } from "./UploadFile";
+export { type FilesGetRequest } from "./FilesGetRequest.js";
+export { type UploadFile } from "./UploadFile.js";

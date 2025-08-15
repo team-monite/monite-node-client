@@ -1,5 +1,5 @@
-export { type EntitiesGetRequest } from "./EntitiesGetRequest";
-export { type CreateEntityRequest } from "./CreateEntityRequest";
-export { type EntityLogoUploadRequest } from "./EntityLogoUploadRequest";
-export { type PatchSettingsPayload } from "./PatchSettingsPayload";
-export { type EntityOnboardingDocumentsPayload } from "./EntityOnboardingDocumentsPayload";
+export { type EntitiesGetRequest } from "./EntitiesGetRequest.js";
+export { type CreateEntityRequest } from "./CreateEntityRequest.js";
+export { type BodyPutEntitiesIdLogo } from "./BodyPutEntitiesIdLogo.js";
+export { type PatchSettingsPayload } from "./PatchSettingsPayload.js";
+export { type EntityOnboardingDocumentsPayload } from "./EntityOnboardingDocumentsPayload.js";

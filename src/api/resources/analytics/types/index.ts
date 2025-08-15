@@ -1,2 +1,2 @@
-export * from "./GetAnalyticsReceivablesRequestStatusInItem";
-export * from "./GetAnalyticsReceivablesRequestStatus";
+export * from "./GetAnalyticsReceivablesRequestStatusInItem.js";
+export * from "./GetAnalyticsReceivablesRequestStatus.js";

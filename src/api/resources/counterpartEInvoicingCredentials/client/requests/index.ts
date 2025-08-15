@@ -1,1 +1,1 @@
-export { type UpdateCounterpartEinvoicingCredentialSchema } from "./UpdateCounterpartEinvoicingCredentialSchema";
+export { type UpdateCounterpartEinvoicingCredentialSchema } from "./UpdateCounterpartEinvoicingCredentialSchema.js";

@@ -11,6 +11,8 @@ export interface CounterpartRawBankAccount {
     bic?: string;
     /** required for non-GB bank accounts */
     iban?: string;
+    /** required for US bank accounts */
+    routing_number?: string;
     /** required for GB bank accounts */
     sort_code?: string;
 }

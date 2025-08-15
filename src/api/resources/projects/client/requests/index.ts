@@ -1,3 +1,3 @@
-export { type ProjectsGetRequest } from "./ProjectsGetRequest";
-export { type ProjectCreateRequest } from "./ProjectCreateRequest";
-export { type ProjectUpdateRequest } from "./ProjectUpdateRequest";
+export { type ProjectsGetRequest } from "./ProjectsGetRequest.js";
+export { type ProjectCreateRequest } from "./ProjectCreateRequest.js";
+export { type ProjectUpdateRequest } from "./ProjectUpdateRequest.js";

@@ -3,14 +3,14 @@
  */
 
 export interface OcrLineItem {
+    description?: string;
     line_reference?: string;
     name?: string;
-    description?: string;
     quantity?: number;
-    unit_price?: number;
-    unit?: string;
     subtotal?: number;
-    tax_rate?: number;
     tax_amount?: number;
+    tax_rate?: number;
     total_amount?: number;
+    unit?: string;
+    unit_price?: number;
 }
